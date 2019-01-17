@@ -7,6 +7,8 @@
 # Summary:
 #     <put a description here>
 # Time:
+#	Ethan -- 1 hr 20 min.
+#	Adrian --
 #     <how long did it take to complete this program>?
 # The most difficult part:
 #     <what was the most difficult part>?
@@ -30,3 +32,5 @@ assignment02.o: stack.h infix.h assignment02.cpp
 infix.o: stack.h infix.h infix.cpp
 	g++ -c infix.cpp -std=c++11
 
+clean:
+	rm a.out *.o *.tar
