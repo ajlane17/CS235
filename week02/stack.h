@@ -35,8 +35,11 @@ namespace custom
       public:
          // Constructors and desctructors
          stack() : data(NULL), numElements(0), numCapacity(0)      {}
-         stack(int numCapacity)                 throw (const char *);
-         stack(const stack & rhs)               throw (const char *);
+         stack(int numCapacity)                 throw (const char *):
+          data(NULL), numCapacity(numCapacity), numElements(0)     {}
+         stack(const stack & rhs)               throw (const char *):
+          data(NULL), numCapacity(0), numElements(0)
+          { if (!rhs.empty()) *this = rhs; }
         ~stack()                                { delete [] data;   }
          stack & operator = (const stack & rhs) throw (const char *);
 
@@ -48,17 +51,104 @@ namespace custom
          
          // Stack-specific interfaces
          void push(const T & t)                 throw (const char *);
-         void pop();
+         void pop()                             throw (const char *);
          T & top()                              throw (const char *);
-         const & T top() const                  throw (const char *);
+         const T & top() const                  throw (const char *);
          
 
       private: 
          T * data;             // dynamically allocated stack of T
          int numElements;      // the number of elements in the stack
          int numCapacity;      // the total capacity of the stack
+
+         // Resizes capacity to set size
+         void resize(int newCapacity)           throw (const char *);
+            
    }; // STACK
 
+    /********************************************
+    * STACK :: Assignment
+    ********************************************/
+   template <class T>
+   stack <T> & stack <T> :: operator = (const stack <T> & rhs)
+      throw (const char *)
+   {
+      // set size equal to rhs
+      numElements = rhs.numElements;
+      
+      // new stack only needs as much capacity as the
+      //        number of elements
+      numCapacity = numElements;
+
+      // attempt to allocate
+      try
+      {
+         data = new T[numCapacity];
+      }
+      catch (std::bad_alloc)
+      {
+         throw "ERROR: Unable to allocate a new buffer for Stack";
+      }
+
+      // move the data over
+      for (int i = 0; i < numElements; i++)
+         data[i] == rhs.data[i];
+      return *this;
+      
+   }
+
+   /********************************************
+    * STACK :: PUSH
+    * Adds a new element to the top of the stack
+    ********************************************/
+   template <class T>
+   void stack <T> :: push(const T & t) throw (const char *)
+   {
+      // check if stack is empty
+      if (numElements == 0)
+      {
+         resize(1);
+      }
+      // check if stack is full
+      else if (numElements == numCapacity)
+      {
+         resize(numCapacity * 2);
+      }
+
+      // add new element to stack
+      data[numElements++] = t;
+   }
+   
+   /********************************************
+    * STACK :: POP
+    * Deletes the top element from the stack
+    ********************************************/
+   template <class T>
+   void stack <T> :: pop() throw (const char *)
+   {
+      if (data != NULL)
+      {
+         T *pNew;
+         // attempt to allocate
+         try
+         {
+            pNew = new T[--numElements];
+         }
+         catch (std::bad_alloc)
+         {
+            throw "ERROR: Unable to allocate a new buffer for Stack";
+         }
+
+         // move the data over
+         for (int i = 0; i < numElements; i++)
+            pNew[i] == data[i];
+         // delete the old data and reassign the new
+         if (NULL != data)
+            delete [] data;
+         data = pNew;
+      }
+   }
+   
    /********************************************
     * STACK :: TOP
     * Returns the last element
@@ -83,6 +173,35 @@ namespace custom
          return data[numElements - 1];
       else
          throw "ERROR: Unable to reference the element from an empty stack";
+   }
+
+   /********************************************
+    * STACK :: Resize
+    * Resizes the capacity of the stack to the specified size
+    ********************************************/
+   template <class T>
+   void stack <T> :: resize(int newCapacity) throw (const char *)
+   {
+      // allocate a new array
+      T *pNew;
+      try
+      {
+         pNew = new T[newCapacity];
+      }
+      catch (std::bad_alloc)
+      {
+         throw "ERROR: Unable to allocate a new buffer for Stack";
+      }
+
+      // copy over the data
+      for (int i = 0; i < numElements; i++)
+         pNew[i] = data[i];
+
+      // delete the old data and reassign the new
+      if (NULL != data)
+         delete [] data;
+      data = pNew;
+      numCapacity = newCapacity;
    }
 
 }; // namespace custom
