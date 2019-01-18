@@ -73,6 +73,8 @@ namespace custom
    stack <T> & stack <T> :: operator = (const stack <T> & rhs)
       throw (const char *)
    {
+      std::cout << " Using assign " << std::endl;
+      
       // set size equal to rhs
       numElements = rhs.numElements;
       
@@ -92,7 +94,7 @@ namespace custom
 
       // move the data over
       for (int i = 0; i < numElements; i++)
-         data[i] == rhs.data[i];
+         data[i] = rhs.data[i];
       return *this;
       
    }
@@ -114,7 +116,7 @@ namespace custom
       if (numElements == numCapacity)
       {
          resize(numCapacity * 2);
-         std::cout << " numCapacity: " << numCapacity << std::endl;
+         std::cout << " numCapacity2: " << numCapacity << std::endl;
       }
 
       // add new element to stack
