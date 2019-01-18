@@ -53,7 +53,7 @@ namespace custom
          void push(const T & t)                 throw (const char *);
          void pop()                             throw (const char *);
          T & top()                              throw (const char *);
-         const T & top() const                  throw (const char *);
+         T top() const                          throw (const char *);
          
 
       private: 
@@ -66,7 +66,7 @@ namespace custom
             
    }; // STACK
 
-    /********************************************
+   /********************************************
     * STACK :: Assignment
     ********************************************/
    template <class T>
@@ -108,15 +108,18 @@ namespace custom
       if (numElements == 0)
       {
          resize(1);
+         std::cout << " numCapacity: " << numCapacity << std::endl;
       }
       // check if stack is full
-      else if (numElements == numCapacity)
+      if (numElements == numCapacity)
       {
          resize(numCapacity * 2);
+         std::cout << " numCapacity: " << numCapacity << std::endl;
       }
 
       // add new element to stack
       data[numElements++] = t;
+      std::cout << "added: " << t << " numElements: " << numElements << std::endl;
    }
    
    /********************************************
@@ -167,7 +170,7 @@ namespace custom
     * Returns a read-only version of the last element
     ********************************************/
    template <class T>
-   const T & stack <T> :: top() const throw (const char *)
+   T stack <T> :: top() const throw (const char *)
    {
       if (!empty())
          return data[numElements - 1];
@@ -195,13 +198,17 @@ namespace custom
 
       // copy over the data
       for (int i = 0; i < numElements; i++)
+      {
          pNew[i] = data[i];
+         std::cout << " data copy: " << pNew[i] << std::endl;
+      }
 
       // delete the old data and reassign the new
       if (NULL != data)
          delete [] data;
       data = pNew;
       numCapacity = newCapacity;
+      std::cout << " newCapacity from resize: " << newCapacity << std::endl;
    }
 
 }; // namespace custom
