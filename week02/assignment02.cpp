@@ -194,7 +194,7 @@ void testPush()
  * insertion operator defined.
  *******************************************/
 template <class T>
-ostream & operator << (ostream & out, stack <T> & rhs) throw (const char *)
+ostream & operator << (ostream & out, stack <T> rhs) throw (const char *)
 {
    // we need to make a copy of the stack that is backwards
    stack <T> backwards;
