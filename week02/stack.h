@@ -87,7 +87,7 @@ namespace custom
       }
       catch (std::bad_alloc)
       {
-         throw "ERROR: Unable to allocate a new buffer for Stack";
+         throw "ERROR: Unable to allocate a new buffer for stack";
       }
 
       // move the data over
@@ -136,7 +136,7 @@ namespace custom
          }
          catch (std::bad_alloc)
          {
-            throw "ERROR: Unable to allocate a new buffer for Stack";
+            throw "ERROR: Unable to allocate a new buffer for stack";
          }
 
          // move the data over
@@ -146,6 +146,7 @@ namespace custom
          if (NULL != data)
             delete [] data;
          data = pNew;
+         numCapacity = numElements;
       }
    }
    
@@ -159,7 +160,7 @@ namespace custom
       if (!empty())
          return data[numElements - 1];
       else
-         throw "ERROR: Unable to reference the element from an empty stack";
+         throw "ERROR: Unable to reference the element from an empty Stack";
    }
 
    /********************************************
@@ -172,7 +173,7 @@ namespace custom
       if (!empty())
          return data[numElements - 1];
       else
-         throw "ERROR: Unable to reference the element from an empty stack";
+         throw "ERROR: Unable to reference the element from an empty Stack";
    }
 
    /********************************************
@@ -190,7 +191,7 @@ namespace custom
       }
       catch (std::bad_alloc)
       {
-         throw "ERROR: Unable to allocate a new buffer for Stack";
+         throw "ERROR: Unable to allocate a new buffer for stack";
       }
 
       // copy over the data
