@@ -10,6 +10,8 @@
  ************************************************************************/
 
 #include <iostream>    // for ISTREAM and COUT
+#include <sstream>     // for STRING STREAM
+#include <vector>      // for VECTOR
 #include <string>      // for STRING
 #include <cassert>     // for ASSERT
 #include "stack.h"     // for STACK
@@ -69,7 +71,96 @@ void testInfixToPostfix()
 string convertPostfixToAssembly(const string & postfix)
 {
    string assembly;
+   custom::stack <string> tempStorage;
+   char memVar = 'A';
 
+   // TODO: REMOVE TEST STRING
+   // Test string instead of postfix
+   string testString = "3 4 5 + * 6 -";
+
+   // Split string by spaces into vector
+   vector <string> splitString;
+
+   stringstream ss;
+   string strBuffer;
+   ss.str(testString);
+
+   while (ss >> strBuffer)
+   {
+      splitString.push_back(strBuffer);
+   }
+
+   // Loop through array
+   for (int i = 0; i < splitString.size(); i++)
+   {
+      // This will hold the assembly instruction to add to the string
+      string assemblyDirective;
+
+      // These will hold the left and right operands
+      string lhs;
+      string rhs;
+
+      // We need the first char from each string
+      char tempChar = (char)splitString.at(i)[0];
+
+      // Determine alphanumeric or operator
+      if (isalpha(tempChar) || isdigit(tempChar))
+      {
+         // If alphanumeric, add to the stack
+         tempStorage.push(splitString.at(i));
+      }
+      else
+      {
+         // Determine the operand and assembly directive match
+         switch (tempChar)
+         {
+            case '+':
+               assemblyDirective = "\tADD ";
+               break;
+            case '-':
+               assemblyDirective = "\tSUB ";
+               break;
+            case '*':
+               assemblyDirective = "\tMUL ";
+               break;
+            case '/':
+               assemblyDirective = "\tDIV ";
+               break;
+            case '%':
+               assemblyDirective = "\tMOD ";
+               break;
+            case '^':
+               assemblyDirective = "\tEXP ";
+               break;
+            default:
+               break;
+         }
+
+         // Get the left and right operands assigned
+         rhs = tempStorage.top();
+         tempStorage.pop();
+
+         lhs = tempStorage.top();
+         tempStorage.pop();
+
+         // Decide between LOD and SET and add to the string
+         if (isalpha(lhs[0]))
+            assembly += "\tLOD " + lhs + '\n';
+         else 
+            assembly += "\tSET " + lhs + '\n';
+
+         // Add the operator and right operand
+         assembly += assemblyDirective + rhs + '\n';
+
+         // "Assign" the result to a variable, put on the stack
+         string s(1, memVar); // cast the CHAR to a string
+         assembly += "\tSAV " + s + '\n';
+         tempStorage.push(s);
+
+         // Increase the variable
+         memVar++;
+      }
+   }
    return assembly;
 }
 
