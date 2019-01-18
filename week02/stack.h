@@ -146,7 +146,7 @@ namespace custom
 
          // move the data over
          for (int i = 0; i < numElements; i++)
-            pNew[i] == data[i];
+            pNew[i] = data[i];
          // delete the old data and reassign the new
          if (NULL != data)
             delete [] data;
