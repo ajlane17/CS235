@@ -17,15 +17,102 @@
 #include "stack.h"     // for STACK
 using namespace std;
 
+int opPriority(char op);
+
 /*****************************************************
- * CONVERT INFIX TO POSTFIX
+ * CONVERT INFIX TO POSTFIX  4 * (5 + 6) ^ 2
  * Convert infix equation "5 + 2" into postifx "5 2 +"
  *****************************************************/
 string convertInfixToPostfix(const string & infix)
 {
    string postfix;
+   // Add starting space
+   postfix += ' ';
+
+   custom::stack <char> tempStack;
+
+   for (int i = 0; i < infix.size(); i++)
+   {
+      char currChar = infix[i];
+
+      if (isalpha(currChar) || isdigit(currChar) || currChar == '.')
+      {
+         //cout << "adding alphanumeric to postfix: " << currChar << endl;
+         if (i != 0 && (opPriority(postfix[postfix.size() - 1]) != 0))
+            postfix += ' ';
+         postfix += currChar;
+      }
+      else
+      {
+         switch (currChar)
+         {
+            case ' ':
+               // cout << "found a space, adding a space" << endl;
+               break;
+            case '(':
+               // cout << "a '(' found" << endl;
+               tempStack.push(currChar);
+               break;
+            case ')':
+               // cout << "a ')' found" << endl;
+               if (postfix[postfix.size() - 1] != ' ')
+                  postfix += ' ';
+               while (tempStack.top() != '(')
+               {
+                  postfix += tempStack.top();
+                  tempStack.pop();
+               }
+               tempStack.pop();
+               break;
+            default:
+               while (!tempStack.empty() && opPriority(currChar) <= opPriority(tempStack.top()))
+               {
+                  // cout << "adding operator to postfix: " << tempStack.top() << endl;
+                  if (postfix[postfix.size() - 1] != ' ')
+                     postfix += ' ';
+
+                  postfix += tempStack.top();
+                  tempStack.pop();
+               }
+               // cout << "adding operator to the stack: " << currChar << endl;
+               tempStack.push(currChar);
+               postfix += ' ';
+         }
+      }
+   }
+
+   while (!tempStack.empty())
+   {
+      // cout << "pushing remaining operators to postfix: " << tempStack.top() << endl;
+      if (postfix[postfix.size() - 1] != ' ')
+         postfix += ' ';
+
+      postfix += tempStack.top();
+      tempStack.pop();
+   }
 
    return postfix;
+}
+
+/*****************************************************
+ * OP PRIORITY
+ * Returns the operator priority regarding order of operations
+ *****************************************************/
+int opPriority(char op)
+{
+   switch (op)
+   {
+      case '+':
+      case '-':
+         return 1;
+      case '*':
+      case '/':
+         return 2;
+      case '^':
+         return 3;
+      default:
+         return 0;
+   }
 }
 
 /*****************************************************
@@ -76,14 +163,14 @@ string convertPostfixToAssembly(const string & postfix)
 
    // TODO: REMOVE TEST STRING
    // Test string instead of postfix
-   string testString = "3 4 5 + * 6 -";
+   // string testString = "3 4 5 + * 6 -";
 
    // Split string by spaces into vector
    vector <string> splitString;
 
    stringstream ss;
    string strBuffer;
-   ss.str(testString);
+   ss.str(postfix);
 
    while (ss >> strBuffer)
    {
@@ -104,7 +191,7 @@ string convertPostfixToAssembly(const string & postfix)
       char tempChar = (char)splitString.at(i)[0];
 
       // Determine alphanumeric or operator
-      if (isalpha(tempChar) || isdigit(tempChar))
+      if (isalpha(tempChar) || isdigit(tempChar) || tempChar == '.')
       {
          // If alphanumeric, add to the stack
          tempStorage.push(splitString.at(i));
