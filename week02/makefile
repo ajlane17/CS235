@@ -5,13 +5,29 @@
 # Author:
 #     Adrian Lane, Ethan Holden
 # Summary:
-#     <put a description here>
+#     This program is a custom version of the stack class that 
+#     stores values is a first in last out manner. It provides 
+#     methods that allow the user to add to the stack, as well 
+#     as take the top item off of the stack.
+#     The second part is there is a separate set of functions 
+#     that first allow the user to change an infix equation 
+#     into a postfix equation. Then we also made it so that 
+#     the program can also convert that same postfix equation 
+#     into assembly language.
 # Time:
-#	Ethan -- 1 hr 20 min.
-#	Adrian --
-#     <how long did it take to complete this program>?
+#     Ethan  = 9 hours
+#     Adrian = 9 hours
+#     Total  = 18 hours
 # The most difficult part:
-#     <what was the most difficult part>?
+#     The most difficult parts of this project were in the 
+#     infix to postfix section of the project. The first was 
+#     figuring out how to check against the order of operations 
+#     and made a separate function to do that. Second we had 
+#     trouble with the spacing on the output of postfix 
+#     equations. Then finally we kept getting this error that 
+#     terminated the program after throwing an instance of 
+#     'char const*', and we still don't know exactly what 
+#     caused that.
 ###############################################################
 
 ##############################################################

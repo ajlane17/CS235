@@ -3,7 +3,7 @@
  *    Week 02, Stack
  *    Brother Helfrich, CS 235
  * Author:
- *    <your name here>
+ *    Adrian Lane, Ethan Holden
  * Summary:
  *    This program will implement the testInfixToPostfix()
  *    and testInfixToAssembly() functions
@@ -20,7 +20,7 @@ using namespace std;
 int opPriority(char op);
 
 /*****************************************************
- * CONVERT INFIX TO POSTFIX  4 * (5 + 6) ^ 2
+ * CONVERT INFIX TO POSTFIX  
  * Convert infix equation "5 + 2" into postifx "5 2 +"
  *****************************************************/
 string convertInfixToPostfix(const string & infix)
@@ -47,7 +47,7 @@ string convertInfixToPostfix(const string & infix)
          switch (currChar)
          {
             case ' ':
-               // cout << "found a space, adding a space" << endl;
+               // cout << "found a space" << endl;
                break;
             case '(':
                // cout << "a '(' found" << endl;
@@ -55,8 +55,11 @@ string convertInfixToPostfix(const string & infix)
                break;
             case ')':
                // cout << "a ')' found" << endl;
+
+               // check if spacing is needed
                if (postfix[postfix.size() - 1] != ' ')
                   postfix += ' ';
+               // add all oerators in () 
                while (tempStack.top() != '(')
                {
                   postfix += tempStack.top();
@@ -65,16 +68,21 @@ string convertInfixToPostfix(const string & infix)
                tempStack.pop();
                break;
             default:
-               while (!tempStack.empty() && opPriority(currChar) <= opPriority(tempStack.top()))
+               
+               while (!tempStack.empty() &&
+                      opPriority(currChar) <= opPriority(tempStack.top()))
                {
-                  // cout << "adding operator to postfix: " << tempStack.top() << endl;
+                  // check if spacing is needed
                   if (postfix[postfix.size() - 1] != ' ')
                      postfix += ' ';
-
+                  
+                  // cout << "adding operator to postfix: "
+                  //      << tempStack.top() << endl;
                   postfix += tempStack.top();
                   tempStack.pop();
                }
-               // cout << "adding operator to the stack: " << currChar << endl;
+               // cout << "adding operator to the stack: "
+               //      << currChar << endl;
                tempStack.push(currChar);
                postfix += ' ';
          }
@@ -83,7 +91,8 @@ string convertInfixToPostfix(const string & infix)
 
    while (!tempStack.empty())
    {
-      // cout << "pushing remaining operators to postfix: " << tempStack.top() << endl;
+      // cout << "pushing remaining operators to postfix: "
+      //      << tempStack.top() << endl;
       if (postfix[postfix.size() - 1] != ' ')
          postfix += ' ';
 
@@ -161,9 +170,6 @@ string convertPostfixToAssembly(const string & postfix)
    custom::stack <string> tempStorage;
    char memVar = 'A';
 
-   // TODO: REMOVE TEST STRING
-   // Test string instead of postfix
-   // string testString = "3 4 5 + * 6 -";
 
    // Split string by spaces into vector
    vector <string> splitString;
