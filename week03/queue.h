@@ -23,6 +23,8 @@
 #define Debug(statement) statement
 #endif // !NDEBUG
 
+#include <cassert>
+
 namespace custom
 {
    /************************************************
@@ -36,11 +38,8 @@ namespace custom
          // Constructors and desctructors
          queue() : data(NULL), numPush(0), numPop(0), numCapacity(0)
           {}
-         queue(int numCapacity)                 throw (const char *):
-         data(NULL), numCapacity(numCapacity), numPush(0), numPop(0)
-          {}
-         queue(const queue & rhs)               throw (const char *)
-         { if (!rhs.empty()) *this = rhs; }
+         queue(int numCapacity)                 throw (const char *);
+         queue(const queue & rhs)               throw (const char *);
          ~queue()                                { delete [] data; }
          queue & operator = (const queue & rhs) throw (const char *);
 
@@ -59,28 +58,64 @@ namespace custom
          
 
       private: 
-         T * data;             // dynamically allocated queue of T
-         int numPush = 0;      // The number of times push is called
-         int numPop  = 0;      // The number of times pop is called
-         int numCapacity;      // the total capacity of the queue
+         T * data;               // dynamically allocated queue of T
+         int numPush;          // The number of times push is called
+         int numPop;            // The number of times pop is called
+         int numCapacity;         // the total capacity of the queue
 
          // Resizes capacity to set size
          void resize(int newCapacity)           throw (const char *);
-         int iHead() const         { return (numPop % numCapacity; }
+         int iHead() const        { return (numPop % numCapacity); }
          int iTail() const { return ((numPush - 1) % numCapacity); }
             
    }; // QUEUE
 
    /********************************************
-    * QUEUE :: Assignment
+    * QUEUE :: NON-DEFAULT CONSTRUCTOR
+    ********************************************/
+   template <class T>
+   queue <T> :: queue(int numCapacity) throw (const char *)
+   {
+      numPush = 0;
+      numPop = 0;
+      this->numCapacity = numCapacity;
+
+      try
+      {
+         data = new T[numCapacity];
+      }
+      catch (std::bad_alloc)
+      {
+         throw "ERROR: Unable to allocate a new buffer for queue";
+      }
+   }
+
+   /********************************************
+    * QUEUE :: COPY CONSTRUCTOR
+    ********************************************/
+   template <class T>
+   queue <T> :: queue(const queue & rhs) throw (const char *)
+   {
+      if (rhs.numCapacity >= 0)
+      {
+         *this = rhs;
+      }
+      else
+      {
+         throw "ERROR: Unable to allocate a new buffer for queue";
+      }
+   }
+
+   /********************************************
+    * QUEUE :: ASSIGNMENT
     ********************************************/
    template <class T>
    queue <T> & queue <T> :: operator = (const queue <T> & rhs)
       throw (const char *)
    {
       // copy over data locations
-      numPush = rhs.numPush;
-      numPop = rhs.numPop;
+      numPush = 0;
+      numPop = 0;
 
       // reallocate capacity if needed.
       if (numCapacity < rhs.size())
@@ -99,8 +134,12 @@ namespace custom
       }
 
       // move the data over
-      for (int i = 0; i < size(); i++)
-         data[i] = rhs.data[i];
+      // for (int i = 0; i < size(); i++)
+      //    data[i] = rhs.data[i];
+      for (int i = rhs.numPop; i < rhs.numPush; i++)
+      {
+         this->push(rhs.data[i % rhs.numCapacity]);
+      }
 
       return *this;
    }
@@ -140,7 +179,7 @@ namespace custom
    {
       if(!empty())
       {
-         data[iHead()] = NULL;
+         //data[iHead()] = NULL;
          numPop++;
       }
    }
@@ -155,7 +194,7 @@ namespace custom
       if (empty())
          throw "ERROR: attempting to access an element in an empty queue";
       else
-         return array[iHead()];
+         return data[iHead()];
    }
 
    /********************************************
@@ -168,7 +207,7 @@ namespace custom
       if (empty())
          throw "ERROR: attempting to access an element in an empty queue";
       else
-         return array[iHead()];
+         return data[iHead()];
    }
 
    /********************************************
@@ -181,7 +220,7 @@ namespace custom
       if (empty())
          throw "ERROR: attempting to access an element in an empty queue";
       else
-         return array[iTail()];
+         return data[iTail()];
    }
 
    /********************************************
@@ -194,7 +233,7 @@ namespace custom
       if (empty())
          throw "ERROR: attempting to access an element in an empty queue";
       else
-         return array[iTail()];
+         return data[iTail()];
    }
 
    /********************************************
