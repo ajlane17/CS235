@@ -39,14 +39,15 @@ namespace custom
          queue(int numCapacity)                 throw (const char *):
          data(NULL), numCapacity(numCapacity), numPush(0), numPop(0)
           {}
-         queue(const queue & rhs)               throw (const char *);          
-        ~queue()                                { delete [] data;   }
+         queue(const queue & rhs)               throw (const char *)
+         { if (!rhs.empty()) *this = rhs; }
+         ~queue()                                { delete [] data; }
          queue & operator = (const queue & rhs) throw (const char *);
 
          // standard container interfaces
-         int size() const                     { return numElements; }
-         bool empty() const              { return numElements == 0; }
-         void clear()                            { numElements = 0; }
+         int size() const             { return (numPush - numPop); }
+         bool empty() const                { return (size() == 0); }
+         void clear();
          
          // Queue-specific interfaces
          void push(const T & t)                 throw (const char *);
@@ -59,14 +60,14 @@ namespace custom
 
       private: 
          T * data;             // dynamically allocated queue of T
-         int numPush;
-         int numPop;
+         int numPush = 0;      // The number of times push is called
+         int numPop  = 0;      // The number of times pop is called
          int numCapacity;      // the total capacity of the queue
 
          // Resizes capacity to set size
          void resize(int newCapacity)           throw (const char *);
-         int iHead()                            throw (const char *);
-         int iTail()                            throw (const char *);
+         int iHead() const         { return (numPop % numCapacity; }
+         int iTail() const { return ((numPush - 1) % numCapacity); }
             
    }; // QUEUE
 
@@ -77,9 +78,46 @@ namespace custom
    queue <T> & queue <T> :: operator = (const queue <T> & rhs)
       throw (const char *)
    {
+      // copy over data locations
+      numPush = rhs.numPush;
+      numPop = rhs.numPop;
+
+      // reallocate capacity if needed.
+      if (numCapacity < rhs.size())
+      {
+         resize(rhs.size());
+      }
+
+      // attempt to allocate
+      try
+      {
+         data = new T[numCapacity];
+      }
+      catch (std::bad_alloc)
+      {
+         throw "ERROR: Unable to allocate a new buffer for stack";
+      }
+
+      // move the data over
+      for (int i = 0; i < size(); i++)
+         data[i] = rhs.data[i];
+
       return *this;
    }
 
+   /********************************************
+    * QUEUE :: CLEAR
+    * Clears the queue of all data
+    ********************************************/
+   template <class T>
+   void queue <T> :: clear()
+   {
+      delete [] data;
+      data = NULL;
+      numPush = 0;
+      numPop = 0;
+   }
+   
    /********************************************
     * QUEUE :: PUSH
     * Adds a new element to the back of the queue
@@ -87,7 +125,10 @@ namespace custom
    template <class T>
    void queue <T> :: push(const T & t) throw (const char *)
    {
-
+      if (size() == numCapacity)
+         resize(numCapacity * 2);
+      numPush++;
+      data[iTail()] = t;
    }
    
    /********************************************
@@ -97,7 +138,11 @@ namespace custom
    template <class T>
    void queue <T> :: pop() throw (const char *)
    {
-
+      if(!empty())
+      {
+         data[iHead()] = NULL;
+         numPop++;
+      }
    }
    
    /********************************************
@@ -107,7 +152,10 @@ namespace custom
    template <class T>
    T & queue <T> :: front() throw (const char *)
    {
-
+      if (empty())
+         throw "ERROR: attempting to access an element in an empty queue";
+      else
+         return array[iHead()];
    }
 
    /********************************************
@@ -117,7 +165,10 @@ namespace custom
    template <class T>
    T queue <T> :: front() const throw (const char *)
    {
-
+      if (empty())
+         throw "ERROR: attempting to access an element in an empty queue";
+      else
+         return array[iHead()];
    }
 
    /********************************************
@@ -127,7 +178,10 @@ namespace custom
    template <class T>
    T & queue <T> :: back() throw (const char *)
    {
-
+      if (empty())
+         throw "ERROR: attempting to access an element in an empty queue";
+      else
+         return array[iTail()];
    }
 
    /********************************************
@@ -137,7 +191,10 @@ namespace custom
    template <class T>
    T queue <T> :: back() const throw (const char *)
    {
-
+      if (empty())
+         throw "ERROR: attempting to access an element in an empty queue";
+      else
+         return array[iTail()];
    }
 
    /********************************************
@@ -148,26 +205,6 @@ namespace custom
    void queue <T> :: resize(int newCapacity) throw (const char *)
    {
 
-   }
-
-   /********************************************
-    * QUEUE :: I_HEAD
-    * Returns the index for the front of the queue
-    ********************************************/
-   template <class T>
-   int queue <T> :: iHead() throw (const char *)
-   {
-      
-   }
-
-   /********************************************
-    * QUEUE :: I_TAIL
-    * Returns the index for the back of the queue
-    ********************************************/
-   template <class T>
-   int queue <T> :: iTail() throw (const char *)
-   {
-      
    }
 
 }; // namespace custom
