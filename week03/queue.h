@@ -36,9 +36,11 @@ namespace custom
    {
       public:
          // Constructors and desctructors (inline)
-         queue() : data(NULL), numPush(0), numPop(0), numCapacity(0)  {}
+         queue() : numPush(0), numPop(0), numCapacity(0)  
+            { data = new T[numCapacity]; }
          queue(int numCapacity)                    throw (const char *):
-          data(NULL), numPush(0), numPop(0), numCapacity(numCapacity) {}
+            numPush(0), numPop(0), numCapacity(numCapacity) 
+            { data = new T[numCapacity]; }
         ~queue()                                     { delete [] data; }
          queue(const queue & rhs)                  throw (const char *):
             data(NULL), numPush(0), numPop(0), numCapacity(0)
@@ -53,7 +55,7 @@ namespace custom
          
          // Queue-specific interfaces
          void push(const T & t)                    throw (const char *);
-         void pop()                                throw (const char *);
+         void pop();
          T & front()                               throw (const char *);
          T front() const                           throw (const char *);
          T & back()                                throw (const char *);
@@ -91,10 +93,10 @@ namespace custom
       
       for (int i = rhs.numPop; i < rhs.numPush; i++)
       {
-         push(rhs.data[i % numCapacity]);
+         push(rhs.data[i % rhs.numCapacity]);
       }
 
-      std::cout << "assign -> cap : size : pop : push - " << numCapacity << " : " << size() << " : " << numPop << " : " << numPush << std::endl;
+      // std::cout << "after assignment -> cap : size : pop : push - " << numCapacity << " : " << size() << " : " << numPop << " : " << numPush << std::endl;
    }
 
    /********************************************
@@ -103,28 +105,29 @@ namespace custom
    template <class T>
    void queue <T> :: push(const T & t) throw (const char *)
    {
-      std::cout << "start push -> cap : size : pop : push - " << numCapacity << " : " << size() << " : " << numPop << " : " << numPush << std::endl;
+      // std::cout << "start push -> cap : size : pop : push - " << numCapacity << " : " << size() << " : " << numPop << " : " << numPush << std::endl;
+      if (numCapacity == 0)
+      {
+         resize(1);
+      }
 
       if (size() == numCapacity)
       {
          resize(numCapacity * 2);
-         std::cout << "push resized -> cap : size : pop : push - " << numCapacity << " : " << size() << " : " << numPop << " : " << numPush << std::endl;
+         // std::cout << "push resized -> cap : size : pop : push - " << numCapacity << " : " << size() << " : " << numPop << " : " << numPush << std::endl;
       }
-
-      std::cout << "after push -> cap : size : pop : push - " << numCapacity << " : " << size() << " : "<<  numPop << " : " << numPush << std::endl;
 
       numPush++;
       data[iTail()] = t;
 
-      std::cout << "assign -> cap : size - " << numCapacity << " : " << size() << std::endl;
-      std::cout << "assign -> pop : push - " << numPop << " : " << numPush << std::endl;
+      // std::cout << "after push -> cap : size : pop : push - " << numCapacity << " : " << size() << " : " << numPop << " : " << numPush << std::endl;
    }
 
    /********************************************
     * QUEUE :: POP
     ********************************************/
    template <class T>
-   void queue <T> :: pop() throw (const char *)
+   void queue <T> :: pop()
    {
       if (!empty())
       {
@@ -191,7 +194,7 @@ namespace custom
    template <class T>
    void queue <T> :: resize(int newCapacity) throw (const char *)
    {
-      std::cout << "RESIZE CALLED" << std::endl;
+      // std::cout << "RESIZE CALLED" << std::endl;
 
       T *pNew;
 
@@ -204,15 +207,25 @@ namespace custom
          throw "ERROR: Unable to allocate a new buffer for queue";
       }
 
-      for (int i = 0; i < size(); i++)
+      int oldSize = size();
+      // for (int i = 0; i < oldSize; i++)
+      // {
+      //    pNew[i] = front();
+      //    pop();
+      // }
+
+      int x = 0;
+      for (int i = numPop; i < numPush; i++)
       {
-         pNew[i] = front();
-         pop();
+         pNew[x] = data[i % numCapacity];
+         x++;
       }
 
       numPop = 0;
-      numPush = size();
+      numPush = oldSize;
       numCapacity = newCapacity;
+
+      delete [] data;
       data = pNew;
    }
 
