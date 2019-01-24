@@ -106,6 +106,8 @@ void testSimple()
       queue <double> q2(10 /*capacity*/);
       cout << "\tSize:     " << q2.size()                   << endl;
       cout << "\tEmpty?    " << (q2.empty() ? "Yes" : "No") << endl;
+      double testval = 23;
+      q2.push(testval);
 
       // Test 1.c: copy the Queue using the copy constructor
       {
