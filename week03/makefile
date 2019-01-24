@@ -7,7 +7,7 @@
 # Summary:
 #     <put a description here>
 # Time:
-#	Ethan - 1.5 hr
+#	Ethan - 5 hr
 #     <how long did it take to complete this program>?
 # Hardest Part:
 #     <>
@@ -37,3 +37,6 @@ dollars.o: dollars.h dollars.cpp
 
 stock.o: stock.h stock.cpp queue.h
 	g++ -c stock.cpp -std=c++11
+
+clean:
+	rm a.out *.o *.tar
