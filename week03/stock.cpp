@@ -23,47 +23,109 @@ class Stock
 private:
    int quantity;
    Dollars cost;
+   Dollars profit;
 public:
    // constructors
    Stock() : quantity(0), cost(0) {}
    Stock(const int & quantity, const Dollars & cost)
    { this->quantity = quantity; this->cost = cost; }
+   Stock(const int & quantity, const Dollars & cost,
+         const Dollars & profit)
+   {
+      this->quantity = quantity;
+      this->cost = cost;
+      this->profit = profit;
+   }
 
    // getters and setters
-   int getQuantity() { return quantity; }
-   Dollars getCost() { return cost; }
+   int getQuantity()   { return quantity; }
+   Dollars getCost()   { return cost; }
+   Dollars getProfit() { return profit; }
 
    void setQuantity(int quantity)
    { this->quantity = quantity; }
    void setCost(Dollars cost)
    { this->cost = cost; }
+   void setProfit()
+   { this->profit = profit; }
    
    //operators
-   Stock operator - (const int & rhs) const
+   Stock operator -= (const int & rhs)
    {
-      return Stock(quantity - rhs, cost);
+      return *this = Stock(quantity - rhs, cost, profit);
    }
-   Stock operator + (const int & rhs) const
+   Stock operator += (const int & rhs) 
    {
-      return Stock(quantity + rhs, cost);
+      return *this = Stock(quantity + rhs, cost, profit);
    }
 };
 
+/************************************************
+ * BUY STOCKS
+ * Buys specified stocks and adds them to the protfolio
+ ***********************************************/
 void buyStocks(const int & q, const Dollars & p,
                custom::queue <Stock> & portfolio)
 {
-   
+   portfolio.push(Stock(q, p));
 }
 
+/************************************************
+ * SELL STOCKS
+ * Sells stocks and calculates the profit or loss
+ * incured by the transaction. Then saves the
+ * portfolio and sales history into their queues.
+ ***********************************************/
 void sellStocks(const int & q, const Dollars & p,
-                custom::queue <Stock> & portfolio)
-{
-
-}
-
-void display(custom::queue <Stock> & portfolio)
+                custom::queue <Stock> & portfolio,
+               custom::queue <Stock> & sellHistory)
 {
    
+}
+
+/************************************************
+ * DISPLAY
+ * Displays the current stocks in the portfolio,
+ * the sales history and the total proceeds made
+ * for the client, but if there is anything to display.
+ ***********************************************/
+void display(const custom::queue <Stock> & portfolio,
+               custom::queue <Stock> & sellHistory)
+{
+   custom::queue <Stock> tempQ = portfolio;
+
+   // display current bought stocks
+   if (!tempQ.empty())
+   {
+      cout << "Currently held:\n";
+      while (!tempQ.empty())
+      {      
+         cout << "\tBought " << tempQ.front().getQuantity()
+              << " shares at " << tempQ.front().getCost()
+              << endl;
+         tempQ.pop();
+      }
+   }
+
+   tempQ = sellHistory;
+   Dollars proceeds = 0;
+   
+   // display the sales history as well as total proceeds
+   if (!tempQ.empty())
+   {
+      cout << "Sell History:\n";
+      while (!tempQ.empty())
+      {
+         cout << "\tSold " << tempQ.front().getQuantity()
+              << " shares at " << tempQ.front().getCost()
+              << " for a profit of " << tempQ.front().getProfit()
+              << endl;
+         proceeds += tempQ.front().getProfit();
+         tempQ.pop();
+      }
+   }
+
+   cout << "Proceeds: " << proceeds << endl;
 }
 
 /************************************************
@@ -80,19 +142,20 @@ void stocksBuySell()
    cout << "  sell 150 $2.15  - Sell 150 shares at $2.15\n";
    cout << "  display         - Display your current stock portfolio\n";
    cout << "  quit            - Display a final report and quit the program\n";
+   cin.ignore();
 
-   // your code here...
+// your code here...
    string command;
    int quantity;
    Dollars price;
    string input;
    custom::queue <Stock> portfolio;
-
-   while (input != "quit")
+   custom::queue <Stock> sellHistory;
+   
+   while (true)
    {
       // get input
       cout << "> ";
-      cin.ignore();
       getline(cin, input);
 
       // parse input
@@ -101,17 +164,23 @@ void stocksBuySell()
       ss >> quantity;
       ss >> price;
 
+      // call various methods depending on input
       if (command == "buy")
       {
          buyStocks(quantity, price, portfolio);
       }
       else if (command == "sell")
       {
-         sellStocks(quantity, price, portfolio);
+         sellStocks(quantity, price, portfolio, sellHistory);
       }
       else if (command == "display")
       {
-         display(portfolio);
+         display(portfolio, sellHistory);
+      }
+      else if (command == "quit")
+      {
+         display(portfolio, sellHistory);
+         return;
       }
    }
 }
