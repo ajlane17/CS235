@@ -7,7 +7,7 @@
 # Summary:
 #     <put a description here>
 # Time:
-#	Ethan - 5 hr
+#	Ethan - 7 hr
 #     <how long did it take to complete this program>?
 # Hardest Part:
 #     <>

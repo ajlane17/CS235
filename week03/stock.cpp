@@ -90,7 +90,7 @@ void sellStocks(const int & q, const Dollars & p,
  * for the client, but if there is anything to display.
  ***********************************************/
 void display(const custom::queue <Stock> & portfolio,
-               custom::queue <Stock> & sellHistory)
+             const custom::queue <Stock> & sellHistory)
 {
    custom::queue <Stock> tempQ = portfolio;
 
