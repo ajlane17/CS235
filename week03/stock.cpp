@@ -239,7 +239,6 @@ void stocksBuySell()
       }
       else if (command == "quit")
       {
-         display(portfolio, sellHistory);
          return;
       }
    }
