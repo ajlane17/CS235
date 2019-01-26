@@ -94,32 +94,41 @@ void sellStocks(const int & q, const Dollars & p,
    Dollars totChange;
    int frontQuantity = 0;
    Dollars frontCost;
-   Stock sellItem;
-
-   sellItem.setQuantity(q);
-   sellItem.setCost(p);
 
    while (sellQuantity > 0)
    {
+      Stock sellItem;
+      Dollars totChange;
       frontQuantity = portfolio.front().getQuantity();
       frontCost = portfolio.front().getCost();
 
+      sellItem.setCost(p);
+
       if (sellQuantity > frontQuantity)
       {
+         sellItem.setQuantity(frontQuantity);
          sellQuantity -= frontQuantity;
          totChange = totChange + ((p - frontCost) * frontQuantity);
          portfolio.pop();
       }
       else
       {
-         portfolio.front().setQuantity(sellQuantity);
+         sellItem.setQuantity(sellQuantity);
+         portfolio.front().setQuantity(frontQuantity - sellQuantity);
          totChange = totChange + ((p - frontCost) * sellQuantity);
+         if ((frontQuantity - sellQuantity) == 0)
+         {
+            portfolio.pop();
+         }
+
          sellQuantity = 0;
       }
+
+      sellItem.setProfit(totChange);
+      sellHistory.push(sellItem);
    }
 
-   sellItem.setProfit(totChange);
-   sellHistory.push(sellItem);
+   
 }
 
 /************************************************
@@ -188,7 +197,7 @@ void stocksBuySell()
    int quantity;
    Dollars price;
    string input;
-   int totalStock;
+   int totalStock = 0;
    custom::queue <Stock> portfolio;
    custom::queue <Stock> sellHistory;
    
@@ -208,6 +217,8 @@ void stocksBuySell()
       if (command == "buy")
       {
          totalStock += quantity;
+         // cout << "quantity: " << quantity << endl;
+         // cout << "totalStock: " << totalStock << endl;
          buyStocks(quantity, price, portfolio);
       }
       else if (command == "sell")
