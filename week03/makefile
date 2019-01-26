@@ -7,8 +7,9 @@
 # Summary:
 #     <put a description here>
 # Time:
-#	Ethan - 7 hr
-#     <how long did it take to complete this program>?
+#	Adrian - 
+#	Ethan  - 8 hr
+#     Total -
 # Hardest Part:
 #     <>
 ###############################################################

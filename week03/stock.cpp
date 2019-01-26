@@ -154,7 +154,7 @@ void display(const custom::queue <Stock> & portfolio,
          tempQ.pop();
       }
    }
-
+   
    tempQ = sellHistory;
    Dollars proceeds = 0;
    

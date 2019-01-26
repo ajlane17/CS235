@@ -101,6 +101,7 @@ namespace custom
 
    /********************************************
     * QUEUE :: PUSH
+    * Adds an element to the back of the queue
     ********************************************/
    template <class T>
    void queue <T> :: push(const T & t) throw (const char *)
@@ -125,6 +126,7 @@ namespace custom
 
    /********************************************
     * QUEUE :: POP
+    * Removes an element from the front of the queue
     ********************************************/
    template <class T>
    void queue <T> :: pop()
@@ -208,12 +210,7 @@ namespace custom
       }
 
       int oldSize = size();
-      // for (int i = 0; i < oldSize; i++)
-      // {
-      //    pNew[i] = front();
-      //    pop();
-      // }
-
+      
       int x = 0;
       for (int i = numPop; i < numPush; i++)
       {
