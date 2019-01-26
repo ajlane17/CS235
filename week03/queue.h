@@ -191,8 +191,6 @@ namespace custom
    template <class T>
    void queue <T> :: resize(int newCapacity) throw (const char *)
    {
-      // std::cout << "RESIZE CALLED" << std::endl;
-
       T *pNew;
 
       try

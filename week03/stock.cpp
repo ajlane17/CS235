@@ -158,7 +158,7 @@ void display(const custom::queue <Stock> & portfolio,
    tempQ = sellHistory;
    Dollars proceeds = 0;
    
-   // display the sales history as well as total proceeds
+   // display the sales history
    if (!tempQ.empty())
    {
       cout << "Sell History:\n";
@@ -172,7 +172,7 @@ void display(const custom::queue <Stock> & portfolio,
          tempQ.pop();
       }
    }
-
+   // display the total proceeds
    cout << "Proceeds: " << proceeds << endl;
 }
 
@@ -217,8 +217,6 @@ void stocksBuySell()
       if (command == "buy")
       {
          totalStock += quantity;
-         // cout << "quantity: " << quantity << endl;
-         // cout << "totalStock: " << totalStock << endl;
          buyStocks(quantity, price, portfolio);
       }
       else if (command == "sell")
