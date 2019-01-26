@@ -46,7 +46,7 @@ public:
    { this->quantity = quantity; }
    void setCost(Dollars cost)
    { this->cost = cost; }
-   void setProfit()
+   void setProfit(Dollars profit)
    { this->profit = profit; }
    
    //operators
@@ -73,14 +73,53 @@ void buyStocks(const int & q, const Dollars & p,
 /************************************************
  * SELL STOCKS
  * Sells stocks and calculates the profit or loss
- * incured by the transaction. Then saves the
+ * incurred by the transaction. Then saves the
  * portfolio and sales history into their queues.
  ***********************************************/
 void sellStocks(const int & q, const Dollars & p,
                 custom::queue <Stock> & portfolio,
                custom::queue <Stock> & sellHistory)
 {
-   
+   // change = 0
+   //
+   // for each stock item in sell command
+   //    remove one from front of history
+   //    add cost diff to change
+   //    if front count = 0
+   //       pop front of history
+   //
+   // add change to profit
+
+   int sellQuantity = q;
+   Dollars totChange;
+   int frontQuantity = 0;
+   Dollars frontCost;
+   Stock sellItem;
+
+   sellItem.setQuantity(q);
+   sellItem.setCost(p);
+
+   while (sellQuantity > 0)
+   {
+      frontQuantity = portfolio.front().getQuantity();
+      frontCost = portfolio.front().getCost();
+
+      if (sellQuantity > frontQuantity)
+      {
+         sellQuantity -= frontQuantity;
+         totChange = totChange + ((p - frontCost) * frontQuantity);
+         portfolio.pop();
+      }
+      else
+      {
+         portfolio.front().setQuantity(sellQuantity);
+         totChange = totChange + ((p - frontCost) * sellQuantity);
+         sellQuantity = 0;
+      }
+   }
+
+   sellItem.setProfit(totChange);
+   sellHistory.push(sellItem);
 }
 
 /************************************************
@@ -149,6 +188,7 @@ void stocksBuySell()
    int quantity;
    Dollars price;
    string input;
+   int totalStock;
    custom::queue <Stock> portfolio;
    custom::queue <Stock> sellHistory;
    
@@ -167,11 +207,20 @@ void stocksBuySell()
       // call various methods depending on input
       if (command == "buy")
       {
+         totalStock += quantity;
          buyStocks(quantity, price, portfolio);
       }
       else if (command == "sell")
       {
-         sellStocks(quantity, price, portfolio, sellHistory);
+         if (quantity > totalStock)
+         {
+            cout << "ERROR: That's more stock than you have";
+         }
+         else
+         {
+            totalStock -= quantity;
+            sellStocks(quantity, price, portfolio, sellHistory);
+         }
       }
       else if (command == "display")
       {
