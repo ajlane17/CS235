@@ -90,13 +90,16 @@ void sellStocks(const int & q, const Dollars & p,
    //
    // add change to profit
 
+   // Create objects we can modify based on the consts
    int sellQuantity = q;
-   Dollars totChange;
    int frontQuantity = 0;
    Dollars frontCost;
 
+   // We're going to cycle through our bundled purchases
+   // until we've satisfied the sell order quantity
    while (sellQuantity > 0)
    {
+      // Prep the properties for the sell order
       Stock sellItem;
       Dollars totChange;
       frontQuantity = portfolio.front().getQuantity();
@@ -104,7 +107,10 @@ void sellStocks(const int & q, const Dollars & p,
 
       sellItem.setCost(p);
 
-      if (sellQuantity > frontQuantity)
+      // if we're selling an entire bundle, just calculate for
+      // the bundle and remove it, otherwise calculate based 
+      // on the remaining sell order and exit our selling loop
+      if (sellQuantity >= frontQuantity)
       {
          sellItem.setQuantity(frontQuantity);
          sellQuantity -= frontQuantity;
@@ -116,19 +122,13 @@ void sellStocks(const int & q, const Dollars & p,
          sellItem.setQuantity(sellQuantity);
          portfolio.front().setQuantity(frontQuantity - sellQuantity);
          totChange = totChange + ((p - frontCost) * sellQuantity);
-         if ((frontQuantity - sellQuantity) == 0)
-         {
-            portfolio.pop();
-         }
 
          sellQuantity = 0;
       }
-
+      // Record our completed sell order
       sellItem.setProfit(totChange);
       sellHistory.push(sellItem);
    }
-
-   
 }
 
 /************************************************

@@ -5,13 +5,33 @@
 # Author:
 #     Adrian lane, Ethan Holden
 # Summary:
-#     <put a description here>
+#     This program is a custom implementation of the queue
+#     class that manages collections in a first-in-first-out
+#     manner, also referred to as FIFO. Items are added on to
+#     the back and may only be removed from the front.
+#     Additionally, items in front may be manipulated while a
+#     part of the collection. This program also contains a 
+#     simple stock trading component to exercise our queue
+#     class for managing buy and sell orders and tracking our 
+#     profits and losses. 
 # Time:
-#	Adrian - 
-#	Ethan  - 8 hr
-#     Total -
+#	Adrian - 8 hours
+#	Ethan  - 8 hours
+#     Total - 16 hours
 # Hardest Part:
-#     <>
+#     The difficulty for this assignment can be found in two 
+#     places with similar functionality. The first is the 
+#     assignment operator and the second is the private resize
+#     method, both of which perform a similar task. Each of
+#     these copies data from one array to the next, but each
+#     take a slightly different approach based on the source
+#     for the copied data. In both instances, it took quite 
+#     some time to identify where our issues were and how we 
+#     we could resolve them. It was only through much trial 
+#     and error that we finally reached a point where we felt
+#     we grasped the role the pop and push trackers played for
+#     this collection, and how to use them when moving through
+#     the collection.
 ###############################################################
 
 ##############################################################

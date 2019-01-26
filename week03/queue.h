@@ -91,12 +91,11 @@ namespace custom
          resize(rhs.size());
       }
       
+      // Copy the data to the new array
       for (int i = rhs.numPop; i < rhs.numPush; i++)
       {
          push(rhs.data[i % rhs.numCapacity]);
       }
-
-      // std::cout << "after assignment -> cap : size : pop : push - " << numCapacity << " : " << size() << " : " << numPop << " : " << numPush << std::endl;
    }
 
    /********************************************
@@ -106,7 +105,6 @@ namespace custom
    template <class T>
    void queue <T> :: push(const T & t) throw (const char *)
    {
-      // std::cout << "start push -> cap : size : pop : push - " << numCapacity << " : " << size() << " : " << numPop << " : " << numPush << std::endl;
       if (numCapacity == 0)
       {
          resize(1);
@@ -115,13 +113,10 @@ namespace custom
       if (size() == numCapacity)
       {
          resize(numCapacity * 2);
-         // std::cout << "push resized -> cap : size : pop : push - " << numCapacity << " : " << size() << " : " << numPop << " : " << numPush << std::endl;
       }
 
       numPush++;
       data[iTail()] = t;
-
-      // std::cout << "after push -> cap : size : pop : push - " << numCapacity << " : " << size() << " : " << numPop << " : " << numPush << std::endl;
    }
 
    /********************************************
@@ -209,8 +204,10 @@ namespace custom
          throw "ERROR: Unable to allocate a new buffer for queue";
       }
 
+      // Keep track of the original size for the new push tracker
       int oldSize = size();
       
+      // Copy the data to the new array
       int x = 0;
       for (int i = numPop; i < numPush; i++)
       {
@@ -218,6 +215,7 @@ namespace custom
          x++;
       }
 
+      // Update the object's collection and tracking properties
       numPop = 0;
       numPush = oldSize;
       numCapacity = newCapacity;
