@@ -162,11 +162,14 @@ template <class T>
    deque <T> & deque <T> :: operator = (const deque <T> & rhs)
       throw (const char *)
    {
+      //std::cout << "\nCalling Assignment:";
+      //display();
       clear();
       
       if (capacity() < rhs.size())
       {
          resize(rhs.size());
+         clear();
       }
 
       for (int i = rhs.iFront; i < rhs.iBack; i++)
@@ -182,21 +185,23 @@ template <class T>
    template <class T>
    void deque <T> :: push_back(const T & t) throw (const char *)
    {
-      std::cout << "Calling Push_Back\n";
-      display();
+      //std::cout << "\nCalling Push_Back:";
+      //display();
       
       if (numCapacity == 0)
       {
          resize(1);
       }
 
-      if (size() == numCapacity)
+      else if (size() == numCapacity)
       {
          resize(numCapacity * 2);
       }
 
       iBack++;
       data[iBackNormalize()] = t;
+      //std::cout << "\nCalled Push_B";
+      //display();
    }
 
    /********************************************
@@ -305,6 +310,8 @@ template <class T>
    template <class T>
    void deque <T> :: resize(int newCapacity) throw (const char *)
    {
+      //std::cout << "\nResizing: ";
+      //display();
       T *pNew;
 
       try
@@ -334,6 +341,9 @@ template <class T>
 
       delete [] data;
       data = pNew;
+
+      //std::cout << "\nCalled Resize:";
+      //display();
    }
 
 }; // namespace custom
