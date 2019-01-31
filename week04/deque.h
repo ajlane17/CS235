@@ -79,7 +79,7 @@ namespace custom
          int iFrontNormalize() const      { return iNormalize(iFront); } // done
          int iBackNormalize() const        { return iNormalize(iBack); } // done
          int iNormalize(int index) const
-         { return (index % capacity() + capacity()) % capacity(); } // done
+         { return (index % capacity() + capacity()) % capacity(); }      // done
             
    }; // DEQUE
 
@@ -162,8 +162,7 @@ template <class T>
    deque <T> & deque <T> :: operator = (const deque <T> & rhs)
       throw (const char *)
    {
-      //std::cout << "\nCalling Assignment:";
-      //display();
+      // std::cout << "\nCalling Assignment:";
       clear();
       
       if (capacity() < rhs.size())
@@ -171,10 +170,13 @@ template <class T>
          resize(rhs.size());
       }
 
-      for (int i = rhs.iFront; i < rhs.iBack; i++)
+      for (int i = rhs.iFront; i < rhs.iBackNormalize() + 1; i++)
       {
          push_back(rhs.data[iNormalize(i)]);
       }
+   // std::cout << "\nCalled Assignment:";
+   // display();
+   return *this;
    }
 
    /********************************************
@@ -184,23 +186,23 @@ template <class T>
    template <class T>
    void deque <T> :: push_back(const T & t) throw (const char *)
    {
-      //std::cout << "\nCalling Push_Back:";
-      //display();
+      // std::cout << "\nCalling Push_Back:";
+      // display();
       
       if (numCapacity == 0)
       {
          resize(1);
       }
 
-      else if (size() == numCapacity)
+      if (size() == numCapacity)
       {
          resize(numCapacity * 2);
       }
 
       iBack++;
       data[iBackNormalize()] = t;
-      //std::cout << "\nCalled Push_B";
-      //display();
+      // std::cout << "\nCalled Push_Back:";
+      // display();
    }
 
    /********************************************
@@ -309,8 +311,8 @@ template <class T>
    template <class T>
    void deque <T> :: resize(int newCapacity) throw (const char *)
    {
-      //std::cout << "\nResizing: ";
-      //display();
+      // std::cout << "\nCalling Resize: ";
+      // display();
       T *pNew;
 
       try
@@ -322,28 +324,32 @@ template <class T>
          throw "ERROR: Unable to allocate a new buffer for deque";
       }
 
-      // Keep track of the original size for the new iBack tracker
-      int oldSize = size();
-      
-      // Copy the data to the new array
-      int x = 0;
-      for (int i = iFront; i < iBack; i++)
+      if (size() != 0)
       {
-         pNew[x] = data[iNormalize(i)];
-         x++;
+         // Keep track of the original size for the new iBack tracker
+         int oldSize = size();
+
+         // Copy the data to the new array
+         int x = 0;
+         for (int i = iFront; i <= iBack; i++)
+         {
+            // std::cout << "adding: " << data[iNormalize(i)] << " to " << x << std::endl;
+            pNew[x] = data[iNormalize(i)];
+            x++;
+         }
+
+         // Update the object's collection and tracking properties
+         iFront = 0;
+         iBack = oldSize - 1;
+
+         if (data != NULL)
+            delete [] data;
       }
-
-      // Update the object's collection and tracking properties
-      iFront = 0;
-      iBack = oldSize;
       numCapacity = newCapacity;
-
-      if (data != NULL)
-         delete [] data;
       data = pNew;
             
-      //std::cout << "\nCalled Resize:";
-      //display();
+      // std::cout << "\nCalled Resize:";
+      // display();
    }
 
 }; // namespace custom
