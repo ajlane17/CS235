@@ -26,7 +26,7 @@ int capacity()
  *****************************************************/
 int iNormalize(int iRelative)
 {
-   return iRelative; // this is not sufficient
+   return (iRelative % capacity() + capacity()) % capacity();
 }
 
 

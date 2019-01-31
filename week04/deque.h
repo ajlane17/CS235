@@ -63,7 +63,6 @@ namespace custom
          T front() const                           throw (const char *); // testing
          T & back()                                throw (const char *); // testing
          T back() const                            throw (const char *); // testing
-         
 
       private: 
          T * data;                   // dynamically allocated deque of T
@@ -76,7 +75,8 @@ namespace custom
          int capacity() const                    { return numCapacity; } // done
          int iFrontNormalize() const      { return iNormalize(iFront); } // done
          int iBackNormalize() const        { return iNormalize(iBack); } // done
-         int iNormalize(int index) const  { return index % capacity(); } // testing
+         int iNormalize(int index) const
+         { return (index % capacity() + capacity()) % capacity(); } // done
             
    }; // DEQUE
 
