@@ -169,7 +169,6 @@ template <class T>
       if (capacity() < rhs.size())
       {
          resize(rhs.size());
-         clear();
       }
 
       for (int i = rhs.iFront; i < rhs.iBack; i++)
@@ -339,9 +338,10 @@ template <class T>
       iBack = oldSize;
       numCapacity = newCapacity;
 
-      delete [] data;
+      if (data != NULL)
+         delete [] data;
       data = pNew;
-
+            
       //std::cout << "\nCalled Resize:";
       //display();
    }
