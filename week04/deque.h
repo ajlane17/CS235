@@ -64,6 +64,9 @@ namespace custom
          T & back()                                throw (const char *); // testing
          T back() const                            throw (const char *); // testing
 
+         //debug
+         void display() const;
+         
       private: 
          T * data;                   // dynamically allocated deque of T
          int iFront;                // The position of the front element
@@ -80,6 +83,78 @@ namespace custom
             
    }; // DEQUE
 
+#ifdef DEBUG
+
+using std::cerr;
+/****************************************************
+ * DISPLAY DEQUE
+ * display the contents of a deque for debug purposes
+ ****************************************************/
+template <class T>
+   void deque <T> :: display() const
+{
+   // display the header info
+   cerr << "\ndeque<T>::display()\n";
+   cerr << "\tnumCapacity = " << numCapacity << "\n";
+
+   // display the contents of the array
+   cerr << "\tdata = ";
+   if (numCapacity == 0)
+      cerr << "NULL";
+   else
+   {
+      cerr << "{ ";
+      for (int i = 0; i < numCapacity; i++)
+      {
+         if (i != 0)
+            cerr << ", ";
+
+         // not wrapped
+         //      0   1   2   3   4   5   6
+         //    +---+---+---+---+---+---+---+
+         //    |   |   | A | B | C |   |   |
+         //    +---+---+---+---+---+---+---+
+         // iFront = 9     iFrontNormalize() = 2
+         // iBack  = 11    iBackNormalize()  = 4
+         if (iFrontNormalize() <= iBackNormalize() &&  // not wrapped
+             iFrontNormalize() <= i &&
+             i <= iBackNormalize())                        // in range
+            cerr << data[i];
+
+         // wrapped
+         //      0   1   2   3   4   5   6
+         //    +---+---+---+---+---+---+---+
+         //    | B | C |   |   |   |   | A |
+         //    +---+---+---+---+---+---+---+
+         // iFront = -8    iFrontNormalize() = 6
+         // iBack  = -6    iBackNormalize()  = 1
+         else if (iFrontNormalize() > iBackNormalize() && // wrapped
+                  size() != 0 &&                              // not empty
+                  (i <= iBackNormalize() ||
+                   i >= iFrontNormalize()))                   // in range
+            cerr << data[i];
+      }
+      cerr << " }";
+   }
+   cerr << "\n";
+
+   // display the front and back with the normalized values in ()s
+   if (numCapacity)
+   {
+      cerr << "\tiFront = " << iFront
+           << " ("          << iFrontNormalize() << ")\n";
+      cerr << "\tiBack  = " << iBack
+           << " ("          << iBackNormalize()  << ")\n";
+   }
+}
+#else
+template <class T>
+   void deque <T> :: display() const
+{
+}
+#endif // DEBUG
+   
+   
    /********************************************
     * DEQUE :: ASSIGNMENT
     ********************************************/
@@ -107,6 +182,9 @@ namespace custom
    template <class T>
    void deque <T> :: push_back(const T & t) throw (const char *)
    {
+      std::cout << "Calling Push_Back\n";
+      display();
+      
       if (numCapacity == 0)
       {
          resize(1);
