@@ -88,16 +88,16 @@ namespace custom
 using std::cerr;
 /****************************************************
  * DISPLAY DEQUE
- * display the contents of a deque for debug purposes
+ * Display the contents of a deque for debug purposes
  ****************************************************/
 template <class T>
    void deque <T> :: display() const
 {
-   // display the header info
-   cerr << "\ndeque<T>::display()\n";
+   // Display the header info
+   cerr << "\ndeque<T>:: display()\n";
    cerr << "\tnumCapacity = " << numCapacity << "\n";
 
-   // display the contents of the array
+   // Display the contents of the array
    cerr << "\tdata = ";
    if (numCapacity == 0)
       cerr << "NULL";
@@ -170,9 +170,10 @@ template <class T>
          resize(rhs.size());
       }
 
-      for (int i = rhs.iFront; i < rhs.iBackNormalize() + 1; i++)
+      for (int i = rhs.iFront; i <= rhs.iBack; i++)
       {
-         push_back(rhs.data[iNormalize(i)]);
+         // std::cout << "rhs.iFront = " << i << " rhs.iBack = " << rhs.iBack << " iNormalize: " << iNormalize(i) << " Pushing: " << rhs.data[iNormalize(i)] << std::endl;
+         push_back(rhs.data[(rhs.iNormalize(i))]);
       }
    // std::cout << "\nCalled Assignment:";
    // display();
@@ -212,6 +213,8 @@ template <class T>
    template <class T>
    void deque <T> :: push_front(const T & t) throw (const char *)
    {
+      // std::cout << "\nCalling Push_Front:";
+      // display();
       if (numCapacity == 0)
       {
          resize(1);
@@ -224,6 +227,8 @@ template <class T>
 
       iFront--;
       data[iFrontNormalize()] = t;
+      // std::cout << "\nCalled Push_Front:";
+      // display();
    }
 
    /********************************************
@@ -260,7 +265,7 @@ template <class T>
    T & deque <T> :: front() throw (const char *)
    {
       if (empty())
-         throw "ERROR: attempting to access an element in an empty deque";
+         throw "ERROR: unable to access data from an empty deque";
       else
          return data[iFrontNormalize()];
    }
@@ -273,7 +278,7 @@ template <class T>
    T deque <T> :: front() const throw (const char *)
    {
       if (empty())
-         throw "ERROR: attempting to access an element in an empty deque";
+         throw "ERROR: unable to access data from an empty deque";
       else
          return data[iFrontNormalize()];
    }
@@ -286,7 +291,7 @@ template <class T>
    T & deque <T> :: back() throw (const char *)
    {
       if (empty())
-         throw "ERROR: attempting to access an element in an empty deque";
+         throw "ERROR: unable to access data from an empty deque";
       else
          return data[iBackNormalize()];
    }
@@ -299,7 +304,7 @@ template <class T>
    T deque <T> :: back() const throw (const char *)
    {
       if (empty())
-         throw "ERROR: attempting to access an element in an empty deque";
+         throw "ERROR: unable to access data from an empty deque";
       else
          return data[iBackNormalize()];
    }
