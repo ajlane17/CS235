@@ -11,7 +11,20 @@
 #ifndef NOW_SERVING_H
 #define NOW_SERVING_H
 
+#include <string>
 #include "deque.h"     // for DEQUE
+
+/********************************************
+ * REQUEST
+ * Stores the properties of a queue request
+ ********************************************/
+struct Request
+{
+   std::string classCode;
+   std::string name;
+   int minutes;
+   bool isPriority = false;
+};
 
 // the interactive nowServing program
 void nowServing();
