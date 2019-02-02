@@ -37,36 +37,33 @@ namespace custom
    {
       public:
          // Constructors and desctructors (inline)
-         deque() : iFront(0), iBack(-1), numCapacity(0)                  // done
+         deque() : iFront(0), iBack(-1), numCapacity(0)                  
             { data = new T[numCapacity]; }
-         deque(int numCapacity)                    throw (const char *): // done
+         deque(int numCapacity)                    throw (const char *): 
             iFront(0), iBack(-1), numCapacity(numCapacity) 
-            { data = new T[numCapacity]; }                               // done
-        ~deque()                                     { delete [] data; } // done
-         deque(const deque & rhs)                  throw (const char *): // done
+            { data = new T[numCapacity]; }                               
+        ~deque()                                     { delete [] data; } 
+         deque(const deque & rhs)                  throw (const char *): 
             data(NULL), iFront(0), iBack(-1), numCapacity(0)
             { if (!rhs.empty()) *this = rhs; }
         // Operators (prototypes)
-         deque & operator = (const deque & rhs)    throw (const char *); // testing
+         deque & operator = (const deque & rhs)    throw (const char *); 
 
          // standard container interfaces
-         int size() const               { return (iBack - iFront + 1); } // done
-         bool empty() const                    { return (size() == 0); } // done
-         void clear()                       { iFront = 0; iBack = -1; }; // done
+         int size() const               { return (iBack - iFront + 1); } 
+         bool empty() const                    { return (size() == 0); } 
+         void clear()                       { iFront = 0; iBack = -1; }; 
          
          // Deque-specific interfaces
-         void push_front(const T & t)              throw (const char *); // testing
-         void push_back(const T & t)               throw (const char *); // testing
+         void push_front(const T & t)              throw (const char *); 
+         void push_back(const T & t)               throw (const char *); 
          void pop_front();
          void pop_back();
-         T & front()                               throw (const char *); // testing
-         T front() const                           throw (const char *); // testing
-         T & back()                                throw (const char *); // testing
-         T back() const                            throw (const char *); // testing
+         T & front()                               throw (const char *); 
+         T front() const                           throw (const char *); 
+         T & back()                                throw (const char *); 
+         T back() const                            throw (const char *); 
 
-         //debug
-         void display() const;
-         
       private: 
          T * data;                   // dynamically allocated deque of T
          int iFront;                // The position of the front element
@@ -74,87 +71,15 @@ namespace custom
          int numCapacity;             // the total capacity of the deque
 
          // Resizes capacity to set size
-         void resize(int newCapacity)              throw (const char *); // testing
-         int capacity() const                    { return numCapacity; } // done
-         int iFrontNormalize() const      { return iNormalize(iFront); } // done
-         int iBackNormalize() const        { return iNormalize(iBack); } // done
+         void resize(int newCapacity)              throw (const char *); 
+         int capacity() const                    { return numCapacity; } 
+         int iFrontNormalize() const      { return iNormalize(iFront); } 
+         int iBackNormalize() const        { return iNormalize(iBack); } 
          int iNormalize(int index) const
-         { return (index % capacity() + capacity()) % capacity(); }      // done
+         { return (index % capacity() + capacity()) % capacity(); }      
             
    }; // DEQUE
 
-#ifdef DEBUG
-
-using std::cerr;
-/****************************************************
- * DISPLAY DEQUE
- * Display the contents of a deque for debug purposes
- ****************************************************/
-template <class T>
-   void deque <T> :: display() const
-{
-   // Display the header info
-   cerr << "\ndeque<T>:: display()\n";
-   cerr << "\tnumCapacity = " << numCapacity << "\n";
-
-   // Display the contents of the array
-   cerr << "\tdata = ";
-   if (numCapacity == 0)
-      cerr << "NULL";
-   else
-   {
-      cerr << "{ ";
-      for (int i = 0; i < numCapacity; i++)
-      {
-         if (i != 0)
-            cerr << ", ";
-
-         // not wrapped
-         //      0   1   2   3   4   5   6
-         //    +---+---+---+---+---+---+---+
-         //    |   |   | A | B | C |   |   |
-         //    +---+---+---+---+---+---+---+
-         // iFront = 9     iFrontNormalize() = 2
-         // iBack  = 11    iBackNormalize()  = 4
-         if (iFrontNormalize() <= iBackNormalize() &&  // not wrapped
-             iFrontNormalize() <= i &&
-             i <= iBackNormalize())                        // in range
-            cerr << data[i];
-
-         // wrapped
-         //      0   1   2   3   4   5   6
-         //    +---+---+---+---+---+---+---+
-         //    | B | C |   |   |   |   | A |
-         //    +---+---+---+---+---+---+---+
-         // iFront = -8    iFrontNormalize() = 6
-         // iBack  = -6    iBackNormalize()  = 1
-         else if (iFrontNormalize() > iBackNormalize() && // wrapped
-                  size() != 0 &&                              // not empty
-                  (i <= iBackNormalize() ||
-                   i >= iFrontNormalize()))                   // in range
-            cerr << data[i];
-      }
-      cerr << " }";
-   }
-   cerr << "\n";
-
-   // display the front and back with the normalized values in ()s
-   if (numCapacity)
-   {
-      cerr << "\tiFront = " << iFront
-           << " ("          << iFrontNormalize() << ")\n";
-      cerr << "\tiBack  = " << iBack
-           << " ("          << iBackNormalize()  << ")\n";
-   }
-}
-#else
-template <class T>
-   void deque <T> :: display() const
-{
-}
-#endif // DEBUG
-   
-   
    /********************************************
     * DEQUE :: ASSIGNMENT
     ********************************************/
@@ -162,7 +87,6 @@ template <class T>
    deque <T> & deque <T> :: operator = (const deque <T> & rhs)
       throw (const char *)
    {
-      // std::cout << "\nCalling Assignment:";
       clear();
       
       if (capacity() < rhs.size())
@@ -170,14 +94,13 @@ template <class T>
          resize(rhs.size());
       }
 
+      // push data from rhs to the lhs of the = sign
       for (int i = rhs.iFront; i <= rhs.iBack; i++)
       {
-         // std::cout << "rhs.iFront = " << i << " rhs.iBack = " << rhs.iBack << " iNormalize: " << iNormalize(i) << " Pushing: " << rhs.data[iNormalize(i)] << std::endl;
          push_back(rhs.data[(rhs.iNormalize(i))]);
       }
-   // std::cout << "\nCalled Assignment:";
-   // display();
-   return *this;
+
+      return *this;
    }
 
    /********************************************
@@ -187,9 +110,6 @@ template <class T>
    template <class T>
    void deque <T> :: push_back(const T & t) throw (const char *)
    {
-      // std::cout << "\nCalling Push_Back:";
-      // display();
-      
       if (numCapacity == 0)
       {
          resize(1);
@@ -202,8 +122,6 @@ template <class T>
 
       iBack++;
       data[iBackNormalize()] = t;
-      // std::cout << "\nCalled Push_Back:";
-      // display();
    }
 
    /********************************************
@@ -213,8 +131,6 @@ template <class T>
    template <class T>
    void deque <T> :: push_front(const T & t) throw (const char *)
    {
-      // std::cout << "\nCalling Push_Front:";
-      // display();
       if (numCapacity == 0)
       {
          resize(1);
@@ -227,8 +143,6 @@ template <class T>
 
       iFront--;
       data[iFrontNormalize()] = t;
-      // std::cout << "\nCalled Push_Front:";
-      // display();
    }
 
    /********************************************
@@ -316,8 +230,7 @@ template <class T>
    template <class T>
    void deque <T> :: resize(int newCapacity) throw (const char *)
    {
-      // std::cout << "\nCalling Resize: ";
-      // display();
+      // Allocate new array
       T *pNew;
 
       try
@@ -329,6 +242,7 @@ template <class T>
          throw "ERROR: Unable to allocate a new buffer for deque";
       }
 
+      // do nothing if empty
       if (size() != 0)
       {
          // Keep track of the original size for the new iBack tracker
@@ -338,7 +252,6 @@ template <class T>
          int x = 0;
          for (int i = iFront; i <= iBack; i++)
          {
-            // std::cout << "adding: " << data[iNormalize(i)] << " to " << x << std::endl;
             pNew[x] = data[iNormalize(i)];
             x++;
          }
@@ -352,9 +265,6 @@ template <class T>
       }
       numCapacity = newCapacity;
       data = pNew;
-            
-      // std::cout << "\nCalled Resize:";
-      // display();
    }
 
 }; // namespace custom

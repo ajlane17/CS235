@@ -67,7 +67,7 @@ void nowServing()
             // Temporarily pop the current front to
             // insert the new priority request right
             // behind it and push the current back
-            // in front (it's janky, but it works)
+            // in front 
             tmpCurrRequest = requests.front();
             requests.pop_front();
             requests.push_front(newRequest);
@@ -76,8 +76,7 @@ void nowServing()
          // If it's 'none', do nothing
          else if (firstWord  == "none")
          {
-            // Do nothing, this is also less than
-            // ideal, but it also works
+            // Do nothing
          }
          // Otherwise, treat it as a normal request
          else if (firstWord != "finished")
