@@ -60,9 +60,9 @@ public:
    
    // the various iterator interfaces
    class iterator;
-   iterator fintd(T t);
-   void insert(T t);
-   iterator erase (iterator it);
+   iterator find(const T & t);
+   void insert(const T & t);
+   void erase(iterator & it);
    iterator begin()                    { return iterator (data); }
    iterator end()         { return iterator(data + numElements); }
 
@@ -76,7 +76,7 @@ private:
    int numElements;
    int numCapacity;
 
-   int findIndex(T t);
+   int findIndex(const T & t);
    void resize(int numCapacity) throw (const char *);
 
 };
@@ -217,9 +217,8 @@ private:
  * SET :: Assignment
  *******************************************/
 template <class T>
-set <T> & set <T> :: opera
-   tor = (const set <T> & rhs)
-          throw (const char *)
+set <T> & set <T> :: operator = (const set <T> & rhs)
+   throw (const char *)
 {
    // set size equal to rhs
    if (rhs.capacity() != capacity())
@@ -230,7 +229,7 @@ set <T> & set <T> :: opera
    numElements = rhs.numElements;
 
    // attempt to allocate
-      try
+   try
    {
       data = new T[rhs.numCapacity];
    }
@@ -251,9 +250,59 @@ set <T> & set <T> :: opera
  * A method used to find a given item in the set
  *******************************************/
 template <class T>
-iterator set <T> :: find(T t)
+typename set <T> :: iterator set <T> :: find(const T & t)
 {
-   
+   int i = findIndex(t);
+
+   if (data[i] != t)
+      return end();
+   else
+      return iterator (data + i);
+}
+
+/********************************************
+ * SET : ERASE
+ * A method used to remove an element from the set
+ *******************************************/
+template <class T>
+void set <T> :: erase(iterator & it)
+{
+   int iErase = findIndex(*it);
+
+   // Remove element if found
+   if (data[iErase] == *it)
+   {
+      for (int i = iErase; i < numElements; i++)
+         data[i] = data[i + 1];
+         
+      numElements--;
+   } 
+}
+
+/********************************************
+ * SET : FIND INDEX
+ * A method used to find a given location of
+ * an item in a set
+ *******************************************/
+template <class T>
+int set <T> :: findIndex(const T & t)
+{
+   int iBegin = 0;
+   int iEnd = numElements - 1;
+   int iMiddle;
+
+   while (iBegin <= iEnd)
+   {
+      iMiddle = (iBegin + iEnd) / 2;
+      if (t == data[iMiddle])
+         return iMiddle;
+
+      if (t < data[iMiddle])
+         iEnd = iMiddle - 1;
+      else 
+         iBegin = iMiddle + 1;
+   }
+   return iBegin;
 }
 
 /********************************************
@@ -262,9 +311,27 @@ iterator set <T> :: find(T t)
  * into the set
  *******************************************/
 template <class T>
-void set <T> :: insert(T t)
+void set <T> :: insert(const T & t)
 {
-   
+   // Resize and add if empty
+   if (numCapacity == 0)
+   {
+      resize(2);
+      data[numElements++] = t;
+      return;
+   }
+
+   // Insert Element if not found
+   int iInsert = findIndex(t);
+   if (data[iInsert] != t)
+   {
+      resize(numCapacity + 1);
+      for (int i = numElements; i < iInsert; i--)
+         data[i + 1] = data[i];
+      
+      data[iInsert] = t;
+      numElements++;
+   }
 }
 
 /********************************************
