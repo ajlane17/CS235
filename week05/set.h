@@ -53,11 +53,10 @@ public:
    bool empty() const                 { return numElements == 0; }
    void clear()                               { numElements = 0; }
 
-   // operator overloading (These probably need to be changed,
-   //    but I wanted to put what the book had in until we can fix it)
-   set <T> set <T> :: operator || (const set <T> & rhs) const throw (const char *);
-   set <T> set <T> :: operator && (const set <T> & rhs) const throw (const char *);
-   set <T> set <T> :: operator - (const set <T> & rhs) const throw (const char *);
+   // operator overloading
+   set  operator || (const set <T> & rhs) const throw (const char *);
+   set  operator && (const set <T> & rhs) const throw (const char *);
+   set  operator - (const set <T> & rhs) const throw (const char *);
    
    // the various iterator interfaces
    class iterator;
@@ -65,17 +64,13 @@ public:
    void insert(T t);
    iterator erase (iterator it);
    iterator begin()                    { return iterator (data); }
-   iterator end();
+   iterator end()         { return iterator(data + numElements); }
 
    // constant iterator
    class const_iterator;
    const_iterator cbegin() const { return const_iterator (data); }
-   const_iterator cend() const;
-   
-   // a debug utility to display the array
-   // this gets compiled to nothing if NDEBUG is defined
-   void display() const; 
-   
+   const_iterator cend() const { return const_iterator(data + numElements); }
+
 private:
    T * data;              // dynamically allocated array of T
    int numElements;
@@ -152,18 +147,6 @@ private:
    T * p;
 };
 
-
-/********************************************
- * SET :: END
- * Note that you have to use "typename" before
- * the return value type
- ********************************************/
-template <class T>
-typename set <T> :: iterator set <T> :: end ()
-{
-   return iterator (data + numElements);
-}
-
 /**************************************************
  * SET CONST_ITERATOR
  * A constant iterator through set
@@ -230,23 +213,12 @@ private:
    T * p;
 };
 
-
-/********************************************
- * SET :: C_END
- * Note that you have to use "typename" before
- * the return value type
- ********************************************/
-template <class T>
-typename set <T> :: const_iterator set <T> :: cend () const
-{
-   return const_iterator (data + numElements);
-}
-
 /*******************************************
  * SET :: Assignment
  *******************************************/
 template <class T>
-set <T> & set <T> :: operator = (const set <T> & rhs)
+set <T> & set <T> :: opera
+   tor = (const set <T> & rhs)
           throw (const char *)
 {
    // set size equal to rhs
@@ -274,48 +246,25 @@ set <T> & set <T> :: operator = (const set <T> & rhs)
    return *this;
 }
 
-/*******************************************
- * SET :: COPY CONSTRUCTOR
+/********************************************
+ * SET : FIND
+ * A method used to find a given item in the set
  *******************************************/
 template <class T>
-   set <T> :: set(const set <T> & rhs) throw (const char *):
-data(NULL), numCapacity(0), numElements(0)
+iterator set <T> :: find(T t)
 {
-   assert(rhs.numCapacity >= 0);
    
-   
-}
-
-/**********************************************
- * SET : NON-DEFAULT CONSTRUCTOR
- * Preallocate the set to "capacity"
- **********************************************/
-template <class T>
-set <T> :: set(int numElements) throw (const char *):
-data(NULL), numCapacity(0), numElements(0)
-{
-   assert(numElements >= 0);
-
-   if (numElements > 0)
-   {
-      resize(numElements);
-      this->numElements = numElements;
-   }
 }
 
 /********************************************
- * SET : DISPLAY
- * A debug utility to display the contents of the set
+ * SET : INSERT
+ * A method used to insert a given item
+ * into the set
  *******************************************/
 template <class T>
-void set <T> :: display() const
+void set <T> :: insert(T t)
 {
-#ifndef NDEBUG
-   std::cerr << "set<T>::display()\n";
-   std::cerr << "\tnumElements = " << numElements << "\n";
-   for (int i = 0; i < numElements; i++)
-      std::cerr << "\tdata[" << i << "] = " << data[i] << "\n";
-#endif // NDEBUG
+   
 }
 
 /********************************************
@@ -346,30 +295,6 @@ void set <T> :: resize(int newCapacity) throw (const char*)
       delete [] data;
    data = pNew;
    numCapacity = newCapacity;
-}
-
-/********************************************
- * SET : PUSH_BACK
- * A method used to add to the set and
- * resize it if it is needed.
- *******************************************/
-template <class T>
-void set <T> :: push_back(T t)
-{
-   // check if set is empty
-   if (numElements == 0)
-   {
-      resize(1);
-   }
-   // check if set is full
-   else if (numElements == numCapacity)
-   {
-      resize(numCapacity * 2);
-   }
-
-   // add new element to set
-   data[numElements++] = t;
-
 }
 
 }; // namespace custom
