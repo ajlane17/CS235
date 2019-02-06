@@ -323,12 +323,16 @@ void set <T> :: insert(const T & t)
 
    // Insert Element if not found
    int iInsert = findIndex(t);
+   // std::cout << "iInsert: " << iInsert << std::endl;
+   // std::cout << "NumElements: " << numElements << std::endl;
    if (data[iInsert] != t)
    {
       resize(numCapacity + 1);
-      for (int i = numElements; i < iInsert; i--)
+      for (int i = numElements; i >= iInsert; i--)
+      {
+      // std::cout << "i: " << i << std::endl;
          data[i + 1] = data[i];
-      
+      }
       data[iInsert] = t;
       numElements++;
    }
