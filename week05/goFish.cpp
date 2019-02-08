@@ -46,7 +46,7 @@ void goFish()
    fin.close();
 
    // display the game
-   cout << "We will play 5 rounds of Go Fish. Guess the card in the hand\n";
+   cout << "We will play 5 rounds of Go Fish.  Guess the card in the hand\n";
 
    // markers to check round and number of matches
    int round = 1;

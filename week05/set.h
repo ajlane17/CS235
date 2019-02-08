@@ -54,9 +54,9 @@ public:
    void clear()                               { numElements = 0; }
 
    // operator overloading
-   set  operator || (const set <T> & rhs) const throw (const char *);
-   set  operator && (const set <T> & rhs) const throw (const char *);
-   set  operator - (const set <T> & rhs) const throw (const char *);
+   set operator || (const set <T> & rhs) const throw (const char *);
+   set operator && (const set <T> & rhs) const throw (const char *);
+   set operator - (const set <T> & rhs) const throw (const char *);
    
    // the various iterator interfaces
    class iterator;
@@ -176,7 +176,8 @@ public:
    }
 
    // dereference operator
-         T & operator * ()       { return *p; }
+   // Disable this operator to prevent writing to the dereferenced object
+   //    T & operator * ()       { return *p; }
    const T & operator * () const { return *p; }
 
    // prefix increment
@@ -214,7 +215,7 @@ private:
 };
 
 /*******************************************
- * SET :: Assignment
+ * SET :: ASSIGNMENT
  *******************************************/
 template <class T>
 set <T> & set <T> :: operator = (const set <T> & rhs)
@@ -243,6 +244,128 @@ set <T> & set <T> :: operator = (const set <T> & rhs)
       data[i] = rhs.data[i];
 
    return *this;
+}
+
+/*******************************************
+ * SET :: UNION
+ * Returns a set of all unique values from both
+ * left and right operands
+ *******************************************/
+template <class T>
+set <T> set <T> :: operator || (const set <T> & rhs) const
+   throw (const char *)
+{
+   set <T> setReturn;
+   int iLhs = 0;
+   int iRhs = 0;
+
+   while ((iLhs < numElements) || (iRhs < rhs.numElements))
+   {
+      if (iLhs == numElements)
+      {
+         setReturn.insert(rhs.data[iRhs++]);
+      }
+      else if (iRhs == rhs.numElements)
+      {
+         setReturn.insert(data[iLhs++]);
+      }
+      else if (data[iLhs] == rhs.data[iRhs])
+      {
+         setReturn.insert(data[iLhs]);
+         iLhs++;
+         iRhs++;
+      }
+      else if (data[iLhs] < rhs.data[iRhs])
+      {
+         setReturn.insert(data[iLhs++]);
+      }
+      else
+      {
+         setReturn.insert(rhs.data[iRhs++]);
+      }
+   }
+   return setReturn;
+}
+
+/*******************************************
+ * SET :: INTERSECTION
+ * Returns a set of matching values from both
+ * left and right operands
+ *******************************************/
+template <class T>
+set <T> set <T> :: operator && (const set <T> & rhs) const
+   throw (const char *)
+{
+   set <T> setReturn;
+   int iLhs = 0;
+   int iRhs = 0;
+
+   while (iLhs < numElements || iRhs < rhs.numElements)
+   {
+      if (iLhs == numElements)
+      {
+         return setReturn;
+      }
+      else if (iRhs == rhs.numElements)
+      {
+         return setReturn;
+      }
+      else if (data[iLhs] == rhs.data[iRhs])
+      {
+         setReturn.insert(data[iLhs]);
+         iLhs++;
+         iRhs++;
+      }
+      else if (data[iLhs] < rhs.data[iRhs])
+      {
+         iLhs++;
+      }
+      else
+      {
+         iRhs++;
+      }
+   }
+   return setReturn;
+}
+
+/*******************************************
+ * SET :: DIFFERENCE
+ * Returns a set of values only found in the 
+ * left operand
+ *******************************************/
+template <class T>
+set <T> set <T> :: operator - (const set <T> & rhs) const
+   throw (const char *)
+{
+   set <T> setReturn;
+   int iLhs = 0;
+   int iRhs = 0;
+
+   while (iLhs < numElements || iRhs < rhs.numElements)
+   {
+      if (iLhs == numElements)
+      {
+         return setReturn;
+      }
+      else if (iRhs == rhs.numElements)
+      {
+         setReturn.insert(data[iLhs++]);
+      }
+      else if (data[iLhs] == rhs.data[iRhs])
+      {
+         iLhs++;
+         iRhs++;
+      }
+      else if (data[iLhs] < rhs.data[iRhs])
+      {
+         setReturn.insert(data[iLhs++]);
+      }
+      else
+      {
+         iRhs++;
+      }
+   }
+   return setReturn;
 }
 
 /********************************************
@@ -313,24 +436,19 @@ int set <T> :: findIndex(const T & t)
 template <class T>
 void set <T> :: insert(const T & t)
 {
-   // Resize and add if empty
-   if (numCapacity == 0)
+   // Resize if empty
+   if (data == NULL)
    {
-      resize(2);
-      data[numElements++] = t;
-      return;
+      resize(1);
    }
 
    // Insert Element if not found
    int iInsert = findIndex(t);
-   // std::cout << "iInsert: " << iInsert << std::endl;
-   // std::cout << "NumElements: " << numElements << std::endl;
    if (data[iInsert] != t)
    {
       resize(numCapacity + 1);
       for (int i = numElements; i >= iInsert; i--)
       {
-      // std::cout << "i: " << i << std::endl;
          data[i + 1] = data[i];
       }
       data[iInsert] = t;
@@ -343,7 +461,7 @@ void set <T> :: insert(const T & t)
  * A method used to resize the set when
  * called upon.
  *******************************************/
-template <class T>
+	template <class T>
 void set <T> :: resize(int newCapacity) throw (const char*)
 {
    // allocate a new array
