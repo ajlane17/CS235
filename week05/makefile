@@ -5,10 +5,19 @@
 # Author:
 #     Adrian Lane, Ethan Holden
 # Summary:
-#     <put a description here>
+#     This program is first a custom data structure of the set. 
+#     It stores a user defined "set" of elements that is a list 
+#     of all non-repeated elements enter into it. It also 
+#     defines the ability for the user to combine and compare 
+#     sets with various opperators. 
+#     The second part is a simple Go Fish! program that has the 
+#     user guess 5 times which cards are in the comupter's 
+#     "hand." For each correct guess it removes the card from 
+#     the hand and then after 5 guesses the program displays 
+#     all remaining cards in the hand.
 # Time:
 #     Adrian: __hrs
-#     Ethan:  __hrs
+#     Ethan:  4 hrs
 #       Total:
 # Hardest Part:
 #     <What was the hardest part?>
