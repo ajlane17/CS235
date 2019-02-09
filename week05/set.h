@@ -15,7 +15,7 @@
 #ifndef SET_H
 #define SET_H
 
-#include <cassert>  // because I am paranoid
+#include <cassert>  
 
 // a little helper macro to write debug code
 #ifdef NDEBUG
@@ -44,9 +44,7 @@ public:
    set(const set & rhs)                      throw (const char *):
       data(NULL), numCapacity(0), numElements(0)
       { if (!rhs.empty()) *this = rhs; }
-   
-   set & operator = (const set & rhs)        throw (const char *);
-   
+      
    // standard container interfaces
    int  size() const                       { return numElements; }
    int  capacity() const                   { return numCapacity; }
@@ -54,6 +52,7 @@ public:
    void clear()                               { numElements = 0; }
 
    // operator overloading
+   set & operator = (const set & rhs)        throw (const char *);
    set operator || (const set <T> & rhs) const throw (const char *);
    set operator && (const set <T> & rhs) const throw (const char *);
    set operator - (const set <T> & rhs) const throw (const char *);
