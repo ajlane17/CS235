@@ -67,6 +67,7 @@ public:
 
    // constant iterator
    class const_iterator;
+   const_iterator cfind(const T & t) const;
    const_iterator cbegin() const { return const_iterator (data); }
    const_iterator cend() const { return const_iterator(data + numElements); }
 
@@ -237,7 +238,7 @@ set <T> & set <T> :: operator = (const set <T> & rhs)
    {
       throw "ERROR: Unable to allocate a new buffer for set";
    }
-   
+   // copy the data
    assert(numCapacity == rhs.numCapacity);
    for (int i = 0; i < numElements; i++)
       data[i] = rhs.data[i];
@@ -258,6 +259,7 @@ set <T> set <T> :: operator || (const set <T> & rhs) const
    int iLhs = 0;
    int iRhs = 0;
 
+   // Iterate through both arrays using O(n + m)
    while ((iLhs < numElements) || (iRhs < rhs.numElements))
    {
       if (iLhs == numElements)
@@ -299,6 +301,7 @@ set <T> set <T> :: operator && (const set <T> & rhs) const
    int iLhs = 0;
    int iRhs = 0;
 
+   // Iterate through both arrays using O(n + m)
    while (iLhs < numElements || iRhs < rhs.numElements)
    {
       if (iLhs == numElements)
@@ -340,6 +343,7 @@ set <T> set <T> :: operator - (const set <T> & rhs) const
    int iLhs = 0;
    int iRhs = 0;
 
+   // Iterate through both arrays using O(n + m)
    while (iLhs < numElements || iRhs < rhs.numElements)
    {
       if (iLhs == numElements)
@@ -376,10 +380,27 @@ typename set <T> :: iterator set <T> :: find(const T & t)
 {
    int i = findIndex(t);
 
+   // If found, return the element, otherwise return the end
    if (data[i] != t)
       return end();
    else
       return iterator (data + i);
+}
+
+/********************************************
+ * SET : CFIND
+ * A method used to find a given item in the set
+ *******************************************/
+template <class T>
+typename set <T> :: const_iterator set <T> :: cfind(const T & t) const
+{
+   int i = findIndex(t);
+
+   // If found, return the element, otherwise return the end
+   if (data[i] != t)
+      return cend();
+   else
+      return const_iterator (data + i);
 }
 
 /********************************************
@@ -413,6 +434,8 @@ int set <T> :: findIndex(const T & t)
    int iEnd = numElements - 1;
    int iMiddle;
 
+   // binary search, return the passed element
+   // or the position it should be in
    while (iBegin <= iEnd)
    {
       iMiddle = (iBegin + iEnd) / 2;

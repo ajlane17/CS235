@@ -16,11 +16,25 @@
 #     the hand and then after 5 guesses the program displays 
 #     all remaining cards in the hand.
 # Time:
-#     Adrian: __hrs
+#     Adrian: 8 hrs
 #     Ethan:  4 hrs
-#       Total:
+#       Total: 12 hrs
 # Hardest Part:
-#     <What was the hardest part?>
+#     The hardest part for this week was in trying to get the 
+#     binary search and insert to work as intended. The pseudo
+#     code did a great job in showing how to return a match,
+#     but figuring out the insert location was more diffucult
+#     than I thought, but redicuously simple to implement. The
+#     insert gave me a lot of problems in how I was trying to
+#     initially handle an empty collection, but once I figured
+#     out my incrementor wasn't working as intented, it was an
+#     easy fix. An honorable mention would be working through 
+#     through operator overrides. I had quite a few bugs to 
+#     work through that were either the wrong comparison 
+#     operator, or using the wrong iterator against the wrong
+#     the wrong collection. The common theme for this week's
+#     difficulties could be "hard to think through, easy to 
+#     fix."
 ###############################################################
 
 ##############################################################
