@@ -50,9 +50,9 @@ template <class T>
 Node <T> * copy(const Node <T> * pSource) throw (const char *)
 {
    Node<T> * pDestination = new Node<T>(pSource->data);
-   //Node<T> * pSrc = pSource;
    const Node<T> * pDes = pDestination;
 
+   //Copies the data. calls insert
    for (const Node<T> * pSrc = pSource; pSrc; pSrc = pSrc->pNext)
    {
       pDes = insert(pDes, pSrc->data, true);
@@ -69,8 +69,16 @@ template <class T>
 Node <T> * insert(const Node <T> * pNode, const T & element, bool after = false)
    throw (const char *)
 {
+   //TODO: Under construction
+   
+   Node<T> * pNew = new Node<T>(element);
+
+   /*if (pNode != NULL && after = false)
+   {
+
+   }*/
    // Return the pointer to the newly created node
-   return NULL;
+   return pNew;
 }
 
 /*****************************************************************************
