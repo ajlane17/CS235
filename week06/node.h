@@ -49,8 +49,16 @@ class Node
 template <class T>
 Node <T> * copy(const Node <T> * pSource) throw (const char *)
 {
+   Node<T> * pDestination = new Node<T>(pSource->data);
+   //Node<T> * pSrc = pSource;
+   const Node<T> * pDes = pDestination;
+
+   for (const Node<T> * pSrc = pSource; pSrc; pSrc = pSrc->pNext)
+   {
+      pDes = insert(pDes, pSrc->data, true);
+   }
    // Return the pointer to the new linked-list
-   return NULL;
+   return pDestination;
 }
 
 /*****************************************************************************
@@ -58,7 +66,7 @@ Node <T> * copy(const Node <T> * pSource) throw (const char *)
  * Inserts a node into the current linked-list
  *****************************************************************************/
 template <class T>
-Node <T> * insert(const Node <T> * pNode, const T & t, bool after = false)
+Node <T> * insert(const Node <T> * pNode, const T & element, bool after = false)
    throw (const char *)
 {
    // Return the pointer to the newly created node
@@ -84,6 +92,7 @@ template <class T>
 std::ostream & operator << (std::ostream & out, Node <T> * rhs)
 {
    // Display the linked list, format unknown at the moment
+   return out;
 }
 
 /*****************************************************************************
