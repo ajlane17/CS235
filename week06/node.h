@@ -47,10 +47,10 @@ class Node
  * Copy a linked-list
  *****************************************************************************/
 template <class T>
-Node <T> * copy(const Node <T> * pSource) throw (const char *)
+Node <T> * copy(Node <T> * pSource) throw (const char *)
 {
    Node<T> * pDestination = new Node<T>(pSource->data);
-   const Node<T> * pDes = pDestination;
+   Node<T> * pDes = pDestination;
 
    //Copies the data. calls insert
    for (const Node<T> * pSrc = pSource; pSrc; pSrc = pSrc->pNext)
@@ -66,17 +66,32 @@ Node <T> * copy(const Node <T> * pSource) throw (const char *)
  * Inserts a node into the current linked-list
  *****************************************************************************/
 template <class T>
-Node <T> * insert(const Node <T> * pNode, const T & element, bool after = false)
+Node <T> * insert(Node <T> * pNode, const T & element, bool after = false)
    throw (const char *)
 {
-   //TODO: Under construction
-   
    Node<T> * pNew = new Node<T>(element);
 
-   /*if (pNode != NULL && after = false)
+   if (pNode != NULL && after == false)
    {
+      pNew->pNext = pNode;
+      pNew->pPrev = pNode->pPrev;
+      pNode->pPrev = pNew;
+      if (pNew->pPrev)
+      {
+         pNew->pPrev->pNext = pNew;
+      }
+   }
 
-   }*/
+   if (pNode != NULL && after == true)
+   {
+      pNew->pPrev = pNode;
+      pNew->pNext = pNode->pNext;
+      pNode->pNext = pNew;
+      if (pNew->pPrev)
+      {
+         pNew->pNext->pPrev = pNew;
+      }
+   }
    // Return the pointer to the newly created node
    return pNew;
 }
