@@ -87,7 +87,7 @@ Node <T> * insert(Node <T> * pNode, const T & element, bool after = false)
       pNew->pPrev = pNode;
       pNew->pNext = pNode->pNext;
       pNode->pNext = pNew;
-      if (pNew->pPrev)
+      if (pNew->pNext)
       {
          pNew->pNext->pPrev = pNew;
       }
@@ -114,6 +114,12 @@ Node <T> * find(Node <T> * pHead, const T & t)
 template <class T>
 std::ostream & operator << (std::ostream & out, Node <T> * rhs)
 {
+   out << "{ ";
+   do
+   {
+      out << rhs->pNext->data << ", ";
+   } while (rhs->pNext != NULL);
+   out << "}";
    // Display the linked list, format unknown at the moment
    return out;
 }
@@ -139,6 +145,5 @@ Node <T> * remove(const Node <T> * pRemove)
    // Return point to the previous node if it exists, else return next node
    return NULL;
 }
-
 
 #endif // NODE_H
