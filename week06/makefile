@@ -5,9 +5,15 @@
 # Author:
 #     Adrian Lane, Ethan Holden, Kenyon Bunker
 # Summary:
-#     <put a description here>
+#     Custom Node/Linked list
+# Time:
+#     Kenyon:   3
+#     Ethan:    
+#     Adrian:   
+#     Together: 1
 # Hardest Part:
-#     Kenyon:
+#     Kenyon: The hardest part for me was insert. Particulary
+#       the second if statement.
 #     Ethan:
 #       The hardest part for me was figuring out where the 
 #       segmentation fault was in test 4. After using the gdb 
