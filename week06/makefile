@@ -8,7 +8,7 @@
 #     Custom Node/Linked list
 # Time:
 #     Kenyon:   3
-#     Ethan:    
+#     Ethan:    3
 #     Adrian:   
 #     Together: 1
 # Hardest Part:
