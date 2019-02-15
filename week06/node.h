@@ -53,7 +53,7 @@ Node <T> * copy(Node <T> * pSource) throw (const char *)
    Node<T> * pDes = pDestination;
 
    //Copies the data. calls insert
-   for (const Node<T> * pSrc = pSource; pSrc; pSrc = pSrc->pNext)
+   for (const Node<T> * pSrc = pSource->pNext; pSrc; pSrc = pSrc->pNext)
    {
       pDes = insert(pDes, pSrc->data, true);
    }
@@ -104,6 +104,12 @@ template <class T>
 Node <T> * find(Node <T> * pHead, const T & t)
 {
    // Return the pointer to the found node else NULL
+   for(Node <T> * p = pHead; p; p = p->pNext)
+   {
+      if (p->data == t)
+         return p;
+   } 
+   
    return NULL;
 }
 
@@ -114,13 +120,24 @@ Node <T> * find(Node <T> * pHead, const T & t)
 template <class T>
 std::ostream & operator << (std::ostream & out, Node <T> * rhs)
 {
-   out << "{ ";
-   do
+   // do nothing if empty
+   if (rhs == NULL)
+      return out;
+
+   while (rhs != NULL)
    {
-      out << rhs->pNext->data << ", ";
-   } while (rhs->pNext != NULL);
-   out << "}";
-   // Display the linked list, format unknown at the moment
+      out << rhs->data;
+      // only display a comma if not the end of the list
+      if (rhs->pNext)
+      {
+         rhs = rhs->pNext;
+         out << ", ";
+      }
+      else
+         rhs = rhs->pNext;
+   }
+
+   // Display the linked list
    return out;
 }
 
@@ -131,6 +148,13 @@ std::ostream & operator << (std::ostream & out, Node <T> * rhs)
 template <class T>
 void freeData(Node <T> * & pHead)
 {
+   Node <T> * pDelete;
+   while (pHead != NULL)
+   {
+      pDelete = pHead;
+      pHead = pHead->pNext;
+      delete pDelete;
+   }
    // No return
    return;
 }
@@ -142,8 +166,24 @@ void freeData(Node <T> * & pHead)
 template <class T>
 Node <T> * remove(const Node <T> * pRemove)
 {
+   Node <T> * pReturn;
+   
    // Return point to the previous node if it exists, else return next node
-   return NULL;
+   if (NULL == pRemove)
+      return NULL;
+
+   if (pRemove->pPrev)
+      pRemove->pPrev->pNext = pRemove->pNext;
+   if (pRemove->pNext)
+      pRemove->pNext->pPrev = pRemove->pPrev;
+
+   if (pRemove->pPrev)
+      pReturn = pRemove->pPrev;
+   else
+      pReturn = pRemove->pNext;
+
+   delete pRemove;
+   return pReturn;
 }
 
 #endif // NODE_H

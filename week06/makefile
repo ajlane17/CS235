@@ -1,11 +1,19 @@
 ###############################################################
 # Program:
 #     Assignment 06, NODE
-#     Brother XXXXX, CS235
+#     Brother Kirby, CS235
 # Author:
-#     <your name here>
+#     Adrian Lane, Ethan Holden, Kenyon Bunker
 # Summary:
 #     <put a description here>
+# Hardest Part:
+#     Kenyon:
+#     Ethan:
+#       The hardest part for me was figuring out where the 
+#       segmentation fault was in test 4. After using the gdb 
+#       tool, I found out it was in the << operator because it 
+#       didn't make an exception for when the list was empty.
+#     Adrian:
 ###############################################################
 
 ##############################################################
@@ -22,3 +30,5 @@ a.out: node.h assignment06.o
 ##############################################################
 assignment06.o: node.h assignment06.cpp sortInsertion.h
 	g++ -c assignment06.cpp -g -std=c++11
+clean:
+	rm a.out *.o *.tar;
