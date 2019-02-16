@@ -71,6 +71,7 @@ Node <T> * insert(Node <T> * pNode, const T & element, bool after = false)
 {
    Node<T> * pNew = new Node<T>(element);
 
+   //Before node
    if (pNode != NULL && after == false)
    {
       pNew->pNext = pNode;
@@ -82,6 +83,7 @@ Node <T> * insert(Node <T> * pNode, const T & element, bool after = false)
       }
    }
 
+   //after node
    if (pNode != NULL && after == true)
    {
       pNew->pPrev = pNode;
@@ -92,6 +94,7 @@ Node <T> * insert(Node <T> * pNode, const T & element, bool after = false)
          pNew->pNext->pPrev = pNew;
       }
    }
+
    // Return the pointer to the newly created node
    return pNew;
 }
