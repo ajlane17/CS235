@@ -38,7 +38,7 @@ class Node
    Node <T> * pPrev;
 
    // Constructors
-   Node() : data(NULL), pNext(NULL), pPrev(NULL) {}
+   Node() : data(), pNext(NULL), pPrev(NULL) {}
    Node(const T & t) : data(t), pNext(NULL), pPrev(NULL) {}
 };
 

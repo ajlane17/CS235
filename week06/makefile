@@ -9,7 +9,7 @@
 # Time:
 #     Kenyon:   3
 #     Ethan:    3
-#     Adrian:   
+#     Adrian:   5
 #     Together: 1
 # Hardest Part:
 #     Kenyon: The hardest part for me was insert. Particulary
@@ -20,6 +20,11 @@
 #       tool, I found out it was in the << operator because it 
 #       didn't make an exception for when the list was empty.
 #     Adrian:
+#       The most difficult part for me was in figuring out how 
+#       to handle readjusting the HEAD in the linked-list. It 
+#       took me some time to figure out that I wasn't 
+#       adjusting the beginning of the list when I was 
+#       inserting at the very beginning. 
 ###############################################################
 
 ##############################################################
