@@ -37,3 +37,4 @@
 *.tar
 output.txt
 CmakeLists.txt
+*~
