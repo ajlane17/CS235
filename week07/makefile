@@ -8,12 +8,15 @@
 #     <put a description here>
 # Time Spent:
 #     Adrain:
-#     Ethan:
+#     Ethan: 4 hours
 #     Kenyon:
 #      Total:
 # Hardest Part:
 #     Adrain:
 #     Ethan:
+#        So far the hardest part for me is figuring out the 
+#        correct syntax for declairing the node and iterator 
+#        classes in within the list class.
 #     Kenyon:
 ###############################################################
 
