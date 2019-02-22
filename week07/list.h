@@ -25,6 +25,9 @@
 #define Debug(statement) statement
 #endif // !NDEBUG
 
+namespace custom
+{
+
 template <class T>
 class list
 {
@@ -60,8 +63,8 @@ class list
 
   private:
    class Node;
-   Node pHead;
-   Node pTail;
+   Node pHead();
+   Node pTail();
    int numElements;
 };
 
@@ -149,8 +152,8 @@ class list <T> :: Node
    public:
    // Member variables
    T data;
-   Node <T> * pNext;
-   Node <T> * pPrev;
+   Node * pNext;
+   Node * pPrev;
 
    // Constructors
    Node() : data(), pNext(NULL), pPrev(NULL) {}
@@ -164,11 +167,11 @@ class list <T> :: Node
 template <class T>
 list <T> :: list(const list & rhs) throw (const char *)
 {
-   Node<T> * pDestination = new Node<T>(rhs->data);
-   Node<T> * pDes = pDestination;
+   Node * pDestination = new Node(rhs->data);
+   Node * pDes = pDestination;
 
    //Copies the data. calls insert
-   for (const Node<T> * pSrc = rhs->pNext; pSrc; pSrc = pSrc->pNext)
+   for (const Node * pSrc = rhs->pNext; pSrc; pSrc = pSrc->pNext)
    {
       pDes = insert(pDes, pSrc->data, true);
    }
@@ -192,7 +195,7 @@ list <T> :: ~list()
 template <class T>
 void list <T> :: clear()
 {
-   Node <T> * pDelete;
+   Node * pDelete;
    while (pHead != NULL)
    {
       pDelete = pHead;
@@ -303,7 +306,7 @@ template <class T>
 typename list <T> :: iterator list <T> ::  find(const T & t)
 {
    // Return the pointer to the found node else NULL
-   for(Node <T> * p = pHead; p; p = p->pNext)
+   for(Node * p = pHead; p; p = p->pNext)
    {
       if (p->data == t)
          return p;
@@ -319,7 +322,7 @@ typename list <T> :: iterator list <T> ::  find(const T & t)
 template <class T>
 void list <T> :: erase(iterator it)
 {
-   Node <T> * pReturn;
+   Node * pReturn;
    
    // Return point to the previous node if it exists, else return next node
    if (NULL == it)
@@ -347,7 +350,7 @@ template <class T>
 void list <T> :: insert(iterator it, const T & element, bool after = false)
    throw (const char *)
 {
-   Node<T> * pNew = new Node<T>(element);
+   Node * pNew = new Node(element);
 
    //Before node
    if (it != NULL && after == false)
@@ -378,6 +381,7 @@ void list <T> :: insert(iterator it, const T & element, bool after = false)
    
    // Return the pointer to the newly created node
    return pNew;
+}
 }
 
 #endif // LIST_H
