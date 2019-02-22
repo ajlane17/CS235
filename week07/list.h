@@ -54,9 +54,9 @@ class list
    iterator begin()                   {return iterator (pHead);}
    iterator end()                     {return iterator (pTail);}
 
-   class reverse_iterator;
-   reverse_iterator rbegin() {return reverse_iterator (pTail);}
-   reverse_iterator rend() {return reverse_iterator (pHead);}
+   //class reverse_iterator;
+   //reverse_iterator rbegin() {return reverse_iterator (pTail);}
+   //reverse_iterator rend() {return reverse_iterator (pHead);}
 
   private:
    class Node;
@@ -74,8 +74,8 @@ class list <T> :: iterator
 {
   public:
    // constructors, destructors, and assignment operator
-  iterator()      : p(pHead)       {              }
-  iterator(Node p) : p(p)         {              }
+  iterator()      : p(NULL)      {              }
+  iterator(T * p) : p(p)         {              }
    iterator(const iterator & rhs) { *this = rhs; }
    iterator & operator = (const iterator & rhs)
    {
@@ -94,13 +94,13 @@ class list <T> :: iterator
    }
 
    // dereference operator
-   T & operator * ()       { return p->data; }
-   const T & operator * () const { return p->data; }
+   T & operator * ()       { return *p; }
+   const T & operator * () const { return *p; }
 
    // prefix increment
    iterator & operator ++ ()
    {
-      p->data = p->pNext;
+      p++;
       return *this;
    }
 
@@ -108,14 +108,14 @@ class list <T> :: iterator
    iterator operator ++ (int postfix)
    {
       iterator tmp(*this);
-      p->data = p->pNext;
+      p++;
       return tmp;
    }
 
    // prefix decrement
    iterator & operator -- ()
    {
-      p->data = p->pPrev;
+      p--;
       return *this;
    }
 
@@ -123,86 +123,28 @@ class list <T> :: iterator
    iterator operator -- (int postfix)
    {
       iterator tmp(*this);
-      p->data = p->pPrev;
+      p--;
       return tmp;
    }
 
   private:
-   Node p;
+   T * p;
+   
 };
 
 /**************************************************
  * LIST REVERSE_ITERATOR
  * A reverse iterator through the linked list
  *************************************************/
-template <class T>
-class list <T> :: reverse_iterator
-{
-  public:
-   // constructors, destructors, and assignment operator
-  reverse_iterator()      : p()       {              }
-  reverse_iterator(Node p) : p(pTail)         {              }
-   reverse_iterator(const reverse_iterator & rhs) { *this = rhs; }
-   reverse_iterator & operator = (const reverse_iterator & rhs)
-   {
-      this->p = rhs.p;
-      return *this;
-   }
 
-   // equals, not equals operator
-   bool operator != (const reverse_iterator & rhs) const
-   {
-      return rhs.p != this->p;
-   }
-   bool operator == (const reverse_iterator & rhs) const
-   {
-      return rhs.p == this->p;
-   }
-
-   // dereference operator
-   T & operator * ()       { return p->data; }
-   const T & operator * () const { return p->data; }
-
-   // prefix increment
-   reverse_iterator & operator ++ ()
-   {
-      p->data = p->pPrev;
-      return *this;
-   }
-
-   // postfix increment
-   reverse_iterator operator ++ (int postfix)
-   {
-      reverse_iterator tmp(*this);
-      p->data = p->pPrev;
-      return tmp;
-   }
-
-   // prefix decrement
-   reverse_iterator & operator -- ()
-   {
-      p->data = p->pNext;
-      return *this;
-   }
-
-   // postfix decrement
-   reverse_iterator operator -- (int postfix)
-   {
-      reverse_iterator tmp(*this);
-      p->data = p->pNext;
-      return tmp;
-   }
-
-  private:
-   Node p;
-};
+// Add after knowing iterator works
 
 /*****************************************************************************
  * NODE
  * an object that holds data and its relative position
  *****************************************************************************/
 template <class T>
-class list <T> :: Node <T>
+class list <T> :: Node
 {
    public:
    // Member variables
@@ -248,7 +190,7 @@ list <T> :: ~list()
  * Release all the memory contained in a given linked-list
  *****************************************************************************/
 template <class T>
-list <T> :: clear()
+void list <T> :: clear()
 {
    Node <T> * pDelete;
    while (pHead != NULL)
@@ -436,36 +378,6 @@ void list <T> :: insert(iterator it, const T & element, bool after = false)
    
    // Return the pointer to the newly created node
    return pNew;
-}
-
-
-
-/*****************************************************************************
- * OPERATOR <<
- * Display the contents of a given linked-list
- *****************************************************************************/
-template <class T>
-std::ostream & operator << (std::ostream & out, Node <T> * rhs)
-{
-   // do nothing if empty
-   if (rhs == NULL)
-      return out;
-
-   while (rhs != NULL)
-   {
-      out << rhs->data;
-      // only display a comma if not the end of the list
-      if (rhs->pNext)
-      {
-         rhs = rhs->pNext;
-         out << ", ";
-      }
-      else
-         rhs = rhs->pNext;
-   }
-
-   // Display the linked list
-   return out;
 }
 
 #endif // LIST_H
