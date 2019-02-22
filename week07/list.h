@@ -51,9 +51,9 @@ class list
    T back() const                         throw (const char *);
 
    class iterator;
-   iterator find(T t);
+   iterator find(T & t);
    void erase(iterator it);
-   void insert(iterator it, T t);
+   void insert(iterator it, T & element, bool after);
    iterator begin()                   {return iterator (pHead);}
    iterator end()                     {return iterator (pTail);}
 
@@ -302,8 +302,9 @@ T list <T> ::  back() const throw (const char *)
  * FIND
  * Find the node corresponding to the given value from the given linked-list
  *****************************************************************************/
+//iterator find(T t);
 template <class T>
-typename list <T> :: iterator list <T> ::  find(const T & t)
+typename list <T> :: iterator list <T> ::  find(T & t)
 {
    // Return the pointer to the found node else NULL
    for(Node * p = pHead; p; p = p->pNext)
@@ -347,7 +348,7 @@ void list <T> :: erase(iterator it)
  * Inserts a node into the current linked-list
  *****************************************************************************/
 template <class T>
-void list <T> :: insert(iterator it, const T & element, bool after = false)
+void list <T> :: insert(iterator it, T & element, bool after)
    throw (const char *)
 {
    Node * pNew = new Node(element);
