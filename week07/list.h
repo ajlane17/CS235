@@ -38,7 +38,9 @@ class list
    public:
       list() : pHead(NULL), pTail(NULL), numElements(0)                      {}
       list(list & rhs)                                    throw (const char *);
-      ~list();   
+      ~list();
+
+      list & operator = (const list <T> & rhs)            throw (const char *);
    
       int size() const                                    {return numElements;}
       bool empty() const                                {return pHead == NULL;}
@@ -57,22 +59,22 @@ class list
       class iterator;
       iterator insert(iterator & it, const T & t)         throw (const char *);
       iterator find(const T & t);
-      void erase(iterator it);
+      void erase(iterator & it);
 
       iterator begin()                               {return iterator (pHead);}
-      iterator end()                                 {return iterator (pTail);}
+      iterator end()                                  {return iterator (NULL);}
 
       class const_iterator;
-      const_iterator cbegin() const                  {return iterator (pHead);}
-      const_iterator cend() const                    {return iterator (pTail);}
+      const_iterator cbegin() const            {return const_iterator (pHead);}
+      const_iterator cend() const               {return const_iterator (NULL);}
 
       class reverse_iterator;
       reverse_iterator rbegin()              {return reverse_iterator (pTail);}
-      reverse_iterator rend()                {return reverse_iterator (pHead);}
+      reverse_iterator rend()                 {return reverse_iterator (NULL);}
 
       class const_reverse_iterator;
       const_reverse_iterator crbegin() const {return reverse_iterator (pTail);}
-      const_reverse_iterator crend() const   {return reverse_iterator (pHead);}
+      const_reverse_iterator crend() const    {return reverse_iterator (NULL);}
 
    private:
       class Node;
@@ -165,7 +167,7 @@ class list <T> :: iterator
       typename list <T> :: Node * p;
    
    friend iterator list <T> :: insert(iterator & it, const T & t) throw (const char *);
-   friend void list <T> :: erase(iterator it);
+   friend void list <T> :: erase(iterator & it);
 };
 
 /**************************************************
@@ -209,7 +211,7 @@ class list <T> :: const_iterator
       // postfix increment
       const_iterator operator ++ (int postfix)
       {
-         iterator tmp(*this);
+         const_iterator tmp(*this);
          p = p->pNext;
          return tmp;
       }
@@ -367,12 +369,12 @@ class list <T> :: const_reverse_iterator
    
 };
 
-/*****************************************************************************
- * COPY CONSTRUCTOR
- * Copy a linked-list
- *****************************************************************************/
+/*******************************************
+ * LIST :: ASSIGNMENT
+ *******************************************/
 template <class T>
-list <T> :: list(list <T> & rhs) throw (const char *)
+list <T> & list <T> :: operator = (const list <T> & rhs)
+   throw (const char *)
 {
    numElements = 0;
    pHead = NULL;
@@ -380,19 +382,24 @@ list <T> :: list(list <T> & rhs) throw (const char *)
 
    if (!(rhs.empty()))
    {
-      for (iterator it = rhs.begin(); it != rhs.end(); it++)
+      for (const_iterator it = rhs.cbegin(); it != rhs.cend(); it++)
       {
          this->push_back(*it);
       }
    }
-   // Node <T> * pDestination = new Node <T> (rhs.pHead->data);
-   // Node <T>* pDes = pDestination;
+}
 
-   // //Copies the data. calls insert
-   // for (const Node * pSrc = rhs.pNext; pSrc; pSrc = pSrc->pNext)
-   // {
-   //    pDes = insert(pDes, pSrc->data, true);
-   // }
+/*****************************************************************************
+ * COPY CONSTRUCTOR
+ * Copy a linked-list
+ *****************************************************************************/
+template <class T>
+list <T> :: list(list <T> & rhs) throw (const char *)
+{
+   if (!rhs.empty())
+   {
+      *this = rhs;
+   }
 }
 
 /*****************************************************************************
@@ -401,7 +408,6 @@ list <T> :: list(list <T> & rhs) throw (const char *)
 template <class T>
 list <T> :: ~list()
 {
-   
 }
 
 /*****************************************************************************
@@ -418,6 +424,10 @@ void list <T> :: clear()
       pHead = pHead->pNext;
       delete pDelete;
    }
+
+   numElements = 0;
+   pHead = NULL;
+   pTail = NULL;
    // No return
    return;
 }
@@ -429,7 +439,22 @@ void list <T> :: clear()
 template <class T>
 void list <T> :: push_back(const T & t)            throw (const char *)
 {
-   
+   Node * pNew = new Node(t);
+
+   if (pTail == NULL && pHead == NULL)
+   {
+      pHead = pNew;
+      pTail = pNew;
+   }
+   else 
+   {
+      pNew->pPrev = pTail;
+      pTail->pNext = pNew;
+      pNew->pNext = NULL;
+      pTail = pNew;
+   }
+
+   numElements++;
 }
 
 /*****************************************************************************
@@ -439,7 +464,22 @@ void list <T> :: push_back(const T & t)            throw (const char *)
 template <class T>
 void list <T> :: push_front(const T & t)           throw (const char *)
 {
-   
+   Node * pNew = new Node(t);
+
+   if (pHead == NULL)
+   {
+      pHead = pNew;
+      pTail = pNew;
+   }
+   else 
+   {
+      pNew->pNext = pHead;
+      pHead->pPrev = pNew;
+      pNew->pPrev = NULL;
+      pHead = pNew;
+   }
+
+   numElements++;
 }
 
 /*****************************************************************************
@@ -449,7 +489,10 @@ void list <T> :: push_front(const T & t)           throw (const char *)
 template <class T>
 void list <T> :: pop_back()
 {
-   
+   pTail = pTail->pPrev;
+   delete pTail->pNext;
+
+   numElements--;
 }
 
 /*****************************************************************************
@@ -459,7 +502,10 @@ void list <T> :: pop_back()
 template <class T>
 void list <T> :: pop_front()
 {
-   
+   pHead = pHead->pNext;
+   delete pHead->pPrev;
+
+   numElements--;
 }
 
 /*****************************************************************************
@@ -537,20 +583,20 @@ typename list <T> :: iterator list <T> ::  find(const T & t)
  * Remove the given node from the linked list it is attached to
  *****************************************************************************/
 template <class T>
-void list <T> :: erase(iterator it)
+void list <T> :: erase(iterator & it)
 {
    if (it == end())
       return;
 
    if (it.p->pPrev)
       it.p->pPrev->pNext = it.p->pNext;
+   else
+      pHead = pHead->pNext;
+
    if (it.p->pNext)
       it.p->pNext->pPrev = it.p->pPrev;
-
-   if (it.p->pPrev)
-      pHead = it.p->pNext;
    else
-      pTail = it.p->pPrev;
+      pTail = pTail->pPrev;
 
    numElements--;
    delete it.p;
@@ -566,15 +612,23 @@ typename list <T> :: iterator list <T> :: insert(iterator & it, const T & t)
 {
    Node * pNew = new Node(t);
 
-   if (it != NULL)
+   if (it != end())
    {
       pNew->pNext = it.p;
       pNew->pPrev = it.p->pPrev;
       it.p->pPrev = pNew;
+      
       if (pNew->pPrev)
-      {
          pNew->pPrev->pNext = pNew;
-      }
+      else
+         pHead = pNew;
+   }
+   else
+   {
+      pTail->pNext = pNew;
+      pNew->pPrev = pTail;
+      pTail = pNew;
+      it.p = pNew;
    }
    
    // add to the size
