@@ -53,13 +53,13 @@ class list
    class iterator;
    iterator find(T & t);
    void erase(iterator it);
-   void insert(iterator it, T & element, bool after);
+   void insert(iterator it, T t);
    iterator begin()                   {return iterator (pHead);}
    iterator end()                     {return iterator (pTail);}
 
-   //class reverse_iterator;
-   //reverse_iterator rbegin() {return reverse_iterator (pTail);}
-   //reverse_iterator rend() {return reverse_iterator (pHead);}
+   class reverse_iterator;
+   reverse_iterator rbegin() {return reverse_iterator (pTail);}
+   reverse_iterator rend() {return reverse_iterator (pHead);}
 
   private:
    class Node;
@@ -139,8 +139,68 @@ class list <T> :: iterator
  * LIST REVERSE_ITERATOR
  * A reverse iterator through the linked list
  *************************************************/
+template <class T>
+class list <T> :: reverse_iterator
+{
+  public:
+   // constructors, destructors, and assignment operator
+  reverse_iterator()      : p(NULL)      {              }
+  reverse_iterator(T * p) : p(p)         {              }
+   reverse_iterator(const reverse_iterator & rhs) { *this = rhs; }
+   reverse_iterator & operator = (const reverse_iterator & rhs)
+   {
+      this->p = rhs.p;
+      return *this;
+   }
 
-// Add after knowing iterator works
+   // equals, not equals operator
+   bool operator != (const reverse_iterator & rhs) const
+   {
+      return rhs.p != this->p;
+   }
+   bool operator == (const reverse_iterator & rhs) const
+   {
+      return rhs.p == this->p;
+   }
+
+   // dereference operator
+   T & operator * ()       { return *p; }
+   const T & operator * () const { return *p; }
+
+   // prefix increment
+   reverse_iterator & operator ++ ()
+   {
+      p--;
+      return *this;
+   }
+
+   // postfix increment
+   reverse_iterator operator ++ (int postfix)
+   {
+      reverse_iterator tmp(*this);
+      p--;
+      return tmp;
+   }
+
+   // prefix decrement
+   reverse_iterator & operator -- ()
+   {
+      p++;
+      return *this;
+   }
+
+   // postfix decrement
+   reverse_iterator operator -- (int postfix)
+   {
+      reverse_iterator tmp(*this);
+      p++;
+      return tmp;
+   }
+
+  private:
+   T * p;
+   
+};
 
 /*****************************************************************************
  * NODE
@@ -175,8 +235,6 @@ list <T> :: list(const list & rhs) throw (const char *)
    {
       pDes = insert(pDes, pSrc->data, true);
    }
-   // Return the pointer to the new linked-list
-   return pDestination;
 }
 
 /*****************************************************************************
@@ -340,7 +398,7 @@ void list <T> :: erase(iterator it)
       pReturn = it->pNext;
 
    delete it;
-   return pReturn;
+   it = pReturn;
 }
 
 /*****************************************************************************
@@ -348,40 +406,24 @@ void list <T> :: erase(iterator it)
  * Inserts a node into the current linked-list
  *****************************************************************************/
 template <class T>
-void list <T> :: insert(iterator it, T & element, bool after)
+void list <T> :: insert(iterator it, T t)
    throw (const char *)
 {
-   Node * pNew = new Node(element);
+   Node * pNew = new Node(t);
 
-   //Before node
-   if (it != NULL && after == false)
+   pNew->pNext = it;
+   pNew->pPrev = it->pPrev;
+   it->pPrev = pNew;
+   if (pNew->pPrev)
    {
-      pNew->pNext = it;
-      pNew->pPrev = it->pPrev;
-      it->pPrev = pNew;
-      if (pNew->pPrev)
-      {
-         pNew->pPrev->pNext = pNew;
-      }
+      pNew->pPrev->pNext = pNew;
    }
-
-   //after node
-   if (it != NULL && after == true)
-   {
-      pNew->pPrev = it;
-      pNew->pNext = it->pNext;
-      it->pNext = pNew;
-      if (pNew->pNext)
-      {
-         pNew->pNext->pPrev = pNew;
-      }
-   }
-
+   
    // add to the size
    numElements++;
    
    // Return the pointer to the newly created node
-   return pNew;
+   it = pNew;
 }
 }
 
