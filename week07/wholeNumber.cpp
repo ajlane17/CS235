@@ -11,4 +11,11 @@
 #include "wholeNumber.h"   // for wholeNumber prototypes
 using namespace std;
 
+wholeNumber::wholeNumber()
+{
 
+}
+
+wholeNumber::~wholeNumber()
+{
+}

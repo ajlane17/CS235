@@ -57,9 +57,9 @@ class list
    iterator begin()                   {return iterator (pHead);}
    iterator end()                     {return iterator (pTail);}
 
-   //class reverse_iterator;
-   //reverse_iterator rbegin() {return reverse_iterator (pTail);}
-   //reverse_iterator rend() {return reverse_iterator (pHead);}
+   class reverse_iterator;
+   reverse_iterator rbegin() {return reverse_iterator (pTail);}
+   reverse_iterator rend() {return reverse_iterator (pHead);}
 
   private:
    class Node;

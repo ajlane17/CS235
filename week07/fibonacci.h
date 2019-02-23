@@ -13,6 +13,9 @@
 
 // the interactive fibonacci program
 void fibonacci();
+void calcFibonacci(int numFib);
+
+
 
 #endif // FIBONACCI_H
 

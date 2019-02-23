@@ -23,9 +23,10 @@ void fibonacci()
 {
    // show the first serveral Fibonacci numbers
    int number;
+   int numFib;
    cout << "How many Fibonacci numbers would you like to see? ";
-   cin  >> number;
-
+   cin  >> numFib;
+   calcFibonacci(numFib);
    // your code to display the first <number> Fibonacci numbers
 
    // prompt for a single large Fibonacci
@@ -33,6 +34,18 @@ void fibonacci()
    cin  >> number;
 
    // your code to display the <number>th Fibonacci number
+}
+
+void calcFibonacci(int numFib)
+{
+   int fib1 = 0, fib2 = 1, fib3 = 1;
+   for(int i = 0; i < numFib; i++)
+   {
+      fib3 = fib1 + fib2;
+      fib1 = fib2;
+      fib2 = fib3;
+      cout << fib3 << endl;
+   }
 }
 
 
