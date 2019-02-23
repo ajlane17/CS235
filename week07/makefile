@@ -8,7 +8,7 @@
 #     <put a description here>
 # Time Spent:
 #     Adrain:
-#     Ethan: 4 hours
+#     Ethan: 7 hours
 #     Kenyon:
 #      Total:
 # Hardest Part:
@@ -16,7 +16,9 @@
 #     Ethan:
 #        So far the hardest part for me is figuring out the 
 #        correct syntax for declairing the node and iterator 
-#        classes in within the list class.
+#        classes in within the list class, then figuring out 
+#        that the Node class no longer needed <T> on 
+#        declaration because Node is not part of the list class.
 #     Kenyon:
 ###############################################################
 
