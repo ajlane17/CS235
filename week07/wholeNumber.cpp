@@ -18,7 +18,7 @@ using namespace std;
  *************************************************/
 wholeNumber::wholeNumber()
 {
-
+   
 }
 
 /**************************************************
@@ -48,9 +48,19 @@ wholeNumber::~wholeNumber()
 /**************************************************
  * insertion operator
  *************************************************/
-wholeNumber wholeNumber::operator<<(const wholeNumber & rhs)
-{
-   return *this;
+ostream & operator<<(ostream & out, const wholeNumber & rhs)
+{  
+   list <int> ::reverse_iterator it;    
+   for (it = rhs.num.rbegin(); it != rhs.num.rend(); ++it)
+   {
+      if (it != rhs.num.rbegin())
+      {
+         out << ',';
+      }
+      out << *it;
+   }
+
+   return out;
 }
 
 /**************************************************
@@ -58,22 +68,33 @@ wholeNumber wholeNumber::operator<<(const wholeNumber & rhs)
  *************************************************/
 wholeNumber wholeNumber::operator+=(const wholeNumber & rhs)
 {
-   *this = *this + rhs;
+   int sum;
+   int carry;
+   list <int> ::iterator itLHS = this->num.begin();
+   list <int> ::iterator itRHS = rhs.num.begin();
+
+   //this->num.begin + rhs.num.begin;
+
+   while (itLHS != NULL && itRHS != NULL)
+   {
+      std::cout << *itLHS << " + " << *itRHS << std::endl;
+      sum = *itLHS + *itRHS;
+      std::cout << sum << std::endl;
+      itLHS++, itRHS++;
+   };
+
+   //*this = *this + rhs;
    return *this;
 }
 
+/**************************************************
+ * add operator
+ *************************************************/
 wholeNumber wholeNumber::operator+(const wholeNumber & rhs)
 {
-   list <int> ::iterator itLHS = this->num.begin();
-   list <int> ::iterator (*itRHS) = rhs.num.begin();
-
-   *this->num.begin + rhs.num.begin;
-
-   do
-   {
-
-   } while (num.end() != NULL);
+   
 
    return *this;
 }
+
 

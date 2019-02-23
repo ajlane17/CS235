@@ -18,7 +18,6 @@ using namespace custom;
 class wholeNumber
 {
 private:
-   //int num;
    list <int> num;
 public:
 /**************************************************
@@ -29,7 +28,7 @@ public:
    wholeNumber(const wholeNumber & rhs);
    ~wholeNumber();
 
-   wholeNumber operator << (const wholeNumber & rhs);
+   friend ostream & operator <<(ostream & out, const wholeNumber & rhs);
    wholeNumber operator += (const wholeNumber & rhs);
    wholeNumber operator + (const wholeNumber & rhs);
    

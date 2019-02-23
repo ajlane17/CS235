@@ -73,6 +73,8 @@ class list
       class reverse_iterator;
       reverse_iterator rbegin()              {return reverse_iterator (pTail);}
       reverse_iterator rend()                 {return reverse_iterator (NULL);}
+      reverse_iterator rbegin() const        { return reverse_iterator(pTail);}
+      reverse_iterator rend() const           { return reverse_iterator(NULL);}
 
       class const_reverse_iterator;
       const_reverse_iterator crbegin() const {return reverse_iterator (pTail);}
