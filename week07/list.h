@@ -387,6 +387,7 @@ list <T> & list <T> :: operator = (const list <T> & rhs)
          this->push_back(*it);
       }
    }
+   return *this;
 }
 
 /*****************************************************************************
