@@ -5,7 +5,8 @@
 # Author:
 #     Adrian Lane, Ethan Holden, Kenyon Bunker
 # Summary:
-#     <put a description here>
+#     This a program that can caluclate large fibnocci sequences
+#     It uses a custom list class.
 # Time Spent:
 #     Adrain:
 #     Ethan: 7 hours
@@ -20,7 +21,7 @@
 #        that the Node class no longer needed <T> on 
 #        declaration because Node is not part of the list class.
 #     Kenyon:
-#        For me the tuoughest part was tryto figure out how to 
+#        For me the toughest part was tryto figure out how to 
 #        lay out wholeNumber. Once I udnerstood the general
 #        body it became easier
 ###############################################################
