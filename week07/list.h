@@ -62,7 +62,9 @@ class list
       void erase(iterator & it);
 
       iterator begin()                               {return iterator (pHead);}
+      iterator begin() const                         {return iterator (pHead);}
       iterator end()                                  {return iterator (NULL);}
+      iterator end() const                            {return iterator (NULL);}
 
       class const_iterator;
       const_iterator cbegin() const            {return const_iterator (pHead);}
