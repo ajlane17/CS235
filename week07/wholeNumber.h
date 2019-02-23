@@ -28,6 +28,9 @@ public:
    wholeNumber(const wholeNumber & rhs);
    ~wholeNumber();
 
+/**************************************************
+ * Operators
+ *************************************************/
    friend ostream & operator <<(ostream & out, const wholeNumber & rhs);
    wholeNumber & operator = (const wholeNumber & rhs);
    wholeNumber& operator += (const wholeNumber & rhs);   

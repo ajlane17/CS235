@@ -24,11 +24,12 @@ using namespace std;
  ***********************************************/
 void fibonacci()
 {
-   // show the first serveral Fibonacci numbers
+   //Prompt
    int number;
-   int numFib;
    cout << "How many Fibonacci numbers would you like to see? ";
    cin  >> number;
+
+   //calcualtes the fibonocci sequence
    calcFibonacci(number);
 
    // prompt for a single large Fibonacci
@@ -41,7 +42,7 @@ void fibonacci()
 
 /************************************************
  * CALCFIBONACCI
- * Calculates the Fibonacci number(s)
+ * Calculates and displays the Fibonacci number(s)
  ***********************************************/
 void calcFibonacci(int number)
 {
@@ -67,7 +68,8 @@ void calcFibonacci(int number)
 
 /************************************************
  * CALCFIBONACCI
- * Calculates the final or last Fibonacci number
+ * Calculates and displays the final or last 
+ * Fibonacci number
  ***********************************************/
 void calcFinalFibonacci(int number)
 {

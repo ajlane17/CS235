@@ -114,14 +114,4 @@ wholeNumber & wholeNumber :: operator+=(const wholeNumber & rhs)
    return *this;
 }
 
-/**************************************************
- * add operator
- *************************************************/
-// wholeNumber wholeNumber::operator+(const wholeNumber & rhs)
-// {
-   
-
-//    return *this;
-// }
-
 
