@@ -8,12 +8,18 @@
 #     This a program that can caluclate large fibnocci sequences
 #     It uses a custom list class.
 # Time Spent:
-#     Adrain:
-#     Ethan: 7 hours
-#     Kenyon: 7
+#     Adrian: 5 hours
+#      Ethan: 7 hours
+#     Kenyon: 7 hours
+#       pair: 6 hours
 #      Total:
 # Hardest Part:
-#     Adrain:
+#    Adrian:
+#        The most difficult part for me was in getting the 
+#        insert method working. I still don't quite understand
+#        the syntax around the friend prototype. The other 
+#        difficult part was in figuring out the logic to insert
+#        the next element in the list collection for wholenumber.
 #     Ethan:
 #        So far the hardest part for me is figuring out the 
 #        correct syntax for declairing the node and iterator 
