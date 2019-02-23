@@ -13,12 +13,13 @@
 #include "list.h"
 using std::ostream;
 using std::ios;
-
+using namespace custom;
 // wholeNumber class
 class wholeNumber
 {
 private:
-
+   //int num;
+   list <int> num;
 public:
 /**************************************************
  * Constructors and Destructors
@@ -28,11 +29,9 @@ public:
    wholeNumber(const wholeNumber & rhs);
    ~wholeNumber();
 
-
-   list <int> x;
-   //represents number in groups of 3 digits.
    wholeNumber operator << (const wholeNumber & rhs);
    wholeNumber operator += (const wholeNumber & rhs);
+   wholeNumber operator + (const wholeNumber & rhs);
    
 };
 
