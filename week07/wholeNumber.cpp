@@ -9,7 +9,7 @@
 
 #include <iostream>
 #include "wholeNumber.h"   // for wholeNumber prototypes
-#include "C:\Users\Kenyon B\source\repos\ajlane17\cs235\week07\list.h" //for Kenyon remove before submition
+//#include "C:\Users\Kenyon B\source\repos\ajlane17\cs235\week07\list.h" //for Kenyon remove before submition
 #include "list.h"
 using namespace std;
 
@@ -24,9 +24,9 @@ wholeNumber::wholeNumber()
 /**************************************************
  * Non-Default Constructor
  *************************************************/
-wholeNumber::wholeNumber(int num)
+wholeNumber::wholeNumber(unsigned int num)
 {
-
+   this->num.push_front(num);
 }
 
 /**************************************************
@@ -50,12 +50,17 @@ wholeNumber::~wholeNumber()
  *************************************************/
 ostream & operator<<(ostream & out, const wholeNumber & rhs)
 {  
-   list <int> ::reverse_iterator it;    
+   list <unsigned int> ::reverse_iterator it;    
    for (it = rhs.num.rbegin(); it != rhs.num.rend(); ++it)
    {
       if (it != rhs.num.rbegin())
       {
-         out << ',';
+         if (*it < 10)
+            out << ",00";
+         else if (*it < 100)
+            out << ",0";
+         else
+            out << ',';
       }
       out << *it;
    }
@@ -64,37 +69,59 @@ ostream & operator<<(ostream & out, const wholeNumber & rhs)
 }
 
 /**************************************************
+ * assignment operator
+ *************************************************/
+wholeNumber & wholeNumber :: operator = (const wholeNumber & rhs)
+{
+   this->num = rhs.num;
+}
+
+/**************************************************
  * add-onto operator
  *************************************************/
-wholeNumber wholeNumber::operator+=(const wholeNumber & rhs)
+wholeNumber & wholeNumber :: operator+=(const wholeNumber & rhs)
 {
-   int sum;
-   int carry;
-   list <int> ::iterator itLHS = this->num.begin();
-   list <int> ::iterator itRHS = rhs.num.begin();
+   list <unsigned int> :: iterator itLHS = this->num.begin();
+   list <unsigned int> :: iterator itRHS = rhs.num.begin();
 
-   //this->num.begin + rhs.num.begin;
+   unsigned int remainder = 0;
+   unsigned int sum;
 
-   while (itLHS != NULL && itRHS != NULL)
+   while (itLHS != NULL)
    {
-      std::cout << *itLHS << " + " << *itRHS << std::endl;
-      sum = *itLHS + *itRHS;
-      std::cout << sum << std::endl;
-      itLHS++, itRHS++;
-   };
+      if  (itRHS != NULL)
+         sum = *itLHS + *itRHS + remainder;
+      else
+         sum = *itLHS + remainder;
 
-   //*this = *this + rhs;
+      if (sum > 999)
+      {
+         remainder = sum / 1000;
+         sum = sum % 1000;
+      }
+      else 
+      {
+         remainder = 0;
+      }
+      *itLHS = sum;
+      itLHS++;
+      if (itRHS != NULL)
+         itRHS++;
+   }
+   if (remainder > 0)
+      this->num.push_back(remainder);
+
    return *this;
 }
 
 /**************************************************
  * add operator
  *************************************************/
-wholeNumber wholeNumber::operator+(const wholeNumber & rhs)
-{
+// wholeNumber wholeNumber::operator+(const wholeNumber & rhs)
+// {
    
 
-   return *this;
-}
+//    return *this;
+// }
 
 

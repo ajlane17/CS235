@@ -10,8 +10,9 @@
 
 #ifndef FIBONACCI_H
 #define FIBONACCI_H
-#include "C:\Users\Kenyon B\source\repos\ajlane17\cs235\week07\list.h"
+// #include "C:\Users\Kenyon B\source\repos\ajlane17\cs235\week07\list.h"
 #include "list.h"        // for LIST
+#include "wholeNumber.h"
 
  /************************************************
   * FIBONACCI
@@ -24,13 +25,13 @@ void fibonacci();
  * CALCFIBONACCI
  * Calculates the Fibonacci number(s)
  ***********************************************/
-void calcFibonacci(int numFib, list <wholeNumber> & fibSequence);
+void calcFibonacci(int numFib);
 
 /************************************************
  * CALCFIBONACCI
  * Calculates the final or last Fibonacci number
  ***********************************************/
-void calcFinalFibonacci(int number, list <wholeNumber> & fibSequence);
+void calcFinalFibonacci(int number);
 
 #endif // FIBONACCI_H
 
