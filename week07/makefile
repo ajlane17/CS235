@@ -9,7 +9,7 @@
 # Time Spent:
 #     Adrain:
 #     Ethan: 7 hours
-#     Kenyon:
+#     Kenyon: 7
 #      Total:
 # Hardest Part:
 #     Adrain:
@@ -20,6 +20,9 @@
 #        that the Node class no longer needed <T> on 
 #        declaration because Node is not part of the list class.
 #     Kenyon:
+#        For me the tuoughest part was tryto figure out how to 
+#        lay out wholeNumber. Once I udnerstood the general
+#        body it became easier
 ###############################################################
 
 ##############################################################
