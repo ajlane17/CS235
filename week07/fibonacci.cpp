@@ -10,9 +10,7 @@
 
 #include <iostream>
 #include "fibonacci.h"   // for fibonacci() prototype
-// #include "C:\Users\Kenyon B\source\repos\ajlane17\cs235\week07\list.h"
 #include "list.h"        // for LIST
-// #include "C:\Users\Kenyon B\source\repos\ajlane17\cs235\week07\wholeNumber.h"
 #include "wholeNumber.h"
 using namespace std;
 

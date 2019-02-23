@@ -41,11 +41,13 @@ class list
       ~list();
 
       list & operator = (const list <T> & rhs)            throw (const char *);
-   
+
+      // standard container functions
       int size() const                                    {return numElements;}
       bool empty() const                                {return pHead == NULL;}
       void clear();
 
+      // list specific functions
       void push_back(const T & t)                         throw (const char *);
       void push_front(const T & t)                        throw (const char *);
       void pop_back();
@@ -56,6 +58,7 @@ class list
       T & back()                                          throw (const char *);
       T back() const                                      throw (const char *);
 
+      // iterators
       class iterator;
       iterator insert(iterator & it, const T & t)         throw (const char *);
       iterator find(const T & t);
@@ -103,7 +106,21 @@ class list <T> :: Node
    // Constructors
    Node() : data(), pNext(NULL), pPrev(NULL) {}
    Node(const T & t) : data(t), pNext(NULL), pPrev(NULL) {}
+   ~Node();
 };
+
+/*****************************************************************************
+ * NODE DESTRUCTOR
+ * Clears the memory after it is no longer needed.
+ *****************************************************************************/
+template <class T>
+list <T> :: Node :: ~Node()
+{
+   pNext = NULL;
+   pPrev = NULL;
+   // No return
+   return;
+}
 
 /**************************************************
  * LIST ITERATOR
@@ -380,10 +397,12 @@ template <class T>
 list <T> & list <T> :: operator = (const list <T> & rhs)
    throw (const char *)
 {
+   // reset lhs
    numElements = 0;
    pHead = NULL;
    pTail = NULL;
 
+   // copy data over
    if (!(rhs.empty()))
    {
       for (const_iterator it = rhs.cbegin(); it != rhs.cend(); it++)
@@ -413,6 +432,7 @@ list <T> :: list(list <T> & rhs) throw (const char *)
 template <class T>
 list <T> :: ~list()
 {
+   clear();
 }
 
 /*****************************************************************************
@@ -423,6 +443,7 @@ template <class T>
 void list <T> :: clear()
 {
    Node * pDelete;
+   // loops through to delete each node
    while (pHead != NULL)
    {
       pDelete = pHead;
@@ -446,11 +467,13 @@ void list <T> :: push_back(const T & t)            throw (const char *)
 {
    Node * pNew = new Node(t);
 
+   // add if previously empty
    if (pTail == NULL && pHead == NULL)
    {
       pHead = pNew;
       pTail = pNew;
    }
+   // add to back
    else 
    {
       pNew->pPrev = pTail;
@@ -470,12 +493,13 @@ template <class T>
 void list <T> :: push_front(const T & t)           throw (const char *)
 {
    Node * pNew = new Node(t);
-
+   // add if previously empty
    if (pHead == NULL)
    {
       pHead = pNew;
       pTail = pNew;
    }
+   //add to front
    else 
    {
       pNew->pNext = pHead;
@@ -590,9 +614,11 @@ typename list <T> :: iterator list <T> ::  find(const T & t)
 template <class T>
 void list <T> :: erase(iterator & it)
 {
+   // stop if not found
    if (it == end())
       return;
 
+   // check placement and remove as needed
    if (it.p->pPrev)
       it.p->pPrev->pNext = it.p->pNext;
    else
@@ -616,7 +642,7 @@ typename list <T> :: iterator list <T> :: insert(iterator & it, const T & t)
    throw (const char *)
 {
    Node * pNew = new Node(t);
-
+   // check placement and insert as needed
    if (it != end())
    {
       pNew->pNext = it.p;

@@ -11,8 +11,8 @@
 #     Adrian: 5 hours
 #      Ethan: 7 hours
 #     Kenyon: 7 hours
-#       pair: 6 hours
-#      Total:
+#       Pair: 6 hours
+#      Total: 37 hours
 # Hardest Part:
 #    Adrian:
 #        The most difficult part for me was in getting the 
