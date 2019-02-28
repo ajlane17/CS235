@@ -15,8 +15,8 @@
  *    Adrian Lane, Ethan Holden, Kenyon Bunker
  *****************************************************************************/
 
-#ifndef LIST_H
-#define LIST_H
+#ifndef BNODE_H
+#define BNODE_H
 
 #include <cassert>  
 #include <ostream>
@@ -47,7 +47,8 @@ class BNode
 
       // Constructors and destructors
       BNode()              { pLeft = NULL; pRight = NULL; pParent = NULL; }
-      BNode(const T & t)   { pLeft = NULL; pRight = NULL; pParent = NULL; }
+      BNode(const T & t)
+                 { pLeft = NULL; pRight = NULL; pParent = NULL; data = t; }
       ~BNode()             { }
 };
 
@@ -114,7 +115,7 @@ void sizeBTree(custom::BNode<T> * t)
 template <class T>
 custom::BNode<T> copyBTree(custom::BNode<T> t)
 {
-   custom::BNode newTree;  //Temp/place holder
+   custom::BNode<T> newTree;  //Temp/place holder
    return newTree;
 }
 
@@ -133,10 +134,10 @@ void deleteBTree(custom::BNode<T> t)
 *
 ***********************************************************************/
 template <class T>
-ostream & operator<<(ostream & out, const BNode<T> & rhs)
+   std:: ostream & operator << (std::ostream & out, const BNode<T> & rhs)
 {
    return out;
 }
 
 }//end custom namespace
-#endif // LIST_H
+#endif // BNODE_H
