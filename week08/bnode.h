@@ -51,15 +51,13 @@ class BNode
       ~BNode()             { }
 };
 
-
-
 /**********************************************************************
 * AddLeft
 * Adds a node to the left of the current node.
 * Version : Template
 ***********************************************************************/
 template <class T>
-void addLeft(T t)
+void addLeft(BNode<T> * pTree, int t)
 {
 
 }
@@ -70,7 +68,7 @@ void addLeft(T t)
 * Version : BNode
 ***********************************************************************/
 template <class T>
-void addLeft(custom::BNode<T> t)
+void addLeft(BNode<T> * pTree, BNode<T> * t)
 {
 
 }
@@ -81,7 +79,7 @@ void addLeft(custom::BNode<T> t)
 * Version: Template
 ***********************************************************************/
 template <class T>
-void addRight(T t)
+void addRight(BNode<T> * pTree, int t)
 {
 
 }
@@ -92,7 +90,7 @@ void addRight(T t)
 * Version : BNode
 ***********************************************************************/
 template <class T>
-void addRight(custom::BNode<T> t)
+void addRight(BNode<T> * pTree, BNode<T> * t)
 {
 
 }
@@ -102,9 +100,9 @@ void addRight(custom::BNode<T> t)
 * determines the size of the binary tree
 ***********************************************************************/
 template <class T>
-void sizeBTree(custom::BNode<T> * t)
+int sizeBTree(BNode<T> * t)
 {
-
+   return 0;
 }
 
 /**********************************************************************
@@ -112,9 +110,9 @@ void sizeBTree(custom::BNode<T> * t)
 * Makes copy of the binary tree
 ***********************************************************************/
 template <class T>
-custom::BNode<T> copyBTree(custom::BNode<T> t)
+BNode<T> copyBTree(BNode<T> * source)
 {
-   custom::BNode newTree;  //Temp/place holder
+   BNode<T> * newTree = new BNode;  //Temp/place holder
    return newTree;
 }
 
@@ -123,14 +121,13 @@ custom::BNode<T> copyBTree(custom::BNode<T> t)
 * Deletes the tree and all its children **sounds aweful**
 ***********************************************************************/
 template <class T>
-void deleteBTree(custom::BNode<T> t)
+void deleteBTree(BNode<T> * t)
 {
 
 }
 
 /**********************************************************************
-*
-*
+* Insertion Operator
 ***********************************************************************/
 template <class T>
 ostream & operator<<(ostream & out, const BNode<T> & rhs)
