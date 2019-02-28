@@ -1,13 +1,19 @@
 ###############################################################
 # Program:
 #     Assignment 08, Binary Tree
-#     Brother XXXXX, CS235
+#     Brother Kirby, CS235
 # Author:
-#     <your name here>
+#     Adrian Lane, Ethan Holden, Kenyon Bunker
 # Summary:
 #     <put a description here>
 # Time:
-#     <how long did it take to complete this program>?
+#     Kenyon:
+#     Adrian:
+#     Ethan:
+# Hardest Part:
+#     Kenyon:
+#     Adrian:
+#     Ethan:
 ###############################################################
 
 ##############################################################
@@ -28,3 +34,5 @@ assignment08.o: bnode.h huffman.h assignment08.cpp
 huffman.o: bnode.h huffman.h huffman.cpp
 	g++ -c huffman.cpp -g -std=c++11
 
+clean: 
+	rm a.out *.tar *.o
