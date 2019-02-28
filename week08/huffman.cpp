@@ -13,7 +13,7 @@
 #include <cassert>         // for ASSERT
 #include <string>          // for STRING: binary representation of codes
 #include "bnode.h"         // for BINARY_NODE class definition
-#include "vector.h"        // for VECTOR container
+//#include "vector.h"        // for VECTOR container
 #include "pair.h"          // for PAIR container
 #include "huffman.h"       // for HUFFMAN() prototype
 
