@@ -37,9 +37,6 @@ void huffman(const string & fileName)
    for (int i = 0; i < data.size(); i++)
       cout << data[i].getFreq() << endl;
    
-
-   
-      
    return;
 }
 
@@ -63,11 +60,19 @@ vector <HuffTree> readFile(const string & fileName)
       if (temp.second != 0)
       {
           data.push_back(temp);
+          std::cout << "displaying vector: ";
+          data.display();
       }
    }
 
    for (int i = 0; i < data.size(); i++)
-      trees.push_back(HuffTree(data[i]));
+   {
+      BNode <pair <string, float>> * newRoot = new BNode <pair <string, float>>;
+      newRoot->data = data[i];
+      std::cout << "newRoot: " << newRoot->data;
+      std::cout << std::endl;
+      trees.push_back(HuffTree(newRoot));
+   }
    
    return trees;
 }
@@ -78,9 +83,9 @@ vector <HuffTree> readFile(const string & fileName)
  * INPUT: BNODE
  * Copies a BNode into the root of the HuffTree
  *************************************************/
-HuffTree :: HuffTree (BNode <pair <string, float>> rhs)
+HuffTree :: HuffTree (BNode <pair <string, float>> * rhs)
 {
-   root = rhs;
+   root = copyBTree(rhs);
 }
 
 /*************************************************
@@ -94,7 +99,7 @@ HuffTree :: HuffTree (const HuffTree first, const HuffTree second)
 {
    pair <string, float> newPair;
    newPair.second = first.getFreq() + second.getFreq();
-   root = BNode <pair <string, float>>(newPair);
-   
-   
+   BNode <pair <string, float>> * newRoot = new BNode <pair <string, float>>;
+   newRoot->data = newPair;
+   root = newRoot;
 }
