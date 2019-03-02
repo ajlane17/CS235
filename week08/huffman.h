@@ -43,5 +43,6 @@ class HuffTree
 
 void huffman(const string & fileName);
 vector <HuffTree> readFile(const string & fileName);
+vector <HuffTree> combineTwo(vector <HuffTree> & data);
 
 #endif // HUFFMAN_h

@@ -11,7 +11,8 @@
 # Time:
 #     Kenyon:
 #     Adrian: 4 hours
-#     Ethan:
+#     Ethan: 4 hours as of 3pm
+#     Paired: 2.5 hours
 # Hardest Part:
 #     Kenyon:
 #     Adrian:

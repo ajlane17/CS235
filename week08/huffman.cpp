@@ -33,6 +33,13 @@ void huffman(const string & fileName)
 {
    vector <HuffTree> data = readFile(fileName);
 
+   while (data.size() > 1)
+   {
+      data = combineTwo(data);
+   }
+
+   cout << data[0].root << endl;
+   
    //for error checking
    for (int i = 0; i < data.size(); i++)
       cout << data[i].getFreq() << endl;
@@ -60,8 +67,6 @@ vector <HuffTree> readFile(const string & fileName)
       if (temp.second != 0)
       {
           data.push_back(temp);
-          std::cout << "displaying vector: ";
-          data.display();
       }
    }
 
@@ -69,12 +74,72 @@ vector <HuffTree> readFile(const string & fileName)
    {
       BNode <pair <string, float>> * newRoot = new BNode <pair <string, float>>;
       newRoot->data = data[i];
-      std::cout << "newRoot: " << newRoot->data;
-      std::cout << std::endl;
       trees.push_back(HuffTree(newRoot));
    }
    
    return trees;
+}
+/*************************************************
+ * COMBINE TWO
+ * Takes the vector and combines the two lowest
+ * frequencies and returns a new updated vector.
+ *************************************************/
+vector <HuffTree> combineTwo(vector <HuffTree> & data)
+{
+   // find the largest frequency in the vector
+   int iMax = 0;
+   for (int i = 1; i < data.size(); i++)
+   {
+      if (data[i].getFreq() > data[iMax].getFreq())
+      {
+         iMax = i;
+      }
+   }
+
+   // start with the two smallest set to the highest frequency to compair
+   int iS = iMax;  // smallest slot
+   int iNS = iMax; // next smallest slot
+
+   // traverse the vector to update the two smallest frequncies
+   for (int i = 0; i < data.size(); i++)
+   {
+      if (data[i].getFreq() < data[iS].getFreq())
+      {
+         iNS = iS;
+         iS = i;
+      }
+      else if (data[i].getFreq() < data[iNS].getFreq())
+      {
+         iNS = i;
+      }
+   }
+
+   // combine the two trees and return a new vector
+   vector <HuffTree> newData;
+   HuffTree newTree(data[iS], data[iNS]);
+   
+   bool firstSlot = true;
+   for (int i = 0; i < data.size() - 1; i++)
+   {
+      // fill in the first slot with the new tree
+      if ((i == iS || i == iNS) && firstSlot)
+      {
+         newData.push_back(newTree);
+         firstSlot = false;
+      }
+      // fill in the second slot with the last tree in the vector
+      else if((i == iS || i == iNS) && !firstSlot)
+      {
+         newData.push_back(data[data.size() - 1]);
+      }
+      // just copy over the other trees to the new vector
+      else
+      {
+         newData.push_back(data[i]);
+      }
+   }
+
+   return newData;
 }
 
 /*************************************************
@@ -98,8 +163,20 @@ HuffTree :: HuffTree (BNode <pair <string, float>> * rhs)
 HuffTree :: HuffTree (const HuffTree first, const HuffTree second)
 {
    pair <string, float> newPair;
+   newPair.first = "---";
    newPair.second = first.getFreq() + second.getFreq();
    BNode <pair <string, float>> * newRoot = new BNode <pair <string, float>>;
    newRoot->data = newPair;
    root = newRoot;
+
+   if (second.getFreq() < first.getFreq())
+   {
+      addLeft(root, second.root);
+      addRight(root, first.root);
+   }
+   else
+   {
+      addLeft(root, first.root);
+      addRight(root, second.root);
+   }
 }
