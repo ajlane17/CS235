@@ -21,7 +21,6 @@
 #include <cassert>  
 #include <ostream>
 #include <iostream>
-using namespace std;
 
  // a little helper macro to write debug code
 #ifdef NDEBUG
@@ -29,8 +28,7 @@ using namespace std;
 #else
 #define Debug(statement) statement
 #endif // !NDEBUG
-namespace custom
-{
+
  /*****************************************************************************
  * BNODE
  * A custom Binary Tree class
@@ -41,9 +39,9 @@ class BNode
    public:
    // Member variables
       T data;
-      BNode * pLeft;
-      BNode * pRight;
-      BNode * pParent;
+      BNode <T> * pLeft;
+      BNode <T> * pRight;
+      BNode <T> * pParent;
 
       // Constructors and destructors
       BNode()              { pLeft = NULL; pRight = NULL; pParent = NULL; }
@@ -53,45 +51,41 @@ class BNode
 };
 
 /**********************************************************************
-* AddLeft
-* Adds a node to the left of the current node.
-* Version : Template
+* ADD LEFT
+* Adds an existing node to the left of the current node.
 ***********************************************************************/
 template <class T>
-void addLeft(BNode<T> * pTree, int t)
+void addLeft(BNode <T> * pNode, BNode <T> * pAdd)
 {
 
 }
 
 /**********************************************************************
-* AddLeft
-* Adds a node to the left of the current node.
-* Version : BNode
+* ADD RIGHT
+* Adds an existing node to the right of the current node.
 ***********************************************************************/
 template <class T>
-void addLeft(BNode<T> * pTree, BNode<T> * t)
+void addRight(BNode <T> * pNode, BNode <T> * pAdd)
 {
 
 }
 
 /**********************************************************************
-* addRight
-* Adds a node to the right of the current node.
-* Version: Template
+* ADD LEFT
+* Allocates and adds a node to the right of the current node.
 ***********************************************************************/
 template <class T>
-void addRight(BNode<T> * pTree, int t)
+void addLeft(BNode <T> * pNode, const T & t) throw (const char *)
 {
 
 }
 
 /**********************************************************************
-* addRight
-* Adds a node to the right of the current node.
-* Version : BNode
+* ADD RIGHT 
+* Allocates and adds a node to the right of the current node.
 ***********************************************************************/
 template <class T>
-void addRight(BNode<T> * pTree, BNode<T> * t)
+void addRight(BNode <T> * pNode, const T & t) throw (const char *)
 {
 
 }
@@ -101,7 +95,7 @@ void addRight(BNode<T> * pTree, BNode<T> * t)
 * determines the size of the binary tree
 ***********************************************************************/
 template <class T>
-int sizeBTree(BNode<T> * t)
+int sizeBTree(const BNode <T> * pRoot)
 {
    return 0;
 }
@@ -111,9 +105,9 @@ int sizeBTree(BNode<T> * t)
 * Makes copy of the binary tree
 ***********************************************************************/
 template <class T>
-BNode<T> copyBTree(BNode<T> * source)
+BNode <T> * copyBTree(const BNode <T> * pSrc) throw (const char *)
 {
-   BNode<T> * newTree = new BNode;  //Temp/place holder
+   BNode <T> * newTree = new BNode <T>;  //Temp/place holder
    return newTree;
 }
 
@@ -122,7 +116,7 @@ BNode<T> copyBTree(BNode<T> * source)
 * Deletes the tree and all its children **sounds aweful**
 ***********************************************************************/
 template <class T>
-void deleteBTree(BNode<T> * t)
+void deleteBTree(BNode <T> * & pNode)
 {
 
 }
@@ -136,5 +130,4 @@ template <class T>
    return out;
 }
 
-}//end custom namespace
 #endif // BNODE_H
