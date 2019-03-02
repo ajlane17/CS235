@@ -127,6 +127,7 @@ void addRight(BNode <T> * pNode, const T & t) throw (const char *)
 template <class T>
 int sizeBTree(const BNode <T> * pRoot)
 {
+   // Recursively iterate through the collection to get the size
    if (pRoot == NULL)
       return 0;
    else
@@ -143,6 +144,7 @@ BNode <T> * copyBTree(const BNode <T> * pSrc) throw (const char *)
    if (pSrc == NULL)
       return NULL;
 
+   // Create a destination tree with the root node's data
    BNode <T> * pDestination;
 
    try
@@ -154,10 +156,14 @@ BNode <T> * copyBTree(const BNode <T> * pSrc) throw (const char *)
       throw "ERROR: Unable to allocate a new buffer for bnode";
    }
 
+   // Recursively copy BTree data using VLR (Pre-Order Traversal)
+
+   // Traverse left nodes, create and assign to new tree
    pDestination->pLeft = copyBTree(pSrc->pLeft);
    if (pDestination->pLeft != NULL)
       pDestination->pLeft->pParent = pDestination;
 
+   // Traverse right nodes, create and assign to new tree
    pDestination->pRight = copyBTree(pSrc->pRight);
    if (pDestination->pRight != NULL)
       pDestination->pRight->pParent = pDestination;
@@ -167,7 +173,7 @@ BNode <T> * copyBTree(const BNode <T> * pSrc) throw (const char *)
 
 /**********************************************************************
 * deleteBTree
-* Deletes the tree and all its children **sounds aweful**
+* Deletes the tree and all its children **sounds awful**
 ***********************************************************************/
 template <class T>
 void deleteBTree(BNode <T> * & pNode)
@@ -175,9 +181,11 @@ void deleteBTree(BNode <T> * & pNode)
    if (pNode == NULL)
       return;
    
+   // Recursively delete all nodes using LRV (Post-Order Traversal)
    deleteBTree(pNode->pLeft);
    deleteBTree(pNode->pRight);
    delete pNode;
+   // After deleting the data, set the pointer to NULL
    pNode = NULL;
 }
 
@@ -190,6 +198,7 @@ std::ostream & operator << (std::ostream & out, const BNode <T> * pHead)
    if (pHead == NULL)
       return out;
 
+   // Recursively display BTree data using VLR (Pre-Order Traversal)
    std::cout << pHead->pLeft;
    out << pHead->data << " ";
    std::cout << pHead->pRight;
