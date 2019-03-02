@@ -44,10 +44,10 @@ class BNode
       BNode <T> * pParent;
 
       // Constructors and destructors
-      BNode()              { pLeft = NULL; pRight = NULL; pParent = NULL; }
+      BNode()      { pLeft = NULL; pRight = NULL; pParent = NULL; data = T(); }
       BNode(const T & t)
-                 { pLeft = NULL; pRight = NULL; pParent = NULL; data = t; }
-      ~BNode()             { }
+                     { pLeft = NULL; pRight = NULL; pParent = NULL; data = t; }
+      ~BNode()    {}
 };
 
 /**********************************************************************
@@ -57,7 +57,10 @@ class BNode
 template <class T>
 void addLeft(BNode <T> * pNode, BNode <T> * pAdd)
 {
-
+   if (pAdd != NULL)
+      pAdd->pParent = pNode;
+   
+   pNode->pLeft = pAdd;
 }
 
 /**********************************************************************
@@ -67,7 +70,10 @@ void addLeft(BNode <T> * pNode, BNode <T> * pAdd)
 template <class T>
 void addRight(BNode <T> * pNode, BNode <T> * pAdd)
 {
-
+   if (pAdd != NULL)
+      pAdd->pParent = pNode;
+   
+   pNode->pRight = pAdd;
 }
 
 /**********************************************************************
@@ -77,7 +83,19 @@ void addRight(BNode <T> * pNode, BNode <T> * pAdd)
 template <class T>
 void addLeft(BNode <T> * pNode, const T & t) throw (const char *)
 {
+   BNode <T> * pAdd;
 
+   try
+   {
+      pAdd = new BNode <T> (t);
+   }
+   catch (std::bad_alloc)
+   {
+      throw "ERROR: Unable to allocate a new buffer for bnode";
+   }
+
+   pAdd->pParent = pNode;
+   pNode->pLeft = pAdd;
 }
 
 /**********************************************************************
@@ -87,7 +105,19 @@ void addLeft(BNode <T> * pNode, const T & t) throw (const char *)
 template <class T>
 void addRight(BNode <T> * pNode, const T & t) throw (const char *)
 {
+   BNode <T> * pAdd;
 
+   try
+   {
+      pAdd = new BNode <T> (t);
+   }
+   catch (std::bad_alloc)
+   {
+      throw "ERROR: Unable to allocate a new buffer for bnode";
+   }
+
+   pAdd->pParent = pNode;
+   pNode->pRight = pAdd;
 }
 
 /**********************************************************************
@@ -97,7 +127,10 @@ void addRight(BNode <T> * pNode, const T & t) throw (const char *)
 template <class T>
 int sizeBTree(const BNode <T> * pRoot)
 {
-   return 0;
+   if (pRoot == NULL)
+      return 0;
+   else
+      return sizeBTree(pRoot->pLeft) + 1 + sizeBTree(pRoot->pRight);
 }
 
 /**********************************************************************
@@ -107,8 +140,29 @@ int sizeBTree(const BNode <T> * pRoot)
 template <class T>
 BNode <T> * copyBTree(const BNode <T> * pSrc) throw (const char *)
 {
-   BNode <T> * newTree = new BNode <T>;  //Temp/place holder
-   return newTree;
+   if (pSrc == NULL)
+      return NULL;
+
+   BNode <T> * pDestination;
+
+   try
+   {
+      pDestination = new BNode <T> (pSrc->data);
+   }
+   catch (std::bad_alloc)
+   {
+      throw "ERROR: Unable to allocate a new buffer for bnode";
+   }
+
+   pDestination->pLeft = copyBTree(pSrc->pLeft);
+   if (pDestination->pLeft != NULL)
+      pDestination->pLeft->pParent = pDestination;
+
+   pDestination->pRight = copyBTree(pSrc->pRight);
+   if (pDestination->pRight != NULL)
+      pDestination->pRight->pParent = pDestination;
+
+   return pDestination;
 }
 
 /**********************************************************************
@@ -118,15 +172,28 @@ BNode <T> * copyBTree(const BNode <T> * pSrc) throw (const char *)
 template <class T>
 void deleteBTree(BNode <T> * & pNode)
 {
-
+   if (pNode == NULL)
+      return;
+   
+   deleteBTree(pNode->pLeft);
+   deleteBTree(pNode->pRight);
+   delete pNode;
+   pNode = NULL;
 }
 
 /**********************************************************************
 * Insertion Operator
 ***********************************************************************/
 template <class T>
-   std:: ostream & operator << (std::ostream & out, const BNode<T> & rhs)
+std::ostream & operator << (std::ostream & out, const BNode <T> * pHead)
 {
+   if (pHead == NULL)
+      return out;
+
+   std::cout << pHead->pLeft;
+   out << pHead->data << " ";
+   std::cout << pHead->pRight;
+
    return out;
 }
 
