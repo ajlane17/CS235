@@ -5,14 +5,21 @@
 # Author:
 #     Adrian Lane, Ethan Holden, Kenyon Bunker
 # Summary:
-#     <put a description here>
+#     This program provides a custom implementation of the 
+#     binary node and supporting functions for basic 
+#     binary node tree operations.
 # Time:
 #     Kenyon:
-#     Adrian:
+#     Adrian: 4 hours
 #     Ethan:
 # Hardest Part:
 #     Kenyon:
 #     Adrian:
+#        The difficulty this week was in working through the
+#        recursive functions. They weren't hard to implement,
+#        but they were hard to understand conceptually. The 
+#        only other tricky part was in realizing I needed to 
+#        pass a pointer by reference for the delete operation.
 #     Ethan:
 ###############################################################
 
