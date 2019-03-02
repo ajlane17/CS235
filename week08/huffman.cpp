@@ -35,7 +35,7 @@ void huffman(const string & fileName)
 
    //for error checking
    for (int i = 0; i < data.size(); i++)
-      cout << data[i].root.data << endl;
+      cout << data[i].getFreq() << endl;
    
 
    
@@ -45,7 +45,7 @@ void huffman(const string & fileName)
 
 /*******************************************
  * READ FILE
- * Reads the file data into a vector of pairs
+ * Reads the file data into a vector of HuffTrees
  *******************************************/
 vector <HuffTree> readFile(const string & fileName)
 {
@@ -90,7 +90,11 @@ HuffTree :: HuffTree (BNode <pair <string, float>> rhs)
  * Copies two HuffTrees into a single one and adds
  * their values together to make a root BNode.
  *************************************************/
-HuffTree :: HuffTree (const HuffTree lhs, const HuffTree rhs)
+HuffTree :: HuffTree (const HuffTree first, const HuffTree second)
 {
-      
+   pair <string, float> newPair;
+   newPair.second = first.getFreq() + second.getFreq();
+   root = BNode <pair <string, float>>(newPair);
+   
+   
 }

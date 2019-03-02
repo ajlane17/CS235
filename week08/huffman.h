@@ -31,10 +31,10 @@ class HuffTree
   public:
    HuffTree() {}
    HuffTree(BNode <pair <string, float>> rhs);
-   HuffTree(const HuffTree lhs, const HuffTree rhs);
+   HuffTree(const HuffTree first, const HuffTree second);
    
-   float getFrequency() { return root.data.second; }
-   float setFrequency(float num) { root.data.second = num; }
+   float getFreq() { return root.data.second; }
+   float setFreq(float num) { root.data.second = num; }
       
    //private:
    BNode <pair <string, float>> root;
