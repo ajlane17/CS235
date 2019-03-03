@@ -48,7 +48,7 @@ void huffman(const string & fileName)
    for (int i = 0; i < data.size(); i++)
    {
       string temp = data[i].first;
-      for (int x = 0; x < matches.size(); i++)
+      for (int x = 0; x < matches.size(); x++)
       {
          string matchString = matches[x].first;
          if (temp == matchString)

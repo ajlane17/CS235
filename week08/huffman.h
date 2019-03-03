@@ -17,7 +17,6 @@
 #include "bnode.h"         // for BINARY_NODE class definition
 #include "vector.h"        // for VECTOR container
 #include "pair.h"          // for PAIR container
-#include "deque.h"
 
 using std::cout;
 using std::cin;
