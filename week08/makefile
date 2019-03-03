@@ -8,10 +8,12 @@
 #     This program provides a custom implementation of the 
 #     binary node and supporting functions for basic 
 #     binary node tree operations.
+#     The second part convers a file of data sets and displays 
+#     their Huffman Code.
 # Time:
 #     Kenyon: 7 hours
 #     Adrian: 4 hours
-#     Ethan: 4 hours as of 3pm
+#     Ethan:  6 hours 
 #     Paired: 8 hours
 # Hardest Part:
 #     Kenyon:
@@ -24,6 +26,11 @@
 #        only other tricky part was in realizing I needed to 
 #        pass a pointer by reference for the delete operation.
 #     Ethan:
+#        My hardest part was figuring out how to set up 
+#        functions so that pointers were passed so that the 
+#        BNode functions could be used properly. Then after 
+#        that, like Adrian, it was hard understanding the 
+#        concept of the recursions so that they worked properly.
 ###############################################################
 
 ##############################################################
