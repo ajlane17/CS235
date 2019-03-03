@@ -9,12 +9,14 @@
 #     binary node and supporting functions for basic 
 #     binary node tree operations.
 # Time:
-#     Kenyon:
+#     Kenyon: 7 hours
 #     Adrian: 4 hours
 #     Ethan: 4 hours as of 3pm
 #     Paired: 8 hours
 # Hardest Part:
 #     Kenyon:
+#        Same as Adrian plus issue doing the stub of copyBTree
+#        could not get the right paramaters.
 #     Adrian:
 #        The difficulty this week was in working through the
 #        recursive functions. They weren't hard to implement,
