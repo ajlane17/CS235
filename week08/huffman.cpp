@@ -40,11 +40,13 @@ void huffman(const string & fileName)
       trees = combineTwo(trees);
    }
 
+   //create objects to store the codes for each value
    string code;
    vector <pair <string, string>> matches;
    findLeafCode(trees[0].root, code, matches);
 
-   
+   // loop through the original data and matches to display
+   //    in order.
    for (int i = 0; i < data.size(); i++)
    {
       string temp = data[i].first;
@@ -170,8 +172,9 @@ vector <HuffTree> combineTwo(vector <HuffTree> & data)
 
 /*************************************************
  * FIND LEAF CODE
- * Takes the root node and the leaf we are searching
- * for and diplays the path to it based on 0's and 1's.
+ * Takes the root node and finds the codes for each
+ * of the values, then stores them in a vector to
+ * access later.
  *************************************************/
 void findLeafCode(const BNode <pair <string, float>> * root,
                   string code, vector <pair <string, string>> & matches)
@@ -180,6 +183,7 @@ void findLeafCode(const BNode <pair <string, float>> * root,
    if (root == NULL)
       return;
 
+   // if it is a leaf then it stores the code in the vector
    if (!root->pLeft && !root->pRight)
    {
       pair <string, string> match;
@@ -189,26 +193,10 @@ void findLeafCode(const BNode <pair <string, float>> * root,
       return;
    }
 
+   // adds the path to the code as each node is traversed.
    findLeafCode(root->pLeft, code + "0", matches);
    findLeafCode(root->pRight, code + "1", matches);
-   /*
-   if (root->data.first == leaf)
-      return true;
-
-   if (findLeafCode(root->pLeft, code, leaf))
-   {
-      code.push_back(0);
-      return true;
-   }
-   if (findLeafCode(root->pRight, code, leaf))
-   {
-      code.push_back(1);
-      return true;
-   }
    
-   code.pop_back();
-   return false;
-   */
 }
 
 /*************************************************
@@ -238,6 +226,7 @@ HuffTree :: HuffTree (const HuffTree first, const HuffTree second)
    newRoot->data = newPair;
    root = newRoot;
 
+   // sets order based on size (left to right)
    if (second.getFreq() < first.getFreq())
    {
       addLeft(root, second.root);
