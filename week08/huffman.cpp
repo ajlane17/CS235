@@ -34,28 +34,31 @@ void huffman(const string & fileName)
    vector <pair <string, float>> data = readFile(fileName);
    vector <HuffTree> trees = convertToHuff(data);
 
+   // combine the trees until there is only one left in the array
    while (trees.size() > 1)
    {
       trees = combineTwo(trees);
    }
 
+   string code;
+   vector <pair <string, string>> matches;
+   findLeafCode(trees[0].root, code, matches);
+
+   
    for (int i = 0; i < data.size(); i++)
    {
-      cout << data[i].first << " = ";
-      findLeafCode(trees[0].root, data[i].first);
-      cout << endl;
+      string temp = data[i].first;
+      for (int x = 0; x < matches.size(); i++)
+      {
+         string matchString = matches[x].first;
+         if (temp == matchString)
+         {
+            cout << matchString << " = "
+                 << matches[x].second << endl;
+         }
+      }
    }
-
-   /*  testing purposes
-   cout << trees[0].root << endl;
-
-   
-   
-   cout << data[0].first << " : ";
-   findLeafCode(trees[0].root, data[0].first);
-   
-   cout << endl;
-   */ 
+      
    return;
 }
 
@@ -170,25 +173,42 @@ vector <HuffTree> combineTwo(vector <HuffTree> & data)
  * Takes the root node and the leaf we are searching
  * for and diplays the path to it based on 0's and 1's.
  *************************************************/
-void findLeafCode(const BNode <pair <string, float>> * root, string leaf)
+void findLeafCode(const BNode <pair <string, float>> * root,
+                  string code, vector <pair <string, string>> & matches)
 {
-   if (root->data.first == leaf)
+
+   if (root == NULL)
       return;
-   else 
+
+   if (!root->pLeft && !root->pRight)
    {
-      if (root->pLeft)
-      {
-         findLeafCode(root->pLeft, leaf);
-         cout << 0;
-      }
-      else if (root->pRight)
-      {
-         findLeafCode(root->pRight, leaf);
-         cout << 1;
-      }
+      pair <string, string> match;
+      match.first = root->data.first;
+      match.second = code;
+      matches.push_back(match);
+      return;
+   }
+
+   findLeafCode(root->pLeft, code + "0", matches);
+   findLeafCode(root->pRight, code + "1", matches);
+   /*
+   if (root->data.first == leaf)
+      return true;
+
+   if (findLeafCode(root->pLeft, code, leaf))
+   {
+      code.push_back(0);
+      return true;
+   }
+   if (findLeafCode(root->pRight, code, leaf))
+   {
+      code.push_back(1);
+      return true;
    }
    
-   return;
+   code.pop_back();
+   return false;
+   */
 }
 
 /*************************************************

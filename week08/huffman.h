@@ -17,6 +17,7 @@
 #include "bnode.h"         // for BINARY_NODE class definition
 #include "vector.h"        // for VECTOR container
 #include "pair.h"          // for PAIR container
+#include "deque.h"
 
 using std::cout;
 using std::cin;
@@ -48,6 +49,6 @@ vector <pair <string, float>> readFile(const string & fileName);
 vector <HuffTree> convertToHuff(const vector <pair <string, float>> data);
 vector <HuffTree> combineTwo(vector <HuffTree> & data);
 void findLeafCode(const BNode <pair <string, float>> * root,
-                          string leaf);
-
+                  string code, vector <pair <string, string>> & matches);
+   
 #endif // HUFFMAN_h
