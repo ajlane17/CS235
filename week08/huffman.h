@@ -26,6 +26,7 @@ using std::string;
 using std::bad_alloc;
 using namespace custom;
 
+// Our Huffman Tree class
 class HuffTree
 {
   public:
@@ -41,8 +42,12 @@ class HuffTree
  
 };
 
+// function prototypes
 void huffman(const string & fileName);
-vector <HuffTree> readFile(const string & fileName);
+vector <pair <string, float>> readFile(const string & fileName);
+vector <HuffTree> convertToHuff(const vector <pair <string, float>> data);
 vector <HuffTree> combineTwo(vector <HuffTree> & data);
+void findLeafCode(const BNode <pair <string, float>> * root,
+                          string leaf);
 
 #endif // HUFFMAN_h

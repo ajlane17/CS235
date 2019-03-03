@@ -31,34 +31,45 @@ using namespace custom;
  *******************************************/
 void huffman(const string & fileName)
 {
-   vector <HuffTree> data = readFile(fileName);
+   vector <pair <string, float>> data = readFile(fileName);
+   vector <HuffTree> trees = convertToHuff(data);
 
-   while (data.size() > 1)
+   while (trees.size() > 1)
    {
-      data = combineTwo(data);
+      trees = combineTwo(trees);
    }
 
-   cout << data[0].root << endl;
-   
-   //for error checking
    for (int i = 0; i < data.size(); i++)
-      cout << data[i].getFreq() << endl;
+   {
+      cout << data[i].first << " = ";
+      findLeafCode(trees[0].root, data[i].first);
+      cout << endl;
+   }
+
+   /*  testing purposes
+   cout << trees[0].root << endl;
+
    
+   
+   cout << data[0].first << " : ";
+   findLeafCode(trees[0].root, data[0].first);
+   
+   cout << endl;
+   */ 
    return;
 }
 
 /*******************************************
  * READ FILE
- * Reads the file data into a vector of HuffTrees
+ * Reads the file data into a vector of pairs
  *******************************************/
-vector <HuffTree> readFile(const string & fileName)
+vector <pair <string, float>> readFile(const string & fileName)
 {
    vector <pair <string, float>> data;
-   vector <HuffTree> trees;
    
    ifstream fin(fileName);
    if (fin.fail())
-      return trees;
+      return data;
 
    while (fin)
    {
@@ -70,6 +81,17 @@ vector <HuffTree> readFile(const string & fileName)
       }
    }
 
+   return data;
+}
+
+/*******************************************
+ * CONVERT TO HUFF
+ * Converts data from pair vector to HuffTree vector
+ *******************************************/
+vector <HuffTree> convertToHuff(const vector <pair <string, float>> data)
+{
+   vector <HuffTree> trees;
+   
    for (int i = 0; i < data.size(); i++)
    {
       BNode <pair <string, float>> * newRoot = new BNode <pair <string, float>>;
@@ -79,6 +101,7 @@ vector <HuffTree> readFile(const string & fileName)
    
    return trees;
 }
+
 /*************************************************
  * COMBINE TWO
  * Takes the vector and combines the two lowest
@@ -140,6 +163,32 @@ vector <HuffTree> combineTwo(vector <HuffTree> & data)
    }
 
    return newData;
+}
+
+/*************************************************
+ * FIND LEAF CODE
+ * Takes the root node and the leaf we are searching
+ * for and diplays the path to it based on 0's and 1's.
+ *************************************************/
+void findLeafCode(const BNode <pair <string, float>> * root, string leaf)
+{
+   if (root->data.first == leaf)
+      return;
+   else 
+   {
+      if (root->pLeft)
+      {
+         findLeafCode(root->pLeft, leaf);
+         cout << 0;
+      }
+      else if (root->pRight)
+      {
+         findLeafCode(root->pRight, leaf);
+         cout << 1;
+      }
+   }
+   
+   return;
 }
 
 /*************************************************
