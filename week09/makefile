@@ -24,3 +24,5 @@ a.out: assignment09.o
 assignment09.o: bst.h assignment09.cpp
 	g++ -c assignment09.cpp -g -std=c++11
 
+clean: 
+	rm a.out *.tar *.o
