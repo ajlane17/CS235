@@ -99,10 +99,10 @@ class BST <T> :: BNode
       bool isRed;
 
       // Constructors and destructors
-      BNode() :pLeft(NULL), pRight(NULL), pParent(NULL), isRed(false),
+      BNode() :pLeft(NULL), pRight(NULL), pParent(NULL), isRed(true),
          data() {}
       BNode(const T & t) :pLeft(NULL), pRight(NULL), pParent(NULL), 
-         isRed(false), data(t) {}
+         isRed(true), data(t) {}
       ~BNode() {}
 
       // Red-Black Balancing helpers
@@ -180,8 +180,8 @@ class BST <T> :: iterator
 
    private:
       stack <BNode *> nodes; // Per the intro
-      //BSTneeds access to the private stack in order to traverse 
-      //the using the iterator.
+      // BST needs access to the private stack in order to traverse 
+      // the using the iterator.
       friend class BST;       
 };
 
@@ -305,7 +305,7 @@ void BST <T> :: copyBinaryTree(const BNode * src, BNode * dest)
    if (src->pLeft != NULL)
    {
       BNode * pLeftTmp = new BNode();
-      pLeftTmp = dest->pLeft;
+      dest->pLeft = pLeftTmp;
       copyBinaryTree(src->pLeft, dest->pLeft);
 
       if (dest->pLeft != NULL)
@@ -313,10 +313,10 @@ void BST <T> :: copyBinaryTree(const BNode * src, BNode * dest)
    }
 
    // Move down the right side
-   if (src->pLeft != NULL)
+   if (src->pRight != NULL)
    {
       BNode * pRightTmp = new BNode();
-      pRightTmp = dest->pRight;
+      dest->pRight = pRightTmp;
       copyBinaryTree(src->pRight, dest->pRight);
 
       if (dest->pRight != NULL)
@@ -333,13 +333,13 @@ BST <T> & BST <T> :: operator = (const BST <T> & rhs) throw (const char *)
    if (rhs.root != NULL)
    {
       // Create a new tree by copying the root data
-      BNode * pNode = new BNode(rhs.root->data);
+      BNode * pNewTree = new BNode();
 
       // Copy the rest of the tree
-      copyBinaryTree(rhs.root, pNode);
+      copyBinaryTree(rhs.root, pNewTree);
 
       // Assign the newly created tree to this object
-      this->root = pNode;
+      this->root = pNewTree;
    }
    
    return *this;
@@ -351,50 +351,91 @@ BST <T> & BST <T> :: operator = (const BST <T> & rhs) throw (const char *)
 template <class T>
 void BST <T> :: insert(const T & t) throw (const char *)
 {
-   BNode * temp = new BNode();
-   temp->data = t;
    //Case 1: No Parent
    if (root == NULL)
    {
-      root = temp;
-
-      //need to set is isRed as false. not sure if this is correct
+      // Create a new BNode and create a new root, root is always black
+      BNode * temp = new BNode(t);
       temp->isRed = false;
+      root = temp;
+      numElements++;
       return;
    }
 
-   //Case 2: Parent is black
-   if (temp->pParent->isRed == false)
+   // Create a traversal node and start at root
+   // Create a node pointer to track current position
+   BNode * pBTree = root;
+   BNode * pCurPos;
+
+   // using <=>, find location for new item
+   while (pBTree != NULL)
    {
-      //insert to left if temp is less than parent
+      // Store the current position prior to NULL
+      // This will be our parent node for assignment
+      pCurPos = pBTree;
 
-      //insert to right if temp is more than parent
-      return;
+      // Compare to determine which direction to go
+      if (pBTree->data >= t)
+      {
+         pBTree = pBTree->pLeft;
+      }
+      else
+      {
+         pBTree = pBTree->pRight; 
+      }
    }
 
-   //Case 3: Parent and aunt are red
-   if (temp->pParent->isRed == true 
-      && temp->pParent->pParent->pRight->isRed == true 
-      || temp->pParent->pParent->pLeft->isRed == true)
+   // Create the node to insert into th tree
+   BNode * pNew = new BNode(t);
+   pNew->pParent = pCurPos;
+
+   // New node goes left
+   if (pCurPos->data >= t)
    {
-      //insert to left if temp is less than parent
-
-      //insert to right if temp is more than parent
-      return;
+      pCurPos->pLeft = pNew;
+      numElements++;
    }
-
-   //Case 4: Parent is red, aunt is black or non existant
-   if (temp->pParent->isRed == false 
-      && temp->pParent->pParent->pRight->isRed == false 
-      || temp->pParent->pParent->pLeft->isRed == false 
-      || temp->pParent->pParent->pRight == NULL 
-      || temp->pParent->pParent->pLeft == NULL) //and aunt is black or NULL)
+   // New node goes right
+   else
    {
-      //insert to left if temp is less than parent
-
-      //insert to right if temp is more than parent
-      return;
+      pCurPos->pRight = pNew;
+      numElements++;
    }
+
+   // new nodes are automatically red when inserted, this is the default property
+
+   // //Case 2: Parent is black
+   // if (temp->pParent->isRed == false)
+   // {
+   //    //insert to left if temp is less than parent
+
+   //    //insert to right if temp is more than parent
+   //    return;
+   // }
+
+   // //Case 3: Parent and aunt are red
+   // if (temp->pParent->isRed == true 
+   //    && temp->pParent->pParent->pRight->isRed == true 
+   //    || temp->pParent->pParent->pLeft->isRed == true)
+   // {
+   //    //insert to left if temp is less than parent
+
+   //    //insert to right if temp is more than parent
+   //    return;
+   // }
+
+   // //Case 4: Parent is red, aunt is black or non existant
+   // if (temp->pParent->isRed == false 
+   //    && temp->pParent->pParent->pRight->isRed == false 
+   //    || temp->pParent->pParent->pLeft->isRed == false 
+   //    || temp->pParent->pParent->pRight == NULL 
+   //    || temp->pParent->pParent->pLeft == NULL) //and aunt is black or NULL)
+   // {
+   //    //insert to left if temp is less than parent
+
+   //    //insert to right if temp is more than parent
+   //    return;
+   // }
 
 }
 
