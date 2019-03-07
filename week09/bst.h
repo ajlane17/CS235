@@ -180,6 +180,9 @@ class BST <T> :: iterator
 
    private:
       stack <BNode *> nodes; // Per the intro
+      //BSTneeds access to the private stack in order to traverse 
+      //the using the iterator.
+      friend class BST;       
 };
 
 /**************************************************
@@ -348,6 +351,44 @@ BST <T> & BST <T> :: operator = (const BST <T> & rhs) throw (const char *)
 template <class T>
 void BST <T> :: insert(const T & t) throw (const char *)
 {
+   BNode * temp = new BNode();
+   temp->data = t;
+   //Case 1: No Parent
+   if (root == NULL)
+   {
+      root = temp;
+
+      //need to set is isRed as false. not sure if this is correct
+      temp->isRed = false;
+      return;
+   }
+
+   //Case 2: Parent is black
+   if (temp->pParent->isRed == false)
+   {
+      //insert to left if temp is less than parent
+
+      //insert to right if temp is more than parent
+      return;
+   }
+
+   //Case 3: Parent and aunt are red
+   if (temp->pParent->isRed == true)//and anut is red. how do I find/define aunt)
+   {
+      //insert to left if temp is less than parent
+
+      //insert to right if temp is more than parent
+      return;
+   }
+
+   //Case 4: Parent is red, aunt is black or non existant
+   if (temp->pParent->isRed == false) //and aunt is black or NULL)
+   {
+      //insert to left if temp is less than parent
+
+      //insert to right if temp is more than parent
+      return;
+   }
 
 }
 
@@ -357,7 +398,58 @@ void BST <T> :: insert(const T & t) throw (const char *)
 template <class T>
 void BST <T> :: erase(BST <T> :: iterator & it)
 {
+   BNode * temp = it.nodes.top();
 
+   //Case 1: No children
+   if (temp->pLeft == NULL && temp->pRight == NULL)
+   {
+      if (temp->pParent != NULL && temp->pParent->pRight == temp)
+      {
+         temp->pParent->pRight = NULL;
+      }
+      if (temp->pParent != NULL && temp->pParent->pLeft == temp)
+      {
+         temp->pParent->pLeft = NULL;
+      }
+      delete temp;
+   }
+
+   //Case 2: One Child
+   //Check left
+   if (temp->pRight == NULL && temp->pLeft != NULL)
+   {
+      temp->pRight->pParent = temp->pParent;
+      if (temp->pParent != NULL && temp->pParent->pRight == temp)
+      {
+         temp->pParent->pRight = temp->pLeft;
+      }
+      if (temp->pParent != NULL && temp->pParent->pLeft == temp)
+      {
+         temp->pParent->pLeft = temp->pLeft;
+      }
+      delete temp;
+   }  
+
+   //Check right
+   if (temp->pLeft == NULL && temp->pRight != NULL)
+   {
+      temp->pRight->pParent = temp->pParent;
+      if (temp->pParent != NULL && temp->pParent->pRight == temp)
+      {
+         temp->pParent->pRight = temp->pRight;
+      }
+      if (temp->pParent != NULL && temp->pParent->pLeft == temp)
+      {
+         temp->pParent->pLeft = temp->pRight;
+      }
+      delete temp;
+   } 
+
+   //Case 3: Two Children
+   if (temp->pLeft != NULL && temp->pRight != NULL)
+   {
+      //TODO: code here
+   }
 }
 
 
