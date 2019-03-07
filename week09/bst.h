@@ -421,7 +421,7 @@ void BST <T> :: erase(BST <T> :: iterator & it)
    }
 
    //Case 2: One Child
-   //Check left
+   //Case 2: One Child: Check left
    if (temp->pRight == NULL && temp->pLeft != NULL)
    {
       temp->pRight->pParent = temp->pParent;
@@ -436,7 +436,7 @@ void BST <T> :: erase(BST <T> :: iterator & it)
       delete temp;
    }  
 
-   //Check right
+   //Case 2: One Child: Check right
    if (temp->pLeft == NULL && temp->pRight != NULL)
    {
       temp->pRight->pParent = temp->pParent;
