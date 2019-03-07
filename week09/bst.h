@@ -373,7 +373,9 @@ void BST <T> :: insert(const T & t) throw (const char *)
    }
 
    //Case 3: Parent and aunt are red
-   if (temp->pParent->isRed == true)//and anut is red. how do I find/define aunt)
+   if (temp->pParent->isRed == true 
+      && temp->pParent->pParent->pRight->isRed == true 
+      || temp->pParent->pParent->pLeft->isRed == true)
    {
       //insert to left if temp is less than parent
 
@@ -382,7 +384,11 @@ void BST <T> :: insert(const T & t) throw (const char *)
    }
 
    //Case 4: Parent is red, aunt is black or non existant
-   if (temp->pParent->isRed == false) //and aunt is black or NULL)
+   if (temp->pParent->isRed == false 
+      && temp->pParent->pParent->pRight->isRed == false 
+      || temp->pParent->pParent->pLeft->isRed == false 
+      || temp->pParent->pParent->pRight == NULL 
+      || temp->pParent->pParent->pLeft == NULL) //and aunt is black or NULL)
    {
       //insert to left if temp is less than parent
 
