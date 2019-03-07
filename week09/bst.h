@@ -79,7 +79,7 @@ class BST
       BNode * root;
       int numElements;
       void deleteNode(BNode * pNode, bool right); // Used for erase(?)
-      void deleteBinaryTree(BNode * pNode);
+      void deleteBinaryTree(BNode * & pNode);
       void copyBinaryTree(const BNode * src, BNode * dest);
 };
 
@@ -131,6 +131,11 @@ class BST <T> :: iterator
       iterator(BNode * p)
       {
          nodes.push(p);
+      }
+      // If a stack is passed, assign it to nodes
+      iterator(stack <BNode *> & nodeStack)
+      {
+         nodes = nodeStack;
       }
       // Copy constructor uses assignment operator
       iterator(const iterator & rhs) { *this = rhs; }
@@ -276,8 +281,8 @@ typename BST <T> :: iterator & BST <T> :: iterator :: operator ++ ()
       return *this;
 
    // if we are the right-child, got to the parent.
-   if (pSave == nodes.top()->pRight)
-      return *this;
+   // if (pSave == nodes.top()->pRight)
+   //    return *this;
 
    // we are the left-child, go up as long as we are the left child!
    while (NULL != nodes.top() && pSave == nodes.top()->pRight)
@@ -340,6 +345,9 @@ BST <T> & BST <T> :: operator = (const BST <T> & rhs) throw (const char *)
 
       // Assign the newly created tree to this object
       this->root = pNewTree;
+
+      // Set the size
+      this->numElements = rhs.numElements;
    }
    
    return *this;
@@ -509,7 +517,9 @@ void BST <T> :: erase(BST <T> :: iterator & it)
 template <class T>
 void BST <T> :: clear()
 {
-
+   deleteBinaryTree(root);
+   root = NULL;
+   numElements = 0;
 }
 
 /**************************************************
@@ -527,7 +537,28 @@ typename BST <T> :: iterator BST <T> :: find(const T & t)
 template <class T>
 typename BST <T> :: iterator BST <T> :: begin()
 {
+   // If the tree is empty, return NULL
+   if (root == NULL)
+      return iterator(NULL);
 
+   // Create a new stack to pop the left nodes onto
+   
+   stack <BNode *> nodeStack;
+
+   // Push a NULL point first to signify the end is reached
+   nodeStack.push(NULL);
+
+   // Start top-down so begin is the left-most bottom node
+   BNode * pBTree = root;
+
+   while (pBTree != NULL)
+   {
+      nodeStack.push(pBTree);
+      pBTree = pBTree->pLeft;
+   }
+
+   // Return an iterator with the complete node path
+   return iterator(nodeStack);
 }
 
 /**************************************************
@@ -545,7 +576,28 @@ typename BST <T> :: iterator BST <T> :: begin() const
 template <class T>
 typename BST <T> :: iterator BST <T> :: rbegin()
 {
+   // If the tree is empty, return NULL
+   if (root == NULL)
+      return iterator(NULL);
 
+   // Create a new stack to pop the right nodes onto
+   
+   stack <BNode *> nodeStack;
+
+   // Push a NULL point first to signify the end is reached
+   nodeStack.push(NULL);
+
+   // Start top-down so begin is the right-most bottom node
+   BNode * pBTree = root;
+
+   while (pBTree != NULL)
+   {
+      nodeStack.push(pBTree);
+      pBTree = pBTree->pRight;
+   }
+
+   // Return an iterator with the complete node path
+   return iterator(nodeStack);
 }
 
 /**************************************************
@@ -555,6 +607,23 @@ template <class T>
 typename BST <T> :: iterator BST <T> :: rbegin() const
 {
 
+}
+
+/**************************************************
+ * BST :: DELETE BINARY TREE
+ * ***********************************************/
+template <class T>
+void BST <T> :: deleteBinaryTree(BNode * & pNode)
+{
+   if (pNode == NULL)
+      return;
+   
+   // Recursively delete all nodes using LRV (Post-Order Traversal)
+   deleteBinaryTree(pNode->pLeft);
+   deleteBinaryTree(pNode->pRight);
+   delete pNode;
+   // After deleting the data, set the pointer to NULL
+   pNode = NULL;
 }
 
 } // namespace custom
