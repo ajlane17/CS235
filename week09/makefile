@@ -1,13 +1,24 @@
 ###############################################################
 # Program:
 #     Assignment 09, Binary Search Tree
-#     Brother XXXXX, CS235
+#     Brother Kirby, CS235
 # Author:
-#     <your name here>
+#     Adrian Lane, Kenyon Bunker, Ethan Holden
 # Summary:
-#     <put a description here>
+#     This program creates a binary search tree that adds data 
+#     in order and then allows the user to find and manipulate 
+#     the data.
 # Time:
-#     <how long did it take to complete this program?>
+#     Adrian:
+#     Kenyon: 6 hours
+#     Ethan: 6 hours
+# Hardest Part:
+#     Adrian:
+#     Kenyon:
+#     Ethan:
+#	The hardest part for me was understanding the logic of 
+#       getting the pointers to rearrange when one was being 
+#       removed from the BST.
 ###############################################################
 
 ##############################################################
