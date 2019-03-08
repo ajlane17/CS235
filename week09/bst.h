@@ -1,9 +1,9 @@
 /***********************************************************************
  * Component:
  *    Assignment 09, Binary Search Tree (BST)
- *    Brother <your instructor name here>, CS 235
+ *    Brother Kirby, CS 235
  * Author:
- *    <your name here>
+ *    Adrian Lane, Kenyon Bunker, Ethan Holden
  * Summary:
  *    Create a binary search tree
  ************************************************************************/
@@ -473,10 +473,10 @@ void BST <T> :: erase(BST <T> :: iterator & it)
    //Case 2: One Child: Check left
    if (temp->pRight == NULL && temp->pLeft != NULL)
    {
-      temp->pRight->pParent = temp->pParent;
+      temp->pLeft->pParent = temp->pParent;
       if (temp->pParent != NULL && temp->pParent->pRight == temp)
       {
-         temp->pParent->pRight = temp->pLeft;
+          temp->pParent->pRight = temp->pLeft;
       }
       if (temp->pParent != NULL && temp->pParent->pLeft == temp)
       {
@@ -503,13 +503,49 @@ void BST <T> :: erase(BST <T> :: iterator & it)
    //Case 3: Two Children
    if (temp->pLeft != NULL && temp->pRight != NULL)
    {
-      //TODO: code here
+      //if no grandchildren, or only right grandchild then right replaces node
+      if ((temp->pRight->pRight == NULL && temp->pRight->pLeft == NULL) ||
+          (temp->pRight->pRight != NULL && temp->pRight->pLeft == NULL))
+      {
+         temp->pRight->pParent = temp->pParent;
+         
+         if (temp->pParent != NULL && temp->pParent->pRight == temp)
+         {
+            temp->pParent->pRight = temp->pRight;
+         }
+         if (temp->pParent != NULL && temp->pParent->pLeft == temp)
+         {
+            temp->pParent->pLeft = temp->pRight;
+         }
+         delete temp;
+      }
+            
+      //if there is a left grandchild, node is replaced by left
+      //   grandchild and it's right child replaces it.
+      else if (temp->pRight->pLeft != NULL)
+      {
+         BNode * leftMin = temp->pRight;
+         while(leftMin->pLeft != NULL)
+         {
+            leftMin = leftMin->pLeft;
+         }
+
+         temp->data = leftMin->data;
+
+         if (leftMin->pRight == NULL)
+         {
+            leftMin->pParent->pLeft = NULL;
+            delete leftMin;
+         }
+         else
+         {
+            leftMin->pRight->pParent = leftMin->pParent;
+            leftMin->pParent->pLeft = leftMin->pRight;
+            delete leftMin;
+         }
+      }
    }
 }
-
-
-
-
 
 /**************************************************
  * BST :: CLEAR
@@ -528,7 +564,28 @@ void BST <T> :: clear()
 template <class T>
 typename BST <T> :: iterator BST <T> :: find(const T & t)
 {
+   BNode * pBTree = root;
 
+   while (pBTree != NULL)
+   {
+      //std::cout << "Start Find Loop\n";
+      if (pBTree->data > t)
+      {
+         //std::cout << "Went Left: ";
+         pBTree = pBTree->pLeft;
+         //std::cout << pBTree->data << std::endl;
+      }
+      else if (pBTree->data < t)
+      {
+         //std::cout << "Went Right: ";
+         pBTree = pBTree->pRight;
+         //std::cout << pBTree->data << std::endl;
+      }
+      else if (pBTree->data == t)
+         return iterator(pBTree);
+   }
+
+   return iterator(NULL);
 }
 
 /**************************************************
@@ -567,7 +624,28 @@ typename BST <T> :: iterator BST <T> :: begin()
 template <class T>
 typename BST <T> :: iterator BST <T> :: begin() const
 {
+   // If the tree is empty, return NULL
+   if (root == NULL)
+      return iterator(NULL);
 
+   // Create a new stack to pop the left nodes onto
+   
+   stack <BNode *> nodeStack;
+
+   // Push a NULL point first to signify the end is reached
+   nodeStack.push(NULL);
+
+   // Start top-down so begin is the left-most bottom node
+   BNode * pBTree = root;
+
+   while (pBTree != NULL)
+   {
+      nodeStack.push(pBTree);
+      pBTree = pBTree->pLeft;
+   }
+
+   // Return an iterator with the complete node path
+   return iterator(nodeStack);
 }
 
 /**************************************************
@@ -601,12 +679,33 @@ typename BST <T> :: iterator BST <T> :: rbegin()
 }
 
 /**************************************************
- * BST :: BEGIN (CONST)
+ * BST :: RBEGIN (CONST)
  * ***********************************************/
 template <class T>
 typename BST <T> :: iterator BST <T> :: rbegin() const
 {
+   // If the tree is empty, return NULL
+   if (root == NULL)
+      return iterator(NULL);
 
+   // Create a new stack to pop the right nodes onto
+   
+   stack <BNode *> nodeStack;
+
+   // Push a NULL point first to signify the end is reached
+   nodeStack.push(NULL);
+
+   // Start top-down so begin is the right-most bottom node
+   BNode * pBTree = root;
+
+   while (pBTree != NULL)
+   {
+      nodeStack.push(pBTree);
+      pBTree = pBTree->pRight;
+   }
+
+   // Return an iterator with the complete node path
+   return iterator(nodeStack);
 }
 
 /**************************************************
