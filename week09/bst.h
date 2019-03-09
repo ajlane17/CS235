@@ -110,6 +110,8 @@ class BST <T> :: BNode
       void findDepth();
       void verifyRedBlack(int depth);
       void balance();
+      void rotateLeft(BNode *&root, BNode *&pTree);
+      void rotateRight(BNode *&root, BNode *&pTree);
 };
 
 /**************************************************
@@ -395,7 +397,7 @@ void BST <T> :: insert(const T & t) throw (const char *)
 
    // Create the node to insert into th tree
    BNode * pNew = new BNode(t);
-   pNew->pParent = pCurPos;
+   pNew->pParent = pCurPos = NULL;
 
    // New node goes left
    if (pCurPos->data >= t)
@@ -723,6 +725,132 @@ void BST <T> :: deleteBinaryTree(BNode * & pNode)
    delete pNode;
    // After deleting the data, set the pointer to NULL
    pNode = NULL;
+}
+
+template <class T>
+void BST<T>::BNode::balance()
+{
+   BNode * temp = new BNode();
+   // new nodes are automatically red when inserted, this is the default property
+   //Case 1: No Parent
+   if (root == NULL)
+   {
+
+   }
+   //Case 2: Parent is black
+    if (temp->pParent->isRed == false)
+    {
+       //Do stuff
+       return;
+    }
+
+    //Case 3: Parent and aunt are red
+    if (temp->pParent->isRed == true 
+       && (temp->pParent->pParent->pRight->isRed == true 
+       || temp->pParent->pParent->pLeft->isRed == true))
+    {
+       //Do stuff
+       return;
+    }
+
+    //Case 4: Parent is red, aunt is black or non existant
+    if (temp->pParent->isRed == false 
+       && (temp->pParent->pParent->pRight->isRed == false 
+       || temp->pParent->pParent->pLeft->isRed == false) 
+       || (temp->pParent->pParent->pRight == NULL 
+       || temp->pParent->pParent->pLeft == NULL)) //and aunt is black or NULL)
+    {
+       return;
+    }
+}
+
+/**************************************************
+ * BST :: ROTATELEFT
+ * ***********************************************/
+template <class T>
+void BST<T>::BNode::rotateLeft(BNode *& root, BNode *& pTree)
+{
+   //Makes copy of BNode
+   BNode *pTree_right = pTree->pRight;
+   pTree->pRight->pParent = pTree;
+
+   //If right's parent is not NULL, take right's and 
+   //   assign parent to equal current node
+   if (pTree->pRight != NULL)
+   {
+      pTree->pRight->pParent = pTree;
+   }
+
+   //Setting right's parent as the nodes parent
+   pTree_right->pParent = pTree->pParent;
+
+   //If current node has no parent. Right node becomes the root
+   if (pTree->pParent == NULL)
+   {
+      root = pTree_right;
+   }
+
+   //If the node is the parent's left node, 
+   //   right is going to equal the main node
+   else if (pTree == pTree->pParent->pLeft)
+   {
+      pTree->pParent->pLeft = pTree_right;
+   }
+
+   //if node is parents right, 
+      //   right is going to euqal the main node
+   else
+   {
+      pTree->pParent->pRight = pTree_right;
+   }
+   
+   //Taking the temp (pTree_right) and making it equal its left
+   pTree_right->pLeft = pTree;
+   //taking the temp and makign it equal the node's parent
+   pTree->pParent = pTree_right;
+}
+
+template <class T>
+void BST<T>::BNode::rotateRight(BNode *& root, BNode *& pTree)
+{
+   //Makes copy of BNode
+   BNode *pTree_left = pTree->pLeft;
+   pTree->pLeft = pTree_left->pRight;
+
+   //If lefts's parent is not NULL, take lefts's and 
+   //   assign parent to equal current node
+   if (pTree->pLeft != NULL)
+   {
+      pTree->pLeft->pParent = pTree;
+   }
+
+   //Setting lefts's parent as the nodes parent
+   pTree_left->pParent = pTree->pParent;
+
+   //If current node has no parent. left node becomes the root
+   if (pTree->pParent == NULL)
+   {
+      root = pTree_left;
+   }
+
+   //If the node is the parent's left node, 
+   //   left is going to equal the main node
+   else if (pTree == pTree->pParent->left)
+   {
+      pTree->pParent->pLeft = pTree_left;
+   }
+
+   //if node is parents right, 
+      //   left is going to euqal the main node
+   else
+   {
+      pTree->pParent->pRight = pTree_left;
+   }
+
+   //Taking the temp (pTree_left) and making it equal its right
+   pTree_left->pRight = pTree;
+   //taking the temp and makign it equal the node's parent
+   pTree->pParent = pTree_left;
 }
 
 } // namespace custom
