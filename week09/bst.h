@@ -109,7 +109,7 @@ class BST <T> :: BNode
       void verifyBTree();
       void findDepth();
       void verifyRedBlack(int depth);
-      void balance();
+      void balance(BNode * temp);
       void rotateLeft(BNode *&root, BNode *&pTree);
       void rotateRight(BNode *&root, BNode *&pTree);
 };
@@ -727,39 +727,76 @@ void BST <T> :: deleteBinaryTree(BNode * & pNode)
    pNode = NULL;
 }
 
+/**************************************************
+ * BST :: BALANCE
+ * ***********************************************/
 template <class T>
-void BST<T>::BNode::balance()
+void BST<T>::BNode::balance(BNode * temp)
 {
-   BNode * temp = new BNode();
-   // new nodes are automatically red when inserted, this is the default property
+   // root has to be black
    //Case 1: No Parent
-   if (root == NULL)
+   if (temp->pParent == NULL)
    {
-
+      temp->isRed = false;
+      return;
    }
+   
    //Case 2: Parent is black
-    if (temp->pParent->isRed == false)
-    {
-       //Do stuff
-       return;
-    }
+   if (temp->pParent->isRed == false)
+   {
+      assert (temp->isRed == true);
+      return;
+   }
 
     //Case 3: Parent and aunt are red
-    if (temp->pParent->isRed == true 
-       && (temp->pParent->pParent->pRight->isRed == true 
-       || temp->pParent->pParent->pLeft->isRed == true))
+   if (temp->pParent->isRed == true                        // parent is red
+       && temp->pParent->pParent->isRed == false    // grandparent is black
+       && (temp->pParent->pParent->pRight->isRed == true     
+           || temp->pParent->pParent->pLeft->isRed == true)) // aunt is red
     {
-       //Do stuff
+       // TO DO: Greatgrandparent red
+
+       // set grandparent to red
+       temp->pParent->pParent->isRed = true;
+       // set parent to black
+       temp->pParent->isRed = false;
+
+       // set aunt to black
+       if (temp->pParent == temp->pParent->pParent->pLeft)
+          temp->pParent->pParent->pRight->isRed = false;
+       if (temp->pParent == temp->pParent->pParent->pRight)
+          temp->pParent->pParent->pLeft->isRed = false;
+       
        return;
     }
 
     //Case 4: Parent is red, aunt is black or non existant
-    if (temp->pParent->isRed == false 
+   if (temp->pParent->isRed == true  // parent is red
+       && temp->pParent->pParent->isRed == false  //grandparent is black
        && (temp->pParent->pParent->pRight->isRed == false 
-       || temp->pParent->pParent->pLeft->isRed == false) 
+           || temp->pParent->pParent->pLeft->isRed == false) // aunt is black
        || (temp->pParent->pParent->pRight == NULL 
-       || temp->pParent->pParent->pLeft == NULL)) //and aunt is black or NULL)
+           || temp->pParent->pParent->pLeft == NULL)) // aunt is NULL)
     {
+       // Case A: Parent is on left with no aunt
+       if(temp == temp->pParent->pLeft // node is parent's left
+          && temp->pParent->pParent->pRight == NULL) // no aunt
+       {
+          rotateRight(root, temp); // grandparent becomes parent's right
+          temp->pParent->isRed = false; // parent turns black
+          temp->pParent->pRight->isRed = true; // sibling turns red
+       }
+             
+       // Case B: Parent is on right with no aunt
+       if(temp == temp->pParent->pRight
+          && temp->pParent->pParent->pLeft == NULL)
+       {
+          leftRotate(root, temp); // grandparent become parent's left
+          temp->pParent->isRed = false; // parent turns black
+          temp->pParent->pLeft->isRed = true; // sibling turns red
+       }
+       
+       
        return;
     }
 }
