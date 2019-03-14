@@ -12,7 +12,7 @@
 #     Adrian: 12 hours
 #     Kenyon: 6 hours
 #     Ethan: 6 hours
-#     Paired 4 hours
+#     Paired 8.5 hours
 # Hardest Part:
 #     Adrian:
 #   The most difficult part was in working through the iterator 
