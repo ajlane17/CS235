@@ -1,13 +1,23 @@
 ###############################################################
 # Program:
 #     Assignment 10, Map
-#     Brother XXXXX, CS 235
+#     Brother Kirby, CS 235
 # Author:
-#     <your name here>
+#     Adrian Lane, Ethan Holden, Kenyon Bunker
 # Summary:
 #     <put a descriptoin here>
 # Time:
-#     <how long did it take to complete this program?>
+#     Adrian:
+#     Ethan: 3 hours
+#     Kenyon:
+#     Paired:
+# Hardest Part:
+#     Adrian:
+#     Ethan: 
+#        The hardest part for me was the understnding the 
+#        pointer logic and the logic in getting insert to sort 
+#        the BST properly using the red black sorting.
+#     Kenyon:
 ###############################################################
 
 ##############################################################
@@ -27,3 +37,6 @@ assignment10.o: pair.h map.h bst.h assignment10.cpp
 
 wordCount.o: map.h bst.h wordCount.h wordCount.cpp 
 	g++ -c wordCount.cpp -g  -std=c++11
+
+clean:
+	rm a.out *.tar *.o
