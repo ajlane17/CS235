@@ -78,9 +78,13 @@ class BST
    private:
       BNode * root;
       int numElements;
-      void deleteNode(BNode * pNode, bool right); // Used for erase(?)
+      void deleteNode(BNode * pNode, bool right); 
       void deleteBinaryTree(BNode * & pNode);
       void copyBinaryTree(const BNode * src, BNode * dest);
+      //Red Black Methods
+      void balance(BNode * temp);
+      void rotateLeft(BNode *& temp);
+      void rotateRight(BNode *& temp);
 };
 
  /*****************************************************************************
@@ -109,9 +113,6 @@ class BST <T> :: BNode
       void verifyBTree();
       void findDepth();
       void verifyRedBlack(int depth);
-      void balance(BNode * temp);
-      void rotateLeft(BNode *& pTree);
-      void rotateRight(BNode *& pTree);
 };
 
 /**************************************************
@@ -411,7 +412,7 @@ void BST <T> :: insert(const T & t) throw (const char *)
       pCurPos->pRight = pNew;
       numElements++;
    }
-   pNew->balance(pNew);
+   balance(pNew);
 }
 
 /**************************************************
@@ -696,53 +697,90 @@ void BST <T> :: deleteBinaryTree(BNode * & pNode)
  * BST :: BALANCE
  * ***********************************************/
 template <class T>
-void BST<T>::BNode::balance(BNode * temp)
+void BST<T>::balance(BNode * temp)
 {
    // root has to be black
-   //Case 1: No Parent
-   if (temp->pParent == NULL)
+   if (temp == root)
    {
       temp->isRed = false;
       return;
    }
 
-   //Case 2: Parent is black
-   if (temp->pParent->isRed == false)
+   BNode * aunt;
+   // work our way through the tree to the root
+   while(temp->pParent != NULL && temp->pParent->isRed == true)
    {
-      temp->isRed == true;
-      return;
-   }
-
-   if (temp->pParent != NULL
-       && temp->pParent->pParent != NULL
-       && temp->pParent->pParent->pRight != NULL
-       && temp->pParent->pParent->pLeft != NULL)
-   {
-   
-      //Case 3: Parent and aunt are red
-      if (temp->pParent->isRed == true    // parent is red
-          && temp->pParent->pParent->isRed == false       // grandparent is black
-          && (temp->pParent->pParent->pRight->isRed == true
-              || temp->pParent->pParent->pLeft->isRed == true))  // aunt is red */
+      BNode * grandparent = temp->pParent->pParent;
+      // if the parent is the left child of the grandparent
+      if (grandparent->pLeft == temp->pParent)
+      {
+         // if a right aunt exists and is red
+         if (grandparent->pRight != NULL)
          {
-            // TO DO: Greatgrandparent red
-            
-            // set grandparent to red
-            if(temp->pParent->pParent->pParent != NULL
-               && temp->pParent->pParent->isRed == true)
-               // set parent to black         
-               temp->pParent->isRed = false;
-
-            // set aunt to black
-            if (temp->pParent->pParent->pLeft != NULL &&
-                temp->pParent->pParent->pRight != NULL)
+            aunt = grandparent->pRight;
+            if (aunt->isRed == true)
             {
-               if (temp->pParent == temp->pParent->pParent->pLeft)
-                  temp->pParent->pParent->pRight->isRed == false;
-               if (temp->pParent == temp->pParent->pParent->pRight)
-                  temp->pParent->pParent->pLeft->isRed == false;
+               // set parent and aunt to black and grandparent to red.
+               temp->pParent->isRed = false;
+               aunt->isRed = false;
+               grandparent->isRed = true;
+               
+               //move up the tree and repeat the while loop
+               temp = grandparent;  
             }
          }
+         // else if there is no right aunt 
+         else
+         {
+            // and the node is the right child
+            if (temp->pParent->pRight == temp)
+            {
+               // move up the tree and rotate left what used to be the parent.
+               temp = temp->pParent;
+               rotateLeft(temp);
+            }
+            // then set parent to black, grandparent to red
+            //    and rotate right grandparent
+            temp->pParent->isRed = false;
+            grandparent->isRed = true;
+            temp = grandparent;
+            rotateRight(temp);
+         }
+      }
+      else
+      {
+         // if a left aunt exists and is red
+         if (grandparent->pLeft != NULL)
+         {
+            aunt = grandparent->pLeft;
+            if (aunt->isRed == true)
+            {
+               // set parent and aunt to black and grandparent to red
+               temp->pParent->isRed = false;
+               aunt->isRed = false;
+               grandparent->isRed = true;
+               // move up the tree and repeat the while loop
+               temp = grandparent;
+            }
+         }
+         else
+         {
+            //if temp is left child, move up and rotate right the parent
+            if (temp->pParent->pLeft == temp)
+            {
+               temp = temp->pParent;
+               rotateRight(temp);
+            }
+            // then set parent to black, grandparent to red
+            //    and rotate right grandparent
+            temp->pParent->isRed = false;
+            grandparent->isRed = true;
+            temp = grandparent;
+            rotateLeft(temp);
+         }
+      }
+      //make sure root stays black
+      root->isRed = false;
    }
 }
 
@@ -750,92 +788,118 @@ void BST<T>::BNode::balance(BNode * temp)
  * BST :: ROTATELEFT
  * ***********************************************/
 template <class T>
-   void BST<T>::BNode::rotateLeft(BNode *& pTree)
+   void BST<T>::rotateLeft(BNode *& temp)
 {
-   //Makes copy of BNode
-   BNode *pTree_right = pTree->pRight;
-   pTree->pRight->pParent = pTree;
-
-   //If right's parent is not NULL, take right's and
-   //   assign parent to equal current node
-   if (pTree->pRight != NULL)
+   // if there is no right check if there is a left of the left
+   //   and rotate so the left becomes the node with the node and
+   //   the grandchild as children
+   if (temp->pRight == NULL)
    {
-      pTree->pRight->pParent = pTree;
+      if (temp->pLeft->pLeft != NULL)
+      {
+         temp->pLeft->pParent = temp->pParent;
+         temp->pLeft->pRight = temp;
+         if (temp == temp->pParent->pLeft)
+            temp->pParent->pLeft = temp->pLeft;
+         else
+            temp->pParent->pRight = temp->pLeft;
+         temp->pLeft = NULL;
+      }
+      // if no left grandchild do nothing
+      return;
    }
-
-   //Setting right's parent as the nodes parent
-   pTree_right->pParent = pTree->pParent;
-
-   //If current node has no parent. Right node becomes the root
-   /*if (pTree->pParent == NULL)
-   {
-      root = pTree_right;
-      }*/
-
-   //If the node is the parent's left node,
-   //   right is going to equal the main node
-   if (pTree == pTree->pParent->pLeft)
-   {
-      pTree->pParent->pLeft = pTree_right;
-   }
-
-   //if node is parents right,
-   //   right is going to euqal the main node
    else
    {
-      pTree->pParent->pRight = pTree_right;
-   }
+      // if right has a left right's left bcomes the node's right
+      BNode * right = temp->pRight;
+      if (right->pLeft != NULL)
+      {
+         temp->pRight = right->pLeft;
+         right->pLeft->pParent = temp;
+      }
+      else
+         // else the node's right is NULL
+         temp->pRight = NULL;
 
-   //Taking the temp (pTree_right) and making it equal its left
-   pTree_right->pLeft = pTree;
-   //taking the temp and makign it equal the node's parent
-   pTree->pParent = pTree_right;
+      // if the node has a parent, set right to be the parent's right
+      //   else if the node is the root, set right as the new root.
+      if (temp->pParent != NULL)
+         right->pParent = temp->pParent;
+      if (temp->pParent == NULL)
+      {
+         root = right;
+         right->pParent = NULL;
+      }
+      else
+      {
+         if (temp == temp->pParent->pLeft)
+            temp->pParent->pLeft = right;
+         else
+            temp->pParent->pRight = right;
+      }
+      // update pointers appropriately
+      right->pLeft = temp;
+      temp->pParent = right;
+   }
 }
 
 /**************************************************
  * BST :: ROTATE RIGHT
  * ***********************************************/
 template <class T>
-void BST<T>::BNode::rotateRight(BNode *& pTree)
+   void BST<T>::rotateRight(BNode *& temp)
 {
-   //Makes copy of BNode
-   BNode *pTree_left = pTree->pLeft;
-   pTree->pLeft = pTree_left->pRight;
-
-   //If lefts's parent is not NULL, take lefts's and
-   //   assign parent to equal current node
-   if (pTree->pLeft != NULL)
+   // if there is no left check if there is a right of the right
+   //   and rotate so the right becomes the node with the node and
+   //   the grandchild as children
+   if (temp->pLeft == NULL)
    {
-      pTree->pLeft->pParent = pTree;
+      if (temp->pRight->pRight != NULL)
+      {
+         temp->pRight->pParent = temp->pParent;
+         temp->pRight->pLeft = temp;
+         if (temp == temp->pParent->pLeft)
+            temp->pParent->pLeft = temp->pRight;
+         else
+            temp->pParent->pRight = temp->pRight;
+         temp->pLeft = NULL;
+      }
+      // if no left grandchild do nothing
+      return;
    }
-
-   //Setting lefts's parent as the nodes parent
-   pTree_left->pParent = pTree->pParent;
-
-   //If current node has no parent. left node becomes the root
-   /*if (pTree->pParent == NULL)
-   {
-      root = pTree_left;
-      }*/
-
-   //If the node is the parent's left node,
-   //   left is going to equal the main node
-   if (pTree == pTree->pParent->pLeft)
-   {
-      pTree->pParent->pLeft = pTree_left;
-   }
-
-   //if node is parents right,
-   //   left is going to euqal the main node
    else
    {
-      pTree->pParent->pRight = pTree_left;
-   }
+      // if left has a left left's right bcomes the node's left
+      BNode * left = temp->pLeft;
+      if (left->pLeft != NULL)
+      {
+         temp->pLeft = left->pRight;
+         left->pLeft->pParent = temp;
+      }
+      // else the node's right is NULL
+      else
+         temp->pLeft = NULL;
 
-   //Taking the temp (pTree_left) and making it equal its right
-   pTree_left->pRight = pTree;
-   //taking the temp and makign it equal the node's parent
-   pTree->pParent = pTree_left;
+      // if the node has a parent, set left to be the parent's left
+      //   else if the node is the root, set left as the new root.
+      if (temp->pParent != NULL)
+         left->pParent = temp->pParent;
+      if (temp->pParent == NULL)
+      {
+         root = left;
+         left->pParent = NULL;
+      }
+      else
+      {
+         if (temp == temp->pParent->pLeft)
+            temp->pParent->pLeft = left;
+         else
+            temp->pParent->pRight = left;
+      }
+      // update pointers appropriately
+      left->pRight = temp;
+      temp->pParent = left;
+   }
 }
 
 } // namespace custom
