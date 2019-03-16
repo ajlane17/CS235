@@ -8,7 +8,7 @@
 #     <put a descriptoin here>
 # Time:
 #     Adrian:
-#     Ethan: 3 hours
+#     Ethan: 7 hours
 #     Kenyon:
 #     Paired:
 # Hardest Part:
