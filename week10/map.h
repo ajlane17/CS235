@@ -82,7 +82,7 @@ class map
 template <class K, class V>
 class map <K, V> ::iterator
 {
-
+   //define here
 };
 
 /*****************************************
@@ -112,6 +112,7 @@ template<class K, class V>
     return *this;
 }
 
+ //The following should not be needed. keeping just in case
  /*****************************************
  * MAP: BEGIN
  *****************************************/
@@ -163,16 +164,16 @@ typename map<K, V> :: iterator map<K, V>::rbegin()
 * Inserts data into the map
 *****************************************/
 template<class K, class V>
-void map<K, V>::insert(const pair<K, V>& input) throw(const char *)
+void map<K, V>::insert(const pair<K, V> & input) throw(const char *)
 {
-   it = bst->find(pair<K, V>);
+   it = bst->find(input);
    if (it != NULL)
    {
-      *it = pair<K, V>;
+      *it = input;
    }
    else
    {
-      bst->insert(pair<K, V>);
+      bst->insert(input);
    }
 }
 
