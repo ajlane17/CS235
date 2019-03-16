@@ -29,15 +29,15 @@ class map
       //Constructors
       map()
       {
-         numElements = 0;
+         bst->size() = 0;
       };
 
       map(const map <K, V> & rhs) throw (const char *)
       {
-         numElements = 0;
+         bst->size() = 0;
          *this = rhs;
       }
-      ~map() {};
+      ~map() { clear(); };
 
       //Operators
       map <K, V> & operator =  (const map <K, V> & rhs)  throw (const char *);
@@ -46,25 +46,25 @@ class map
 
       // Nested iterator class & related functions
       class iterator;
+      iterator it;
+      iterator begin()           { return bst->begin(); }
+      iterator begin() const     { return bst->begin(); }
 
-      iterator begin();
-      iterator begin() const;
+      iterator rbegin()          { return bst->rbegin(); }
+      iterator rbegin() const    { return bst->rbegin(); }
 
-      iterator rbegin();
-      iterator rbegin() const;
+      iterator end()             { return bst->end(); }
+      iterator end() const       { return bst->end();; }
 
-      iterator end() { return iterator(NULL); }
-      iterator end() const { return iterator(NULL); }
+      iterator rend()            { return bst->rend(); }
+      iterator rend() const      { return bst->rend();; }
 
-      iterator rend() { return iterator(NULL); }
-      iterator rend() const { return iterator(NULL); }
-
-      iterator find(const K & k);
+      iterator find(const K & k) { return bst->find(); }
 
       // Standard container functions
-      int size() const { return numElements; }
-      bool empty() const { return numElements == 0; }
-      void clear();
+      int size() const           { return bst->size();   }
+      bool empty() const         { return bst->empty();  }
+      void clear()               { return bst->clear();  }
 
       //map specific functions
       void insert(const pair <K, V> & input) throw (const char *);
@@ -115,7 +115,7 @@ template<class K, class V>
  /*****************************************
  * MAP: BEGIN
  *****************************************/
-template<class K, class V>
+/*template<class K, class V>
 typename map<K, V> :: iterator map<K, V>::begin()
 {
    return iterator();
@@ -124,7 +124,7 @@ typename map<K, V> :: iterator map<K, V>::begin()
 /*****************************************
 * MAP: BEGIN (CONST)
 *****************************************/
-template<class K, class V>
+/*template<class K, class V>
 typename map<K, V> :: iterator map<K, V>::begin() const
 {
    return iterator();
@@ -133,7 +133,7 @@ typename map<K, V> :: iterator map<K, V>::begin() const
 /*****************************************
 * MAP: RBEGIN
 *****************************************/
-template<class K, class V>
+/*template<class K, class V>
 typename map<K, V> :: iterator map<K, V>::rbegin()
 {
    return iterator();
@@ -141,32 +141,22 @@ typename map<K, V> :: iterator map<K, V>::rbegin()
 
 /*****************************************
 * MAP: RBEGIN (CONST)
-*****************************************/
-template<class K, class V>
-typename map<K, V> :: iterator map<K, V>::rbegin() const
-{
-   return iterator();
-}
-
-/*****************************************
-* MAP: FIND
-* Finds data based on a key (k)
-*****************************************/
-template<class K, class V>
-typename map<K, V> :: iterator map<K, V>::find(const K & k)
-{
-   return iterator();
-}
-
-/*****************************************
-* MAP: CLEAR
-* clears the map
-*****************************************/
-template<class K, class V>
-void map<K, V>::clear()
-{
-
-}
+//*****************************************/
+//template<class K, class V>
+//typename map<K, V> :: iterator map<K, V>::rbegin() const
+//{
+//   return iterator();
+//}
+//
+///*****************************************
+//* MAP: FIND
+//* Finds data based on a key (k)
+//*****************************************/
+//template<class K, class V>
+//typename map<K, V> :: iterator map<K, V>::find(const K & k)
+//{
+//   return iterator();
+//}
 
 /*****************************************
 * MAP: INSERT
@@ -175,7 +165,15 @@ void map<K, V>::clear()
 template<class K, class V>
 void map<K, V>::insert(const pair<K, V>& input) throw(const char *)
 {
-
+   it = bst->find(pair<K, V>);
+   if (it != NULL)
+   {
+      *it = pair<K, V>;
+   }
+   else
+   {
+      bst->insert(pair<K, V>);
+   }
 }
 
 /*****************************************
@@ -185,7 +183,15 @@ void map<K, V>::insert(const pair<K, V>& input) throw(const char *)
 template<class K, class V>
 void map<K, V>::insert(const K & k, const V & v) throw(const char *)
 {
-
+   it = bst->find(pair<K, V>);
+   if (it != NULL)
+   {
+      *it = pair<K, V>;
+   }
+   else
+   {
+      bst->insert(pair<K, V>);
+   }
 }
 
 }//end customn
