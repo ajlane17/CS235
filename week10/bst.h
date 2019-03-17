@@ -797,22 +797,22 @@ template <class T>
    if (temp->pRight == NULL)
    {
       return;
-      //if (temp->pLeft == NULL)
-      //{
-      //   return;
-      //}
-      //if (temp->pLeft->pLeft != NULL)
-      //{
-      //   temp->pLeft->pParent = temp->pParent;
-      //   temp->pLeft->pRight = temp;
-      //   if (temp == temp->pParent->pLeft)
-      //      temp->pParent->pLeft = temp->pLeft;
-      //   else
-      //      temp->pParent->pRight = temp->pLeft;
-      //   temp->pLeft = NULL;
-      //}
-      //// if no left grandchild do nothing
-      //return;
+      if (temp->pLeft == NULL)
+      {
+         return;
+      }
+      if (temp->pLeft->pLeft != NULL)
+      {
+         temp->pLeft->pParent = temp->pParent;
+         temp->pLeft->pRight = temp;
+         if (temp == temp->pParent->pLeft)
+            temp->pParent->pLeft = temp->pLeft;
+         else
+            temp->pParent->pRight = temp->pLeft;
+         temp->pLeft = NULL;
+      }
+      // if no left grandchild do nothing
+      return;
    }
    else
    {

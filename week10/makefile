@@ -7,12 +7,17 @@
 # Summary:
 #     Custom Map Program
 # Time:
-#     Adrian:
+#     Adrian: 9 hours
 #     Ethan: 7 hours
 #     Kenyon: 8 hours
-#     Paired:
+#     Paired: 2.5 hours
 # Hardest Part:
 #     Adrian:
+#        Figuring out the "NULL not in scope issue" and then 
+#        trying to figure out how to get around an empty stack 
+#        when using the decrement opperator for the iterator. 
+#        This is why testbed 3 has the extra line of print with 
+#        the error.
 #     Ethan: 
 #        The hardest part for me was the understnding the 
 #        pointer logic and the logic in getting insert to sort 
