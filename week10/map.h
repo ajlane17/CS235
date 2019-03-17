@@ -49,7 +49,7 @@ class map
       iterator rbegin() const    { return bst.rbegin(); }
 
       iterator end()             { return bst.end(); }
-      iterator end() const       { return bst.end();; }
+      iterator end() const       { return bst.end(); }
 
       iterator rend()            { return bst.rend(); }
       iterator rend() const      { return bst.rend(); }
@@ -99,7 +99,6 @@ class map <K, V> ::iterator
   
   private:
    typename BST <pair<K, V>> :: iterator it;
-   friend class map;
 };
 
 /*****************************************

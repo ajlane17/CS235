@@ -11,13 +11,11 @@
 #include "map.h"       // for MAP
 #include "wordCount.h" // for wordCount() prototype
 #include <iostream>
+#include <fstream>
 using std::string;
 using std::ifstream;
-using std::endl;
-using std::cout;
-using std::cin;
 using namespace custom;
-void readFile(map <string, int> & counts, const string & fileName);
+void readFile(map <string, Count> & counts, const string & fileName);
 
 /*****************************************************
  * WORD COUNT
@@ -26,5 +24,47 @@ void readFile(map <string, int> & counts, const string & fileName);
  *****************************************************/
 void wordCount()
 {
+   string fileName;
+   string input = " ";
+   map <string, Count> wordMap;
 
+   // Get the file name and read it into memory
+   std::cout << "What is the filename to be counted? ";
+   std::cin  >> fileName;
+
+   readFile(wordMap, fileName);
+
+   // Prompt for a word to get the count for
+   std::cout << "What word whose frequency is to be found. Type ! when done" << std::endl;
+
+   // The loop happens after the prompt
+   while (input != "!")
+   {
+      std::cout << "> ";
+      std::cin  >> input;
+      std::cout << "\t" << input << " : " << wordMap[input].getCount() << std::endl;
+   }
+}
+
+/*****************************************************
+ * READ FILE
+ * Read the file into a map object
+ *****************************************************/
+void readFile(map <string, Count> & counts, const string & fileName)
+{
+   ifstream fin(fileName);
+   if (fin.fail())
+   {
+      std::cout << "Can't read file: " << fileName << std::endl;
+      return;
+   }
+
+   while (fin)
+   {
+      string word;
+      fin >> word;
+      Count tmp = counts[word];
+      if (tmp.getCount() > 0)
+         tmp.setCount(tmp.getCount() + 1);
+   }
 }

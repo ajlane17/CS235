@@ -12,6 +12,18 @@
 #define WORD_COUNT_H
 #include <string>
 
+class Count
+{
+   public:
+      Count() : count(0)                                 {}
+      Count & operator = (int & rhs) { this->count = rhs; }
+      int getCount() const                { return count; }
+      void setCount(int count)     { this->count = count; }
+   private:
+      int count;
+
+};
+
 /*****************************************************
  * WORD COUNT
  * Prompt the user for a file to read, then prompt the
