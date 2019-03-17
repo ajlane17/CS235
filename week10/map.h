@@ -11,7 +11,6 @@
 #define MAP_H
 
 #include <cassert>
-//#include "C:\Users\Kenyon B\source\repos\ajlane17\cs235\week10\bst.h"
 #include "bst.h"
 #include "pair.h"
 
@@ -20,14 +19,14 @@ namespace custom
 
 /**********************************************************************
 * MAP
-* A customn map class
+* A custom map class
 ***********************************************************************/
 template <class K, class V>
 class map
 {
    public:
       //Constructors
-      map() { bst->size() = 0; };
+      map() : bst() {}
 
       map(const map <K, V> & rhs) throw (const char *)
       {
@@ -37,13 +36,12 @@ class map
 
       //Operators
       map <K, V> & operator =  (const map <K, V> & rhs)  throw (const char *)
-                                 { bst = rhs->bst; return *this; }
-      map <K, V> & operator [] (const K & k)             throw (const char *);
-      map <K, V> & operator [] (const K & k) const       throw (const char *);
+                                 { bst = rhs.bst; return *this; }
+      V & operator [] (const K & k)             throw (const char *);
+      V operator [] (const K & k) const         throw (const char *);
 
       // Nested iterator class & related functions
       class iterator;
-      iterator it;
       iterator begin()           { return bst->begin(); }
       iterator begin() const     { return bst->begin(); }
 
@@ -54,9 +52,14 @@ class map
       iterator end() const       { return bst->end();; }
 
       iterator rend()            { return bst->rend(); }
-      iterator rend() const      { return bst->rend();; }
+      iterator rend() const      { return bst->rend(); }
 
-      iterator find(const K & k) { return bst->find(); }
+      iterator find(const K & k)
+      {
+         pair <K,V> input (k, V());
+         iterator it = bst->find(input);
+         return it;
+      }
 
       // Standard container functions
       int size() const           { return bst->size();   }
@@ -68,7 +71,6 @@ class map
       void insert(const K & k, const V & v) throw (const char *);
 
   private:
-      
       BST <pair<K, V>> * bst;
 };
 
@@ -80,49 +82,51 @@ template <class K, class V>
 class map <K, V> ::iterator
 {
   public:
-   iterator() { }
-   iterator(typename BST <pair<V, K>> :: iterator rhs) { it = rhs; }
-   iterator(const iterator & it) { this->it = it; }
-   iterator & operator = (const iterator & rhs) { it = rhs; }
-   bool operator != (const iterator & rhs) const { return it != rhs; }
-   bool operator == (const iterator & rhs) const { return it == rhs; }
-   V & operator * () { return *it->second; }
-   const V & operator * () { return *it; }
-   iterator & operator ++ () { ++it; }
-   iterator & operator ++ (int postfix) { it++; }
-   iterator & operator -- () { --it; }
-   iterator & operator -- (int postfix) { it--; }
+   // Constructors
+   iterator() : it() { }
+   iterator(typename BST <pair<K, V>> :: iterator it)  { this->it = it; }
+   iterator(const iterator & rhs)                      { (*this) = rhs; }
+
+   // Operators
+   iterator & operator = (const iterator & rhs)          { it = rhs.it; }
+   bool operator != (const iterator & rhs) const { return it != rhs.it; }
+   bool operator == (const iterator & rhs) const { return it == rhs.it; }
+   pair<K, V>  & operator * ()                            { return *it; }
+   iterator & operator ++ ()                                    { ++it; }
+   iterator & operator ++ (int postfix)                         { it++; }
+   iterator & operator -- ()                                    { --it; }
+   iterator & operator -- (int postfix)                         { it--; }
   
   private:
    typename BST <pair<K, V>> :: iterator it;
+   friend class map;
 };
 
 /*****************************************
 * Access Operator
 *****************************************/
 template<class K, class V>
- map <K, V> & map <K, V> :: operator [] (const K & key) throw(const char *)
+ V & map <K, V> :: operator [] (const K & key) throw(const char *)
 {
    pair <K,V> input (key, V{});
-   it = bst->find(input);
-   if (it != NULL)
+   iterator it = bst->find(input);
+   if (it != end())
       return (*it).second;
    else
    {
       bst->insert(input);
-      return bst->find(input).second;
+      return (*bst->find(input)).second;
    }
-   return *this;
 }
 
 /*****************************************
  * Access Operator (CONST)
  *****************************************/
 template<class K, class V>
- map <K, V> & map <K, V> :: operator [] (const K & key) const throw(const char *)
+ V map <K, V> :: operator [] (const K & key) const throw(const char *)
 {
    pair <K, V> input (key, V{});
-   it = bst->find(input);
+   iterator it = bst->find(input);
    if (it != NULL)
       return (*it).second;
    else
@@ -130,7 +134,6 @@ template<class K, class V>
       bst->insert(input);
       return bst->find(input).second;
    }
-   return *this;
 }
 
 /*****************************************
@@ -140,7 +143,7 @@ template<class K, class V>
 template<class K, class V>
 void map<K, V>::insert(const pair<K, V>& input) throw(const char *)
 {
-   it = bst->find(input);
+   iterator it = bst->find(input);
    if (it != NULL)
    {
       *it = input;
@@ -158,7 +161,7 @@ void map<K, V>::insert(const pair<K, V>& input) throw(const char *)
 template<class K, class V>
 void map<K, V>::insert(const K & k, const V & v) throw(const char *)
 {
-   it = bst->find(pair<K, V>(k,v));
+   iterator it = bst->find(pair<K, V>(k,v));
    if (it != NULL)
    {
       *it = pair<K, V>(k,v);

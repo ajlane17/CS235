@@ -16,6 +16,9 @@
 #ifndef STACK_H
 #define STACK_H
 
+#include <cstddef>
+#include <new>
+
 // For debugging purposes
 #ifdef NDEBUG
 #define Debug(statement)
@@ -85,7 +88,7 @@ namespace custom
       {
          data = new T[numCapacity];
       }
-      catch (typename std::bad_alloc)
+      catch (std::bad_alloc)
       {
          throw "ERROR: Unable to allocate a new buffer for stack";
       }
@@ -134,7 +137,7 @@ namespace custom
          {
             pNew = new T[--numElements];
          }
-         catch (typename std::bad_alloc)
+         catch (std::bad_alloc)
          {
             throw "ERROR: Unable to allocate a new buffer for stack";
          }
@@ -189,7 +192,7 @@ namespace custom
       {
          pNew = new T[newCapacity];
       }
-      catch (typename std::bad_alloc)
+      catch (std::bad_alloc)
       {
          throw "ERROR: Unable to allocate a new buffer for stack";
       }

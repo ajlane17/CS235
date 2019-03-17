@@ -11,7 +11,8 @@
 #ifndef BST_H
 #define BST_H
 
-#include <cassert> 
+#include <cassert>
+#include <cstddef> 
 #include "stack.h"
 
 // a little helper macro to write debug code
