@@ -5,11 +5,11 @@
 # Author:
 #     Adrian Lane, Ethan Holden, Kenyon Bunker
 # Summary:
-#     <put a descriptoin here>
+#     Custom Map Program
 # Time:
 #     Adrian:
 #     Ethan: 7 hours
-#     Kenyon:
+#     Kenyon: 8 hours
 #     Paired:
 # Hardest Part:
 #     Adrian:
@@ -18,6 +18,8 @@
 #        pointer logic and the logic in getting insert to sort 
 #        the BST properly using the red black sorting.
 #     Kenyon:
+#        My hardest part was identifying why the program hung 
+#        when opening larger files.
 ###############################################################
 
 ##############################################################
