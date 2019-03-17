@@ -88,14 +88,14 @@ class map <K, V> ::iterator
    iterator(const iterator & rhs)                      { (*this) = rhs; }
 
    // Operators
-   iterator & operator = (const iterator & rhs)          { it = rhs.it; }
-   bool operator != (const iterator & rhs) const { return it != rhs.it; }
-   bool operator == (const iterator & rhs) const { return it == rhs.it; }
-   pair<K, V>  & operator * ()                            { return *it; }
-   iterator & operator ++ ()                                    { ++it; }
-   iterator & operator ++ (int postfix)                         { it++; }
-   iterator & operator -- ()                                    { --it; }
-   iterator & operator -- (int postfix)                         { it--; }
+   iterator & operator = (const iterator & rhs) { it = rhs.it; return *this; }
+   bool operator != (const iterator & rhs) const      { return it != rhs.it; }
+   bool operator == (const iterator & rhs) const      { return it == rhs.it; }
+   pair<K, V>  & operator * ()                                 { return *it; }
+   iterator & operator ++ ()                           { ++it; return *this; }
+   iterator & operator ++ (int postfix)                              { it++; }
+   iterator & operator -- ()                           { --it; return *this; }
+   iterator & operator -- (int postfix)                              { it--; }
   
   private:
    typename BST <pair<K, V>> :: iterator it;

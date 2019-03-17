@@ -377,7 +377,7 @@ void BST <T> :: insert(const T & t) throw (const char *)
    // Create a traversal node and start at root
    // Create a node pointer to track current position
    BNode * pBTree = root;
-   BNode * pCurPos;
+   BNode * pCurPos = NULL;
 
    // using <=>, find location for new item
    while (pBTree != NULL)
@@ -796,18 +796,23 @@ template <class T>
    //   the grandchild as children
    if (temp->pRight == NULL)
    {
-      if (temp->pLeft->pLeft != NULL)
-      {
-         temp->pLeft->pParent = temp->pParent;
-         temp->pLeft->pRight = temp;
-         if (temp == temp->pParent->pLeft)
-            temp->pParent->pLeft = temp->pLeft;
-         else
-            temp->pParent->pRight = temp->pLeft;
-         temp->pLeft = NULL;
-      }
-      // if no left grandchild do nothing
       return;
+      //if (temp->pLeft == NULL)
+      //{
+      //   return;
+      //}
+      //if (temp->pLeft->pLeft != NULL)
+      //{
+      //   temp->pLeft->pParent = temp->pParent;
+      //   temp->pLeft->pRight = temp;
+      //   if (temp == temp->pParent->pLeft)
+      //      temp->pParent->pLeft = temp->pLeft;
+      //   else
+      //      temp->pParent->pRight = temp->pLeft;
+      //   temp->pLeft = NULL;
+      //}
+      //// if no left grandchild do nothing
+      //return;
    }
    else
    {
