@@ -42,7 +42,8 @@ void wordCount()
    {
       std::cout << "> ";
       std::cin  >> input;
-      std::cout << "\t" << input << " : " << wordMap[input].getCount() << std::endl;
+      if (input != "!")
+         std::cout << "\t" << input << " : " << wordMap[input].getCount() << std::endl;
    }
 }
 

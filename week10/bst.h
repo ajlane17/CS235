@@ -413,7 +413,7 @@ void BST <T> :: insert(const T & t) throw (const char *)
       pCurPos->pRight = pNew;
       numElements++;
    }
-   balance(pNew);
+   // balance(pNew);
 }
 
 /**************************************************

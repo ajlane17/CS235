@@ -15,7 +15,7 @@
 class Count
 {
    public:
-      Count() : count(0)                                 {}
+      Count() : count(0)                                         {}
       Count & operator = (Count & rhs)  { this->count =rhs.count; }
       int getCount() const                        { return count; }
       void setCount(int count)             { this->count = count; }
