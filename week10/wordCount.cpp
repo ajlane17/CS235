@@ -63,8 +63,6 @@ void readFile(map <string, Count> & counts, const string & fileName)
    {
       string word;
       fin >> word;
-      Count tmp = counts[word];
-      if (tmp.getCount() > 0)
-         tmp.setCount(tmp.getCount() + 1);
+      (counts[word]).setCount((counts[word]).getCount() + 1);
    }
 }
