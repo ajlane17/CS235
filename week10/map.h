@@ -26,7 +26,7 @@ class map
 {
    public:
       //Constructors
-      map() : bst() {}
+      map() : bst() { }
 
       map(const map <K, V> & rhs) throw (const char *)
       {
@@ -42,36 +42,36 @@ class map
 
       // Nested iterator class & related functions
       class iterator;
-      iterator begin()           { return bst->begin(); }
-      iterator begin() const     { return bst->begin(); }
+      iterator begin()           { return bst.begin(); }
+      iterator begin() const     { return bst.begin(); }
 
-      iterator rbegin()          { return bst->rbegin(); }
-      iterator rbegin() const    { return bst->rbegin(); }
+      iterator rbegin()          { return bst.rbegin(); }
+      iterator rbegin() const    { return bst.rbegin(); }
 
-      iterator end()             { return bst->end(); }
-      iterator end() const       { return bst->end();; }
+      iterator end()             { return bst.end(); }
+      iterator end() const       { return bst.end();; }
 
-      iterator rend()            { return bst->rend(); }
-      iterator rend() const      { return bst->rend(); }
+      iterator rend()            { return bst.rend(); }
+      iterator rend() const      { return bst.rend(); }
 
       iterator find(const K & k)
       {
          pair <K,V> input (k, V());
-         iterator it = bst->find(input);
+         iterator it = bst.find(input);
          return it;
       }
 
       // Standard container functions
-      int size() const           { return bst->size();   }
-      bool empty() const         { return bst->empty();  }
-      void clear()               { return bst->clear();  }
+      int size() const           { return bst.size();   }
+      bool empty() const         { return bst.empty();  }
+      void clear()               { return bst.clear();  }
 
       //map specific functions
       void insert(const pair <K, V> & input) throw (const char *);
       void insert(const K & k, const V & v) throw (const char *);
 
   private:
-      BST <pair<K, V>> * bst;
+      BST <pair<K, V>> bst;
 };
 
 /**************************************************
@@ -109,13 +109,13 @@ template<class K, class V>
  V & map <K, V> :: operator [] (const K & key) throw(const char *)
 {
    pair <K,V> input (key, V{});
-   iterator it = bst->find(input);
+   iterator it = bst.find(input);
    if (it != end())
       return (*it).second;
    else
    {
-      bst->insert(input);
-      return (*bst->find(input)).second;
+      bst.insert(input);
+      return (*bst.find(input)).second;
    }
 }
 
@@ -126,13 +126,13 @@ template<class K, class V>
  V map <K, V> :: operator [] (const K & key) const throw(const char *)
 {
    pair <K, V> input (key, V{});
-   iterator it = bst->find(input);
+   iterator it = bst.find(input);
    if (it != NULL)
       return (*it).second;
    else
    {
-      bst->insert(input);
-      return bst->find(input).second;
+      bst.insert(input);
+      return bst.find(input).second;
    }
 }
 
@@ -143,14 +143,14 @@ template<class K, class V>
 template<class K, class V>
 void map<K, V>::insert(const pair<K, V>& input) throw(const char *)
 {
-   iterator it = bst->find(input);
+   iterator it = bst.find(input);
    if (it != NULL)
    {
       *it = input;
    }
    else
    {
-      bst->insert(input);
+      bst.insert(input);
    }
 }
 
@@ -161,14 +161,14 @@ void map<K, V>::insert(const pair<K, V>& input) throw(const char *)
 template<class K, class V>
 void map<K, V>::insert(const K & k, const V & v) throw(const char *)
 {
-   iterator it = bst->find(pair<K, V>(k,v));
+   iterator it = bst.find(pair<K, V>(k,v));
    if (it != NULL)
    {
       *it = pair<K, V>(k,v);
    }
    else
    {
-      bst->insert(pair<K, V>(k,v));
+      bst.insert(pair<K, V>(k,v));
    }
 }
 
