@@ -3,7 +3,7 @@
  *    Week 11, Sort Bubble
  *    Brother Helfrich, CS 235
  * Author:
- *    <your name>
+ *    Ethan Holden, Adrian Lane, Kenyon Bunker
  * Summary:
  *    This program will implement the Bubble Sort
  ************************************************************************/
@@ -18,6 +18,22 @@
 template <class T>
 void sortBubble(T array[], int num)
 {
+   for(int iPivot = num - 1; iPivot > 0; iPivot--)
+   {
+      bool swapped = false;
+      for(int iCheck = 0; iCheck < iPivot; iCheck++)
+      {
+         if (array[iCheck] > array[iCheck + 1])
+         {
+            T temp = array[iCheck];
+            array[iCheck] = array[iCheck + 1];
+            array[iCheck + 1] = temp;
+            swapped = true;
+         }
+      }
+      if(!swapped)
+         return
+   }
 }
 
 
