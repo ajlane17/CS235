@@ -25,14 +25,12 @@ void sortBubble(T array[], int num)
       {
          if (array[iCheck] > array[iCheck + 1])
          {
-            T temp = array[iCheck];
-            array[iCheck] = array[iCheck + 1];
-            array[iCheck + 1] = temp;
+            std::swap(array[iCheck], array[iCheck + 1]);
             swapped = true;
          }
       }
       if(!swapped)
-         return
+         return;
    }
 }
 
