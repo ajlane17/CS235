@@ -29,14 +29,11 @@ void sortSelection(T array[], int num)
          }
 
       }
+
+      //swap elements
       if (array[iLargest] > array[iPivot])
       {
-         //swap elements
-         T element1 = array[iLargest];
-         T element2 = array[iPivot];
-
-         array[iLargest] = element2;
-         array[iPivot] = element1;
+         std::swap(array[iLargest], array[iPivot]);
       }
    }
 }

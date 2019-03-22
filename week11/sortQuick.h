@@ -42,11 +42,7 @@ void sortQuick(T array[], int num)
       //Swap elements
       if (iUp <= iDown)
       {
-         T element1 = array[iUp++];
-         T element2 = array[iDown--];
-
-         array[iUp++] = element2;
-         array[iDown--] = element1;
+         std::swap(array[iUp++], array[iDown--]);
       }
    }
    sortQuick(array, iUp);
