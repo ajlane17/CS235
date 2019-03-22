@@ -63,11 +63,11 @@ void sortMerge(T array[], int num)
          // from working as it skipped a bunch of numbers, and the operator in the 
          // condition kept me in an infinite loop until I reversed it and removed the
          // negation check.
-         for (iEnd1 = iBegin1; iEnd1 < num && source[iEnd1 + 1] > source[iEnd1]; iEnd1++) {}
+         for (iEnd1 = iBegin1; iEnd1 < num && source[iEnd1 + 1] >= source[iEnd1]; iEnd1++) {}
 
          iBegin2 = iEnd1 + 1;
 
-         for (iEnd2 = iBegin2; iEnd2 < num && source[iEnd2 + 1] > source[iEnd2]; iEnd2++) {}
+         for (iEnd2 = iBegin2; iEnd2 < num && source[iEnd2 + 1] >= source[iEnd2]; iEnd2++) {}
 
          if (iBegin2 < num)
          {
