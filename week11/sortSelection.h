@@ -21,7 +21,7 @@ void sortSelection(T array[], int num)
    for (int iPivot = num - 1; iPivot >= 1; iPivot--)
    {
       int iLargest = 0;
-      for (int iCheck = 1; iCheck < iPivot - 1; iCheck++)
+      for (int iCheck = 1; iCheck <= iPivot - 1; iCheck++)
       {
          if (array[iLargest] <= array[iCheck])
          {
