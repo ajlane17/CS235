@@ -13,6 +13,7 @@
 
 #include "bst.h"
 #include <cassert>
+#include <iostream>
 
 using namespace custom;
 
@@ -25,14 +26,14 @@ void sortBinary(T array[], int num)
 {
    BST <T> bst;
 
-   for (int i = 0; i < num - 1; i++)
+   for (int i = 0; i <= num - 1; i++)
    {
       bst.insert(array[i]);
    }
 
    int i = 0;
    typename BST <T> :: iterator it;
-   for (it = bst.begin(); it == bst.end(); it++)
+   for (it = bst.begin(); it != bst.end(); it++)
    {
       array[i++] = *it;
    }
