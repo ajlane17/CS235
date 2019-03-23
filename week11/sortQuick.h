@@ -18,7 +18,7 @@
 template <class T>
 void sortQuick(T array[], int num)
 {
-   if (num < 1)
+   if (num <= 1)
    {
       return;
    }
