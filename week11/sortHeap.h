@@ -47,7 +47,7 @@ Heap <T> :: Heap(T *inputArray, int inputNum)
    array = inputArray;
    num = inputNum;
    
-   for(int i = (num / 2); i > 0; i--)
+   for(int i = (num / 2); i >= 0; i--)
       percolateDown(i);
 }
 
@@ -83,6 +83,7 @@ void Heap <T> :: percolateDown(int index)
 template <class T>
 void Heap <T> :: sort()
 {
+   num--;
    while (num > 0)
    {
       swap(0, num);
