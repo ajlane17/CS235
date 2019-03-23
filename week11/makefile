@@ -11,7 +11,7 @@
 # Time:
 #     Ethan: 4 hours
 #     Adrian: 7 hours
-#     Kenyon:
+#     Kenyon: 5
 #     Paired: 1 hour
 # Hardest Part:
 #     Ethan:
@@ -26,6 +26,12 @@
 #       end of the stick with that one. I left comments in the code
 #       where I was unable to replicate the pseudocode logic.
 #     Kenyon:
+#       My hardest part was selection sort. in sortSelection. i 
+#       was getting this error: binary '<=': 'T' does not define 
+#       this operator or a conversion to a type acceptable to the 
+#       predefined operator, on this line of code: 
+#       if (array[iLargest] <= array[iCheck].) 
+#       The fix was to add <= operator overlaod to sortValue
 ###############################################################
 
 ##############################################################

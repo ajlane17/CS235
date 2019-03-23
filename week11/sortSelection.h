@@ -34,9 +34,6 @@ void sortSelection(T array[], int num)
       if (array[iLargest] > array[iPivot])
       {
          std::swap(array[iLargest], array[iPivot]);
-         // T tmp = array[iLargest];
-         // array[iLargest] = array[iPivot];
-         // array[iPivot] = tmp;
       }
    }
 }
