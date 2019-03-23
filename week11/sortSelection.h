@@ -18,7 +18,7 @@
 template <class T>
 void sortSelection(T array[], int num)
 {
-   for (int iPivot = num - 1; iPivot < 1; iPivot++)
+   for (int iPivot = num - 1; iPivot >= 1; iPivot--)
    {
       int iLargest = 0;
       for (int iCheck = 1; iCheck < iPivot - 1; iCheck++)
@@ -34,6 +34,9 @@ void sortSelection(T array[], int num)
       if (array[iLargest] > array[iPivot])
       {
          std::swap(array[iLargest], array[iPivot]);
+         // T tmp = array[iLargest];
+         // array[iLargest] = array[iPivot];
+         // array[iPivot] = tmp;
       }
    }
 }
