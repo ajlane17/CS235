@@ -20,8 +20,6 @@ class Heap
 {
   public:
    Heap(T *inputArray, int inputNum);
-   //T getMax()                                   { return array[0]; }
-   //void deleteMax();
    void sort();
          
   private:
@@ -30,9 +28,7 @@ class Heap
 
    void percolateDown(int index);
    void swap(int i1, int i2)
-   {
-      std::swap((array[i1]), (array[i2]));
-   }
+   { std::swap((array[i1]), (array[i2])); }
    
 };
 
@@ -46,7 +42,7 @@ Heap <T> :: Heap(T *inputArray, int inputNum)
 {
    array = inputArray;
    num = inputNum;
-   
+   // heapify the array as soon as it is passed into the class
    for(int i = (num / 2); i >= 0; i--)
       percolateDown(i);
 }
@@ -61,13 +57,17 @@ void Heap <T> :: percolateDown(int index)
    int indexLeft = index * 2;
    int indexRight = indexLeft + 1;
 
+   // make the right the head if it is bigger
    if (indexRight <= num
        && array[indexRight] > array[indexLeft]
        && array[indexRight] > array[index])
    {
       swap(index, indexRight);
+      // then check to see if we need to change things
+      //   further back down because of the swap.
       percolateDown(indexRight);
    }
+   // make the left the head if bigger.
    else if (indexLeft <= num
             && array[indexLeft] > array[index])
    {
@@ -83,9 +83,12 @@ void Heap <T> :: percolateDown(int index)
 template <class T>
 void Heap <T> :: sort()
 {
+   // set num to the last slot
    num--;
+   // sort from biggest to smallest starting at the end
    while (num > 0)
    {
+      // swap the counter item with the hepified head
       swap(0, num);
       num--;
       percolateDown(0);
@@ -100,6 +103,7 @@ void Heap <T> :: sort()
 template <class T>
 void sortHeap(T array[], int num)
 {
+   // create object and sort
    Heap<T> h(array, num);
    h.sort();
 }
