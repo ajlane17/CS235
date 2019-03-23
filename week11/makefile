@@ -10,9 +10,9 @@
 #     Binary Sort, Heap Sort, Merge Sort, and Quick Sort.
 # Time:
 #     Ethan: 4 hours
-#     Adrian:
+#     Adrian: 7 hours
 #     Kenyon:
-#     Paired:
+#     Paired: 1 hour
 # Hardest Part:
 #     Ethan:
 #        THe hardest part was working on the heap sort. I had 
@@ -20,6 +20,11 @@
 #        of using a pointer to change the original array itself. 
 #        But once I got that, it worked great.
 #     Adrian:
+#       I worked on merge sort, and I could not get most of it to
+#       work following the pseudocode, wheras the other algorithms
+#       seemed to work apples to apples. I clearly drew the short
+#       end of the stick with that one. I left comments in the code
+#       where I was unable to replicate the pseudocode logic.
 #     Kenyon:
 ###############################################################
 

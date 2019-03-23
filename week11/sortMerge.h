@@ -3,7 +3,7 @@
  *    Week 11, Sort Merge
  *    Brother Helfrich, CS 235
  * Author:
- *    Adrian Lane
+ *    Ethan Holden, Adrian Lane, Kenyon Bunker
  * Summary:
  *    This program will implement the Merge Sort
  ************************************************************************/

@@ -3,7 +3,7 @@
  *    Week 11, Sort Quick
  *    Brother Helfrich, CS 235
  * Author:
- *    <author>
+ *    Ethan Holden, Adrian Lane, Kenyon Bunker
  * Summary:
  *    This program will implement the Quick Sort
  ************************************************************************/

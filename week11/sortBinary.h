@@ -3,7 +3,7 @@
  *    Week 11, Sort Binary
  *    Brother Helfrich, CS 235
  * Author:
- *    <your name>
+ *    Ethan Holden, Adrian Lane, Kenyon Bunker
  * Summary:
  *    This program will implement the Binary Tree Sort
  ************************************************************************/
