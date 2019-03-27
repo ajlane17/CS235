@@ -10,11 +10,14 @@
 #     Kenyon:
 #     Adrian:
 #     Ethan:
+#        4.5 hours
 #     Paired:
 # Hardest Part:
 #     Kenyon:
 #     Adrian:
 #     Ethan:
+#        The hardest part for me was figuring out how to make 
+#        the derived classes connect properly to the hash class. 
 ###############################################################
 
 ##############################################################
