@@ -14,9 +14,6 @@
 #include <cassert>
 #include "list.h"
 
-namespace custom
-{
-
 /**************************************************
  * HASH
  * A hash table storage that allows quick access to
@@ -29,7 +26,7 @@ class Hash
    // constructors
    Hash(int numBuckets)                              throw (const char *);
    Hash(const Hash & rhs)                            throw (const char *);
-   ~Hash()                                             { delete[] table; }
+   ~Hash()                                             {}// delete[] table; }
 
    // operator overloading
    Hash & operator = (const Hash & rhs)          throw (const char *);
@@ -43,10 +40,10 @@ class Hash
    void erase(T t);
 
    // Hash specific functions
-   virtual int hash(const T & value) = 0;
+   virtual int hash(const T & value)const = 0;
    
   private:
-   list <T> * table;
+   custom::list <T> * table;
    int numElements;
    int numBuckets;
 };
@@ -62,7 +59,7 @@ Hash <T> :: Hash (int numBuckets) throw (const char *)
    numElements = 0;
    try
    {
-      table = new list <T>[numBuckets];
+      table = new custom::list <T>[numBuckets];
    }
    catch (std::bad_alloc)
    {
@@ -77,10 +74,7 @@ Hash <T> :: Hash (int numBuckets) throw (const char *)
 template <class T>
 Hash <T> :: Hash (const Hash <T> & rhs) throw (const char *)
 {
-   if (!rhs.empty());
-   {
-      *this = rhs;
-   }
+   *this = rhs;
 }
 
 /*******************************************
@@ -90,24 +84,23 @@ template <class T>
 Hash <T> & Hash <T> :: operator = (const Hash <T> & rhs)
    throw (const char *)
 {
-   numElements = 0;
-   numBuckets = 0;
-   table = NULL;
-
-   if (!rhs.empty());
+   numElements = rhs.numElements;
+   numBuckets = rhs.numBuckets;
+   
+   try
    {
-      numElements = rhs.numElements;
-      numBuckets = rhs.numBuckets;
-      
-      try
-      {
-         table = rhs.table;
-      }
-      catch (std::bad_alloc)
-      {
-         throw "ERROR: Unable to allocate memory for the hash.";
-      }
+      table = rhs.table;
+      //table = new custom::list <T>[numBuckets];
+      //table = rhs.table;
    }
+   catch (std::bad_alloc)
+   {
+      throw "ERROR: Unable to allocate memory for the hash.";
+   }
+
+//   for (int i = 0; i < size(); i++)
+//      table[i] = rhs.table[i];
+
 }
 
 /*************************************************
@@ -135,7 +128,7 @@ bool Hash <T> :: find(T t)
    // find the hash index
    int i = hash(t);
    // check if the element is at that index
-   return table[i].find(t);
+   return (table[i].find(t) != NULL);
 }
    
 /*************************************************
@@ -154,5 +147,4 @@ void Hash <T> :: erase(T t)
    numElements--;
 }
 
-} // namespace custom
 #endif // HASH_H

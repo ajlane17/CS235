@@ -5,19 +5,22 @@
 # Author:
 #     Kenyon Bunker, Adrian Lane, Ethan Holden
 # Summary:
-#     <put a description here>
+#     A custom class that stores values in a hash table so that 
+#     they can be accessed quickly.
 # Time Spent:
 #     Kenyon:
 #     Adrian:
 #     Ethan:
-#        4.5 hours
+#        6.5 hours
 #     Paired:
 # Hardest Part:
 #     Kenyon:
 #     Adrian:
 #     Ethan:
 #        The hardest part for me was figuring out how to make 
-#        the derived classes connect properly to the hash class. 
+#        the derived classes connect properly to the hash class.
+#        Turns out I was using a custom namespace for the hash.h 
+#        file that was not needed. 
 ###############################################################
 
 ##############################################################
