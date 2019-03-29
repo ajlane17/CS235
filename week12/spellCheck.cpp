@@ -21,4 +21,37 @@ using namespace std;
  ****************************************/
 void spellCheck()
 {
+   prompt();
+}
+
+void prompt()
+{
+   string fileName;
+   
+
+   cout << "What file do you want to check?\n";
+   cin >> fileName;
+   SHash data(100);
+   readFile(data, fileName);
+}
+
+/*****************************************************
+ * READ FILE
+ * Read the file into a map object
+ *****************************************************/
+void readFile(SHash & data, string & fileName)
+{
+   ifstream fin(fileName);
+   if (fin.fail())
+   {
+      std::cout << "Can't read file: " << fileName << std::endl;
+      return;
+   }
+
+   while (!fin.eof())
+   {
+      string word;
+      fin >> word;
+      data.insert(word);
+   }
 }
