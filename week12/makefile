@@ -9,13 +9,17 @@
 #     they can be accessed quickly.
 # Time Spent:
 #     Kenyon:
-#     Adrian:
-#     Ethan:
-#        6.5 hours
-#     Paired:
+#     Adrian: 4 hours
+#     Ethan:  6.5 hours
+#     Paired: 1 hour
 # Hardest Part:
 #     Kenyon:
 #     Adrian:
+#        The most difficult part for me was in testing the hash
+#        and other collections to make sure they were storing 
+#        objects correctly. From there, thinking about how to 
+#        break up the components of spell check was also a little
+#        tricky when trying to avoid tight coupling.
 #     Ethan:
 #        The hardest part for me was figuring out how to make 
 #        the derived classes connect properly to the hash class.
@@ -38,7 +42,7 @@ a.out: assignment12.o spellCheck.o
 assignment12.o: hash.h assignment12.cpp list.h
 	g++ -c assignment12.cpp -g -std=c++11
 
-spellCheck.o: hash.h spellCheck.h spellCheck.cpp
+spellCheck.o: vector.h hash.h spellCheck.h spellCheck.cpp
 	g++ -c spellCheck.cpp -g -std=c++11
 
 clean: 
