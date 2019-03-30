@@ -24,6 +24,7 @@ void spellCheck()
 {
    string spellCheckfileName;
    string dictionaryFileName = "/home/cs235/week12/dictionary.txt";
+   // string dictionaryFileName = "dictionary.txt";
    // We are creating a hash table with 3845 buckets because the 
    // general rule of thumb from the book is to create 1.5 times 
    // the number of buckets than the number of elements to be 
@@ -44,6 +45,7 @@ void spellCheck()
    // Spell check the file
    for (int i = 0; i < spellCheckList.size(); i++)
    {
+      // for word comparisons, ensure word to check is all lowercase
       string tmp = spellCheckList[i];
       transform(tmp.begin(), tmp.end(), tmp.begin(), ::tolower);
       if (!dictionary.find(tmp))
