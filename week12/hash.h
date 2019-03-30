@@ -97,10 +97,6 @@ Hash <T> & Hash <T> :: operator = (const Hash <T> & rhs)
    {
       throw "ERROR: Unable to allocate memory for the hash.";
    }
-
-//   for (int i = 0; i < size(); i++)
-//      table[i] = rhs.table[i];
-
 }
 
 /*************************************************

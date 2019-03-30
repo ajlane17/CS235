@@ -8,12 +8,15 @@
 #     A custom class that stores values in a hash table so that 
 #     they can be accessed quickly.
 # Time Spent:
-#     Kenyon:
+#     Kenyon: 5 hours
 #     Adrian: 4 hours
 #     Ethan:  6.5 hours
 #     Paired: 1 hour
 # Hardest Part:
 #     Kenyon:
+#        The most difficult part for me was figuring out the 
+#        string hash. I understand the math and the concept but 
+#        the syntax was throwing me off.
 #     Adrian:
 #        The most difficult part for me was in testing the hash
 #        and other collections to make sure they were storing 

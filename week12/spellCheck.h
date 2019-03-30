@@ -1,9 +1,9 @@
 /***********************************************************************
  * Module:
  *    Assignment 12, Spell Check
- *    Brother Helfrich, CS 235
+ *    Brother Kirby, CS 235
  * Author:
- *    Br. Helfrich
+ *    Ethan Holden, Adrian Lane, Kenyon Bunker
  * Summary:
  *    This program will implement the spellCheck() function
  ************************************************************************/
