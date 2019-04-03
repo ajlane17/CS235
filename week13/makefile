@@ -29,3 +29,6 @@ graph.o: graph.h set.h vertex.h graph.cpp
 
 maze.o: maze.cpp maze.h vertex.h graph.h
 	g++ -c maze.cpp -g -std=c++11
+
+clean: 
+	rm a.out *.tar *.o
