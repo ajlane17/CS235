@@ -10,6 +10,7 @@
 #include <cassert>
 #include <new>      // required for std::bad_alloc
 #include <cstddef>  // required for NULL
+#include <iostream> // required for DEBUG output
 #include "vertex.h"
 #include "set.h"
 #include "graph.h"
@@ -44,8 +45,8 @@ Graph :: Graph(int numVertices) throw (const char *)
  *************************************************/
 Graph & Graph :: operator = (const Graph & rhs) throw (const char *)
 {
-   // If it's the same object, return
-   if (matrix == rhs.matrix)
+   // If it's the same object or empty, return
+   if (matrix == rhs.matrix || rhs.size() == 0)
       return *this;
 
    // Assign the new capacity
@@ -90,6 +91,9 @@ void Graph :: clear()
 void Graph :: add(const Vertex & v1, const Vertex & v2)
 {
    // grid location [v1, v2] = true
+   int gridPos = getGridPos(v1.index(), v2.index());
+   matrix[gridPos] = true;
+   // std::cout << "set " << v1.index() << "," << v2.index() << " to TRUE" << std::endl;
 }
 
 /**************************************************
@@ -99,6 +103,13 @@ void Graph :: add(const Vertex & v1, const Vertex & v2)
 void Graph :: add(const Vertex & v1, const custom::set <Vertex> & s)
 {
    // grid location [v1, set 0...n] = true
+   int gridPos;
+   for (custom::set <Vertex> :: const_iterator it = s.cbegin(); it != s.cend(); it++)
+   {
+      gridPos = getGridPos(v1.index(), (*it).index());
+      matrix[gridPos] = true;
+      // std::cout << "set " << v1.index() << "," << (*it).index() << " to TRUE" << std::endl;
+   }
 }
 
 /**************************************************
@@ -108,21 +119,40 @@ void Graph :: add(const Vertex & v1, const custom::set <Vertex> & s)
 bool Graph :: isEdge(const Vertex & v1, const Vertex & v2) const
 {
    // Return value in grid location [v1, v2]
-   return true;
+   int gridPos = getGridPos(v1.index(), v2.index());
+   
+   char c;
+   if (matrix[gridPos])
+      c = 'T';
+   else
+      c = 'F';
+   // std::cout << "isEdge: " << v1.index() << "," << v2.index() << " " << c << std::endl;
+   
+   return matrix[gridPos];
 }
 /**************************************************
  * GRAPH :: FIND EDGES
  * Returns a set of connected vertices
  *************************************************/
-custom::set <Vertex> Graph :: findEdges(const Vertex & v)
+custom::set <Vertex> Graph :: findEdges(const Vertex & v) const
 {
    // Return a set of connected vertices
+   Vertex v2;
    custom::set <Vertex> s;
+   for (int i = 0; i < size(); i++)
+   {
+      v2.set(i);
+      if (isEdge(v, v2))
+      {
+         s.insert(v2);
+         // std::cout << "findEdges: Inserted v2:" << v2.index() << ", set size is: " << s.size() << std::endl;
+      }
+   }
    return s;
 }
 
 /**************************************************
- * GRAPH :: IS EDGE
+ * GRAPH :: FIND PATH
  * Returns a set of vertices that connect two
  *************************************************/
 custom::set <Vertex> findPath(const Vertex & v1, const Vertex & v2)
@@ -130,4 +160,15 @@ custom::set <Vertex> findPath(const Vertex & v1, const Vertex & v2)
    // Return a set of the connected vertex between two vertices
    custom::set <Vertex> s;
    return s;
+}
+
+/**************************************************
+ * GRAPH :: GET GRID POS
+ * Returns the matrix array index of the edge
+ *************************************************/
+int Graph :: getGridPos(int row, int col) const
+{
+   int gridPos;
+   gridPos = size() * row + col;
+   return gridPos;
 }

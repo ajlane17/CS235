@@ -458,16 +458,25 @@ int set <T> :: findIndex(const T & t)
 template <class T>
 void set <T> :: insert(const T & t)
 {
+   // std::cout << "SET::INSERT: Function called..." << std::endl;
    // Resize if empty
    if (data == NULL)
    {
       resize(1);
+      // std::cout << "SET::INSERT: resizing to 1, new capacity: " << numCapacity << std::endl;
    }
 
    // Insert Element if not found
    int iInsert = findIndex(t);
-   if (data[iInsert] != t)
+   // char c;
+   // if (data[iInsert] == t || iInsert == 0)
+   //    c = 'T';
+   // else
+   //    c = 'F';
+   // std::cout << "SET::INSERT: findIndex returned: " << iInsert << ", t == " << c << std::endl;
+   if (data[iInsert] != t || iInsert == 0) // modified to check for 0, this could break stuff
    {
+      // std::cout << "SET::INSERT: element not found, inserting..." << std::endl;
       resize(numCapacity + 1);
       for (int i = numElements; i >= iInsert; i--)
       {

@@ -45,13 +45,14 @@ class Graph
       void add(const Vertex & v1, const Vertex & v2);
       void add(const Vertex & v1, const custom::set <Vertex> & s);
       bool isEdge(const Vertex & v1,const Vertex & v2) const;
-      custom::set <Vertex> findEdges(const Vertex & v);
+      custom::set <Vertex> findEdges(const Vertex & v) const;
       custom::set <Vertex> findPath(const Vertex & v1, const Vertex & v2);
 
 
    private:
       bool * matrix;
       int numVertices;
+      int getGridPos(int row, int col) const;
 };
 
 #endif // GRAPH_h

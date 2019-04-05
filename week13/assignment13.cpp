@@ -200,6 +200,7 @@ void testQuery()
    {
       // read the verticies from a file
       Graph g1(readMaze("/home/cs235/week13/maze5x5.txt"));
+      // Graph g1(readMaze("maze5x5.txt"));
 
       // copy the graph. Note that we need to ge the size from g1
       Graph g2(g1.size());
@@ -246,6 +247,7 @@ void testFindAll()
          // read the class dependencies from a file
          // CS124 CS165 CIT225 ECEN160 |
          ifstream fin("/home/cs235/week13/cs.txt");
+         // ifstream fin("cs.txt");
          assert(fin.good());
          while (fin >> vFrom)  // read the first vertex, the class
          {

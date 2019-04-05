@@ -21,7 +21,7 @@ a.out: assignment13.o graph.o maze.o
 #      graph.o            : the graph code
 #      maze.o             : the maze reading and solving code
 ##############################################################
-assignment13.o: graph.h vertex.h assignment13.cpp
+assignment13.o: graph.h vertex.h set.h assignment13.cpp
 	g++ -c assignment13.cpp -g -std=c++11
 
 graph.o: graph.h set.h vertex.h graph.cpp
