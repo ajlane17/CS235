@@ -96,7 +96,6 @@ void Graph :: add(const Vertex & v1, const Vertex & v2)
    // grid location [v1, v2] = true
    int gridPos = getGridPos(v1.index(), v2.index());
    matrix[gridPos] = true;
-   // std::cout << "set " << v1.index() << "," << v2.index() << " to TRUE" << std::endl;
 }
 
 /**************************************************
@@ -111,7 +110,6 @@ void Graph :: add(const Vertex & v1, const custom::set <Vertex> & s)
    {
       gridPos = getGridPos(v1.index(), (*it).index());
       matrix[gridPos] = true;
-      // std::cout << "set " << v1.index() << "," << (*it).index() << " to TRUE" << std::endl;
    }
 }
 
@@ -129,7 +127,6 @@ bool Graph :: isEdge(const Vertex & v1, const Vertex & v2) const
       c = 'T';
    else
       c = 'F';
-   // std::cout << "isEdge: " << v1.index() << "," << v2.index() << " " << c << std::endl;
    
    return matrix[gridPos];
 }
@@ -148,7 +145,6 @@ custom::set <Vertex> Graph :: findEdges(const Vertex & v) const
       if (isEdge(v, v2))
       {
          s.insert(v2);
-         // std::cout << "findEdges: Inserted v2:" << v2.index() << ", set size is: " << s.size() << std::endl;
       }
    }
    return s;

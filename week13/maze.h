@@ -21,6 +21,6 @@ void solveMaze();
 Graph readMaze(const char * fileName);
 
 // display a maze on the screen
-void drawMaze(const Graph & g, const custom :: vector <Vertex> & path);
+void drawMaze(const Graph & g, bool empty, const custom :: vector <Vertex> & path);
 
 #endif // MAZE_H

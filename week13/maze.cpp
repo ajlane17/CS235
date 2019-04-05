@@ -4,6 +4,7 @@
  *    Brother Helfrich, CS 235
  * Author:
  *    Br. Helfrich
+ *    Adrian Lane, Ethan Holden, Kenyon Bunker
  * Summary:
  *    Draw and solve a maze
  ************************************************************************/
@@ -32,7 +33,7 @@ using custom::vector;
  * Draw all the horizontal tunnels on a given row
  *  Author: Br. Helfrich
  *********************************************/
-void drawMazeRow(const Graph & g, int row, set <CVertex> & s)
+void drawMazeRow(const Graph & g, int row, set <CVertex> & s, bool empty)
 {
    const char * space = NULL;
    
@@ -49,7 +50,10 @@ void drawMazeRow(const Graph & g, int row, set <CVertex> & s)
       // set the position
       vFrom.set(col, row);
       vTo.set(col - 1, row);
-      space = (s.end() == s.find(vTo) ? "  " : "##");
+      if (!empty)
+         space = (s.end() == s.find(vTo) ? "  " : "##");
+      else
+         space = "  ";
       
       // draw
       if (g.isEdge(vFrom, vTo) || g.isEdge(vTo, vFrom))
@@ -60,7 +64,10 @@ void drawMazeRow(const Graph & g, int row, set <CVertex> & s)
 
    // draw the end of row marker
    vTo.set( vFrom.getMaxCol() - 1, row);
+   if (!empty)
    space = (s.end() == s.find(vTo) ? "  " : "##");
+   else
+      space = "  ";
    cout << space << "|\n";
 }
 
@@ -104,7 +111,7 @@ void drawMazeColumn(const Graph & g, int row, const set <CVertex> & s)
  *    path  - the path from the upper left corner to the lower right
  * Author: Br. Helfrich
  ***********************************************/
-void drawMaze(const Graph & g, const vector <Vertex> & path)
+void drawMaze(const Graph & g, bool empty, const vector <Vertex> & path)
 {
    CVertex v;
 
@@ -112,7 +119,7 @@ void drawMaze(const Graph & g, const vector <Vertex> & path)
    set <CVertex> s;
    for (int i = 0; i < path.size(); i++)
       s.insert((CVertex)path[i]);
-
+      
    // draw the top border
    cout << "+  ";
    for (int c = 1; c < v.getMaxCol(); c++)
@@ -122,12 +129,12 @@ void drawMaze(const Graph & g, const vector <Vertex> & path)
    // draw a horizontal row
    for (int row = 0; row < v.getMaxRow() - 1; row++)
    {
-      drawMazeRow(g, row, s);
+      drawMazeRow(g, row, s, empty);
       drawMazeColumn(g, row, s);
    }
 
    // draw the last row
-   drawMazeRow(g, v.getMaxRow() - 1, s);
+   drawMazeRow(g, v.getMaxRow() - 1, s, empty);
 
    // draw the bottom border
    for (int c = 0; c < v.getMaxCol() - 1; c++)
@@ -176,7 +183,32 @@ Graph readMaze(const char * fileName)
  *****************************************/
 void solveMaze()
 {
-
    // your code goes here.
+
+   // prompt for the filename
+   string filename;
+   cout << "What is the filename? ";
+   cin  >> filename;
+
+   // read the file contents into the graph
+   Graph maze = readMaze(filename.c_str());
+
+   // find the shortest path from the start to finish
+   //    using the findPath method
+   vector <Vertex> path = maze.findPath(0, maze.size()-1);
+
+   // display the unsolved maze
+   drawMaze(maze, true, path);
+
+   cout << "Press any key to solve the maze.\n";
+
+   // grab the random text that we won't do anything with
+   //    I figured we could just reuse filename since we are
+   //    done with it anyways
+   cin  >> filename;
+      
+   // display the solved maze
+   drawMaze(maze, false, path);
+   
 }
 

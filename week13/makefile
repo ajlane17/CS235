@@ -1,11 +1,31 @@
 ###############################################################
 # Program:
 #     Assignment 13, Graph
-#     Brother XXXXX, CS235
+#     Brother Kirby, CS235
 # Author:
-#     <your name here>
+#     Adrian Lane, Kenyon Bunker, Ethan Holden
 # Summary:
-#     <put a description here>
+#     This is a program that stores a custom graph ADT. This 
+#     graph will store the connections that each element within 
+#     the graph have to one another. THe second part is that 
+#     which takes a maze from a file and first displays a 
+#     pictoral representation of the maze and then solves it by 
+#     showing where the shortest path from start to finish is.
+# Time Spent:
+#     Adrian:
+#     Kenyon:
+#     Ethan: 4 hours
+#     Paired:
+# Hardest Part:
+#     Adrian:
+#     
+#     Kenyon:
+#     
+#     Ethan:
+#     	The hardest part for me was trying to figure out how 
+#     	to get the display graph functions to show only a 
+#     	blank graph. I ended up having to modify the display 
+#     	functions to do so.
 ###############################################################
 
 ##############################################################
