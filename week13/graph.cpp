@@ -14,7 +14,9 @@
 #include "vertex.h"
 #include "set.h"
 #include "graph.h"
-
+#include "stack.h"
+#include "list.h"
+using namespace custom;
 /**************************************************
  * GRAPH :: NON-DEFAULT CONSTRUCTOR
  * Creates a graph of specified size
@@ -155,11 +157,63 @@ custom::set <Vertex> Graph :: findEdges(const Vertex & v) const
  * GRAPH :: FIND PATH
  * Returns a set of vertices that connect two
  *************************************************/
-custom::set <Vertex> findPath(const Vertex & v1, const Vertex & v2)
+custom::set<Vertex> Graph::findPath(const Vertex & source, const Vertex & destination)
 {
-   // Return a set of the connected vertex between two vertices
-   custom::set <Vertex> s;
-   return s;
+   int distance = 0;
+   custom::list <Vertex> toVisit;
+
+   //Path between connected vertex(s)
+   custom::set <Vertex> path;
+
+
+   int *distances = new int[size()];
+   Vertex *predecessor = new Vertex[size()];
+
+   toVisit.push_back(source);
+
+   for (int i = 0; i < size(); i++)
+   {
+      distances[i] = -1;
+   }
+
+   while (!toVisit.empty() && distances[destination] == -1)
+   {
+      Vertex v = toVisit.front();
+      toVisit.pop_front();
+
+      if (distances[v] > distance)
+      {
+         distance++;
+      }
+
+      custom::set <Vertex> s = findEdges(v);
+
+      custom::set <Vertex> ::const_iterator it;
+      for (it = s.cbegin(); it < s.cend(); it++)
+      {
+         if (distances[it] = -1)
+         {
+            distances[it] = distance + 1;
+            predecessor[it] = v;
+            toVisit.push_back(*it);
+            distance++;
+         }
+      }
+   }
+
+   if (distances[destination] == -1)
+   {
+      return path; //TODO: insert error
+   }
+
+   path.insert(destination);
+
+   for (int i = 1; i < distance; i++)
+   {
+      path.insert(predecessor[path[i - 1]]);
+   }
+   // Return a set of the connected vertex (path) between two vertices
+   return path;
 }
 
 /**************************************************
