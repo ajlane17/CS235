@@ -14,6 +14,7 @@
 
 #include "vertex.h"
 #include "set.h"
+#include "vector.h"
 
 // a little helper macro to write debug code
 #ifdef NDEBUG
@@ -46,7 +47,7 @@ class Graph
       void add(const Vertex & v1, const custom::set <Vertex> & s);
       bool isEdge(const Vertex & v1,const Vertex & v2) const;
       custom::set <Vertex> findEdges(const Vertex & v) const;
-      custom::set <Vertex> findPath(const Vertex & source, const Vertex & destination);
+      custom::vector <Vertex> findPath(const Vertex & v1, const Vertex & v2);
 
 
    private:

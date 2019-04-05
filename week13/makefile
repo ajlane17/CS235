@@ -24,7 +24,7 @@ a.out: assignment13.o graph.o maze.o
 assignment13.o: graph.h vertex.h set.h assignment13.cpp
 	g++ -c assignment13.cpp -g -std=c++11
 
-graph.o: graph.h set.h vertex.h graph.cpp
+graph.o: graph.h set.h vector.h vertex.h graph.cpp
 	g++ -c graph.cpp -g -std=c++11
 
 maze.o: maze.cpp maze.h vertex.h graph.h

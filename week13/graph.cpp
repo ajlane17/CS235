@@ -15,7 +15,8 @@
 #include "set.h"
 #include "graph.h"
 #include "stack.h"
-#include "list.h"
+#include "queue.h"
+#include "vector.h"
 using namespace custom;
 /**************************************************
  * GRAPH :: NON-DEFAULT CONSTRUCTOR
@@ -157,62 +158,67 @@ custom::set <Vertex> Graph :: findEdges(const Vertex & v) const
  * GRAPH :: FIND PATH
  * Returns a set of vertices that connect two
  *************************************************/
-custom::set<Vertex> Graph::findPath(const Vertex & source, const Vertex & destination)
+custom::vector <Vertex> Graph :: findPath(const Vertex & source, const Vertex & destination)
 {
    int distance = 0;
-   custom::list <Vertex> toVisit;
+   int * distances = new int[size()];
+   Vertex * predecessor = new Vertex[size()];
+   custom::queue <Vertex> toVisit;
+   custom::vector <Vertex> path;
 
-   //Path between connected vertex(s)
-   custom::set <Vertex> path;
+   // Put the source in the first position
+   toVisit.push(source);
 
-
-   int *distances = new int[size()];
-   Vertex *predecessor = new Vertex[size()];
-
-   toVisit.push_back(source);
-
+   // Set the distances of each possible path to -1 to start
    for (int i = 0; i < size(); i++)
-   {
       distances[i] = -1;
-   }
 
-   while (!toVisit.empty() && distances[destination] == -1)
+   // Loop until all bridged vertices have been searched 
+   while (!toVisit.empty() && distances[destination.index()] == -1)
    {
+      // Take the front vertex and remove it from the queue
       Vertex v = toVisit.front();
-      toVisit.pop_front();
+      toVisit.pop();
 
-      if (distances[v] > distance)
+      // Increment the distance value based on vertex distance
+      if (distances[v.index()] > distance)
+         distance++;
+
+      // Find the edges of the next vertex
+      custom::set <Vertex> s;
+      s = findEdges(v);
+
+      // Iterate over the new edges added, pushing them to the queue as needed
+      for (custom::set <Vertex> :: const_iterator it = s.cbegin(); it != s.cend(); it++)
       {
+         if (distances[(*it).index()] = -1)
+         {
+            distances[(*it).index()] = distance + 1;
+            predecessor[(*it).index()] = v;
+            toVisit.push(*it);
+         }
          distance++;
       }
-
-      custom::set <Vertex> s = findEdges(v);
-
-      custom::set <Vertex> ::const_iterator it;
-      for (it = s.cbegin(); it < s.cend(); it++)
-      {
-         if (distances[it] = -1)
-         {
-            distances[it] = distance + 1;
-            predecessor[it] = v;
-            toVisit.push_back(*it);
-            distance++;
-         }
-      }
    }
 
-   if (distances[destination] == -1)
+   // If the destination is never found, throw an error
+   if (distances[destination.index()] == -1)
    {
-      return path; //TODO: insert error
+      // No idea what kind of error he's expecting
+      std::cout << "Error: no path";
+      return path;
    }
 
-   path.insert(destination);
+   // Push the path into the vector to return
+   path.push_back(destination);
+   
+   for (int i = 1; i <= distance; i++)
+      path.push_back(predecessor[path[i - 1].index()]);
 
-   for (int i = 1; i < distance; i++)
-   {
-      path.insert(predecessor[path[i - 1]]);
-   }
-   // Return a set of the connected vertex (path) between two vertices
+   delete [] distances;
+   delete [] predecessor;
+
+   // Return a vector of the connected vertices (path) between two vertices
    return path;
 }
 
