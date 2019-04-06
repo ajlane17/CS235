@@ -9,7 +9,7 @@
 #     It uses a custom list class.
 # Time Spent:
 #     Adrian: 5 hours
-#      Ethan: 7 hours
+#      Ethan: 8 hours
 #     Kenyon: 7 hours
 #       Pair: 6 hours
 #      Total: 37 hours
